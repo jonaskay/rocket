@@ -1,0 +1,547 @@
+[
+  {
+    "category": "functional",
+    "description": "Super admin can sign in, access the dedicated admin area, and sign out while non-admin content stays protected behind authentication.",
+    "steps": [
+      "Step 1: Navigate to /session/new while signed out.",
+      "Step 2: Verify the login form renders email and password fields plus a forgot-password link.",
+      "Step 3: Submit valid super admin credentials.",
+      "Step 4: Verify authentication succeeds and the browser lands on the super admin area at /admin/clients.",
+      "Step 5: Verify the page shows a client accounts listing and does not expose trainer-only authoring controls.",
+      "Step 6: Trigger logout from the authenticated navigation.",
+      "Step 7: Verify the session is destroyed, the user is redirected away from protected content, and revisiting /admin/clients returns to the login page."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Role-based authorization and tenant scoping block unauthorized access for super admins, account admins, and trainers across protected routes.",
+    "steps": [
+      "Step 1: Sign in as a trainer from Client A.",
+      "Step 2: Attempt to visit /admin/clients directly.",
+      "Step 3: Verify access is denied with a redirect and flash notice.",
+      "Step 4: Attempt to visit /account/edit directly.",
+      "Step 5: Verify access is denied with a redirect and flash notice.",
+      "Step 6: Sign out and sign in as an account admin from Client A.",
+      "Step 7: Attempt to visit a master training owned by a trainer in Client B.",
+      "Step 8: Verify the record is hidden or forbidden and no Client B data leaks in the response.",
+      "Step 9: Sign out and sign in as a super admin.",
+      "Step 10: Attempt to visit trainer-only master training management routes.",
+      "Step 11: Verify access is denied and the super admin remains confined to the admin area."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Invited trainers are forced through first-time password setup and cannot access the application until pending_password_change is cleared.",
+    "steps": [
+      "Step 1: As an account admin, create a trainer invitation for a new email address.",
+      "Step 2: Open the invitation or reset link delivered for that trainer.",
+      "Step 3: Set a new password through the password form.",
+      "Step 4: Verify the password change succeeds and the trainer status becomes active.",
+      "Step 5: Sign in as the trainer with the new password.",
+      "Step 6: Verify the trainer reaches their authorized dashboard instead of being looped back to the forced password page."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Pending trainers who sign in before completing setup are redirected to the forced change-password page until they choose a new password.",
+    "steps": [
+      "Step 1: Seed or create a trainer account with status pending_password_change.",
+      "Step 2: Sign in using that trainer's current credentials.",
+      "Step 3: Verify the app redirects to /account/password/edit before any protected page renders.",
+      "Step 4: Attempt to visit /master_trainings directly while still pending.",
+      "Step 5: Verify the app redirects back to the forced password page.",
+      "Step 6: Submit a valid new password at /account/password.",
+      "Step 7: Verify the trainer status changes to active.",
+      "Step 8: Verify the trainer can now visit /master_trainings normally."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Password reset flow sends a reset email, accepts a valid token, updates credentials, and invalidates the old password.",
+    "steps": [
+      "Step 1: Visit /passwords/new while signed out.",
+      "Step 2: Submit the email address of an existing active user.",
+      "Step 3: Verify the app reports that reset instructions were sent.",
+      "Step 4: Open the reset link generated for that user.",
+      "Step 5: Verify the reset form renders for the token.",
+      "Step 6: Submit a new valid password.",
+      "Step 7: Verify the user can now sign in with the new password.",
+      "Step 8: Verify the previous password no longer works."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Super admin can create a new client account together with its initial account admin using the dedicated admin workflow.",
+    "steps": [
+      "Step 1: Sign in as a super admin and visit /admin/clients/new.",
+      "Step 2: Enter a client organization name.",
+      "Step 3: Enter the initial account admin's email and password.",
+      "Step 4: Submit the form.",
+      "Step 5: Verify a new client record is created.",
+      "Step 6: Verify an account admin user is created and linked to that client.",
+      "Step 7: Verify the new client appears in the /admin/clients listing with its creation date and trainer count.",
+      "Step 8: Visit the client show page and verify the initial account admin appears in the read-only user list."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Super admin can view client account details including account admins and trainers without being able to edit tenant-owned data from that page.",
+    "steps": [
+      "Step 1: Sign in as a super admin.",
+      "Step 2: Visit /admin/clients.",
+      "Step 3: Select an existing client account.",
+      "Step 4: Verify the show page lists account admins and trainers for that client.",
+      "Step 5: Verify the page is read-only and does not expose trainer invitation, training authoring, or organization-edit controls."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Deleting a client account from the super admin panel cascades through users, trainings, sessions, and attached assets after confirmation.",
+    "steps": [
+      "Step 1: Sign in as a super admin.",
+      "Step 2: Open a client account that has account admins, trainers, master trainings, generated training sessions, slides, prerequisite assets, and exercises.",
+      "Step 3: Trigger the delete action for the client account and confirm it.",
+      "Step 4: Verify the client account is removed from /admin/clients.",
+      "Step 5: Verify the deleted client's users can no longer sign in.",
+      "Step 6: Verify master trainings and training sessions for that client are no longer accessible.",
+      "Step 7: Verify associated asset records and snapshots are also removed from the application."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Account admins can update their own organization name from account settings without affecting any other client account.",
+    "steps": [
+      "Step 1: Sign in as an account admin.",
+      "Step 2: Visit /account/edit.",
+      "Step 3: Change the organization name and submit the form.",
+      "Step 4: Verify the new name appears on the settings page and any account-scoped navigation.",
+      "Step 5: Verify a different client's name remains unchanged."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Account admins can view the trainer roster for their client with names, emails, and active or inactive status indicators.",
+    "steps": [
+      "Step 1: Sign in as an account admin.",
+      "Step 2: Visit /account/trainers.",
+      "Step 3: Verify the roster includes all trainers for that account.",
+      "Step 4: Verify each trainer row shows name, email, and current status.",
+      "Step 5: Verify trainers from other clients are not listed."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Account admins can invite a trainer, generate a secure onboarding path, and deliver the invitation through the password-reset style setup flow.",
+    "steps": [
+      "Step 1: Sign in as an account admin and visit /account/trainers/new.",
+      "Step 2: Enter the trainer's first name, last name, and email address.",
+      "Step 3: Submit the invitation form.",
+      "Step 4: Verify a trainer user is created under the same client with role trainer and status pending_password_change.",
+      "Step 5: Verify a secure invite or reset token is generated for the trainer.",
+      "Step 6: Verify an invitation email is queued or sent with a setup link to /passwords/:token/edit.",
+      "Step 7: Open the delivered link.",
+      "Step 8: Set a password for the invited trainer.",
+      "Step 9: Verify the trainer becomes active and can sign in.",
+      "Step 10: Verify the trainer appears in the roster with the correct name and email."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Account admins can deactivate and reactivate trainers using the roster controls, and inactive trainers are blocked from logging in.",
+    "steps": [
+      "Step 1: Sign in as an account admin.",
+      "Step 2: Visit /account/trainers.",
+      "Step 3: Deactivate an active trainer via the row action.",
+      "Step 4: Verify the trainer row updates to inactive without a full page reload if Turbo is enabled.",
+      "Step 5: Sign out and attempt to log in as that inactive trainer.",
+      "Step 6: Verify authentication is blocked.",
+      "Step 7: Sign back in as the account admin and reactivate the same trainer.",
+      "Step 8: Verify the trainer row updates back to active.",
+      "Step 9: Verify the trainer can log in again."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Account admins can permanently remove a trainer with confirmation and the deleted trainer disappears from the roster and authentication system.",
+    "steps": [
+      "Step 1: Sign in as an account admin and visit /account/trainers.",
+      "Step 2: Trigger the remove action for an existing trainer.",
+      "Step 3: Confirm the destructive action in the confirmation UI.",
+      "Step 4: Verify the trainer row is removed from the roster.",
+      "Step 5: Verify that trainer can no longer sign in."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Trainers can create, edit, view, and delete a master training when no sessions have been generated from it.",
+    "steps": [
+      "Step 1: Sign in as a trainer and visit /master_trainings.",
+      "Step 2: Open the new training form.",
+      "Step 3: Create a master training with title and optional description.",
+      "Step 4: Verify the training appears on the dashboard and opens its detail page.",
+      "Step 5: Edit the master training metadata and save changes.",
+      "Step 6: Verify the updated title and description render on the show page and dashboard.",
+      "Step 7: Delete the master training before any training sessions exist.",
+      "Step 8: Verify the training is removed successfully from the dashboard."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "The trainer dashboard lists only the current client's master trainings and exposes session counts and timestamps for each card.",
+    "steps": [
+      "Step 1: Sign in as a trainer who belongs to a client with multiple master trainings.",
+      "Step 2: Visit /master_trainings.",
+      "Step 3: Verify each card shows the training title, description summary, session count, and timestamps.",
+      "Step 4: Verify trainings from any other client are absent."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "A master training cannot be deleted once training sessions have been generated from it, and the user receives a clear warning.",
+    "steps": [
+      "Step 1: Sign in as a trainer and open a master training that already has at least one generated training session.",
+      "Step 2: Trigger the delete action for the master training.",
+      "Step 3: Verify deletion is blocked.",
+      "Step 4: Verify the training still exists.",
+      "Step 5: Verify the UI shows a warning explaining that trainings with sessions cannot be deleted."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Trainers can upload slide files to a master training using direct upload, then view file metadata and download each slide through a signed URL redirect.",
+    "steps": [
+      "Step 1: Sign in as a trainer and open a master training detail page.",
+      "Step 2: Upload a PDF slide deck through the slides interface.",
+      "Step 3: Verify direct upload completes successfully.",
+      "Step 4: Verify the slide appears in the ordered list.",
+      "Step 5: Verify the UI shows display name, upload date, and file size.",
+      "Step 6: Click the slide download action.",
+      "Step 7: Verify the request redirects to a short-lived signed cloud download URL and the file downloads."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Trainers can rename, reorder, and delete slide files within a master training and the persisted order survives page reloads.",
+    "steps": [
+      "Step 1: Sign in as a trainer and open a master training with at least three slides.",
+      "Step 2: Rename one slide through its edit control.",
+      "Step 3: Verify the updated display name appears immediately.",
+      "Step 4: Drag the last slide to the first position.",
+      "Step 5: Verify the reorder persists through the PATCH position endpoint and the list refreshes correctly.",
+      "Step 6: Reload the page and verify the new order remains intact.",
+      "Step 7: Delete one slide.",
+      "Step 8: Verify it is removed from the list and the remaining slides keep a coherent order."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Trainers can upload prerequisite assets of arbitrary file types, include optional descriptions, and download them through signed URLs.",
+    "steps": [
+      "Step 1: Sign in as a trainer and open a master training detail page.",
+      "Step 2: Upload a prerequisite asset such as a ZIP file or video file.",
+      "Step 3: Provide a display name and optional description.",
+      "Step 4: Verify the asset appears in the prerequisite assets list.",
+      "Step 5: Verify the UI shows display name, description, upload date, and file size.",
+      "Step 6: Click the asset download action.",
+      "Step 7: Verify the request redirects to a short-lived signed cloud download URL and the file downloads."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Trainers can update metadata, reorder, and delete prerequisite assets with Turbo-backed list updates.",
+    "steps": [
+      "Step 1: Sign in as a trainer and open a master training with multiple prerequisite assets.",
+      "Step 2: Edit an asset's display name and description.",
+      "Step 3: Verify the updated metadata renders in the list.",
+      "Step 4: Drag an asset to a new position.",
+      "Step 5: Verify the new order persists after reload.",
+      "Step 6: Delete one asset.",
+      "Step 7: Verify the asset is removed and the remaining list stays ordered."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Trainers can create exercises with rich text content, supported formatting, and embedded images attached through Action Text.",
+    "steps": [
+      "Step 1: Sign in as a trainer and open a master training detail page.",
+      "Step 2: Open the new exercise form in its Turbo Frame context.",
+      "Step 3: Enter an exercise title.",
+      "Step 4: Author body content using headings, bold text, italic text, bullet lists, numbered lists, links, and code formatting in the Trix editor.",
+      "Step 5: Attach an image inside the rich text body.",
+      "Step 6: Save the exercise.",
+      "Step 7: Verify the exercise appears in the ordered exercises list.",
+      "Step 8: Verify the rendered preview or detail output preserves the authored formatting and image attachment."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Trainers can edit, preview, reorder, and delete exercises without leaving the master training workflow.",
+    "steps": [
+      "Step 1: Sign in as a trainer and open a master training with multiple exercises.",
+      "Step 2: Open an exercise edit form inside its Turbo Frame.",
+      "Step 3: Update the title and body content.",
+      "Step 4: Verify the saved exercise reflects the edits.",
+      "Step 5: Open the preview panel and verify the rendered HTML matches the authored content.",
+      "Step 6: Drag an exercise to a new position.",
+      "Step 7: Verify the new order persists after reload.",
+      "Step 8: Delete an exercise.",
+      "Step 9: Verify it is removed from the list."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Generating a training session creates an immutable snapshot of the current master training, including ordered slides, assets, and rendered exercise HTML.",
+    "steps": [
+      "Step 1: Sign in as a trainer and open a master training with metadata, multiple ordered slides, multiple ordered prerequisite assets, and multiple exercises.",
+      "Step 2: Record the current title, description, slide order, asset order, and exercise content.",
+      "Step 3: Trigger Generate Session from the master training detail page.",
+      "Step 4: Confirm the generation action if prompted.",
+      "Step 5: Verify a new master training version record is created with the next version number.",
+      "Step 6: Verify slide snapshots are created in the same order with matching names, file metadata, and cloud references.",
+      "Step 7: Verify prerequisite asset snapshots are created in the same order with matching descriptions and cloud references.",
+      "Step 8: Verify exercise snapshots are created in the same order and contain rendered HTML copied from the rich text body.",
+      "Step 9: Verify a new training session is created and linked to the new version.",
+      "Step 10: Verify the session name defaults to '{Master Training Title} – Session N'.",
+      "Step 11: Verify the trainer is redirected to the new session's edit page with a success notice."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Editing a master training after session generation affects only future sessions and leaves existing session snapshots unchanged.",
+    "steps": [
+      "Step 1: Sign in as a trainer and generate a first training session from a master training.",
+      "Step 2: Modify the master training title, description, slide order, asset metadata, and exercise body.",
+      "Step 3: Generate a second training session.",
+      "Step 4: Open the first generated session's public or internal view.",
+      "Step 5: Verify it still shows the original title, original ordered content, and original exercise HTML.",
+      "Step 6: Open the second generated session.",
+      "Step 7: Verify it reflects the updated title and updated snapshot content.",
+      "Step 8: Verify the two sessions point to different version numbers."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "The version history page shows every immutable snapshot with timestamps and linked session counts in read-only form.",
+    "steps": [
+      "Step 1: Sign in as a trainer and generate at least two sessions from the same master training across two different content states.",
+      "Step 2: Visit /master_trainings/:id/versions for that training.",
+      "Step 3: Verify each version appears with its version number and creation timestamp.",
+      "Step 4: Verify each row shows how many training sessions are linked to that version.",
+      "Step 5: Verify the page is read-only and exposes no controls for editing a stored snapshot."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "The session list for a master training shows all generated sessions with generated date, version number, password state, and share link.",
+    "steps": [
+      "Step 1: Sign in as a trainer and open a master training with multiple generated sessions.",
+      "Step 2: Visit /master_trainings/:id/training_sessions.",
+      "Step 3: Verify each session row shows the session name, generated date, version number, password status, and share link.",
+      "Step 4: Verify the sessions are scoped to the current master training only."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Trainers can rename a generated training session and the new name appears consistently in the session list and edit page.",
+    "steps": [
+      "Step 1: Sign in as a trainer and open /training_sessions/:id/edit for an existing session.",
+      "Step 2: Change the session name and submit the form.",
+      "Step 3: Verify the edit page shows the updated name.",
+      "Step 4: Visit the session list for the parent master training.",
+      "Step 5: Verify the same updated session name appears in the list."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Trainers can set, change, and remove a password on a training session using bcrypt-backed protection.",
+    "steps": [
+      "Step 1: Sign in as a trainer and open /training_sessions/:id/edit for an existing session.",
+      "Step 2: Set a password and save the form.",
+      "Step 3: Verify the session list now shows that the session is password protected.",
+      "Step 4: Return to the edit page and change the password to a different value.",
+      "Step 5: Verify the session remains protected and accepts only the latest password.",
+      "Step 6: Use the remove-password control and save.",
+      "Step 7: Verify the password digest is cleared and the session list shows the session as open access."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Deleting a training session removes only that session and does not alter the parent master training or sibling sessions.",
+    "steps": [
+      "Step 1: Sign in as a trainer and open the session list for a master training with multiple sessions.",
+      "Step 2: Delete one session and confirm the destructive action.",
+      "Step 3: Verify the deleted session disappears from the list.",
+      "Step 4: Verify the parent master training still exists.",
+      "Step 5: Verify the remaining sessions are unchanged."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Public open-access sessions render snapshot content without authentication and expose downloads plus exercise navigation in read-only mode.",
+    "steps": [
+      "Step 1: Create or identify a training session with no password.",
+      "Step 2: Visit /s/:slug while signed out.",
+      "Step 3: Verify the session content renders immediately without a password gate.",
+      "Step 4: Verify slides are listed with download actions.",
+      "Step 5: Verify prerequisite assets are listed with download actions.",
+      "Step 6: Verify exercises render as read-only sanitized HTML and can be navigated by tabs or sidebar.",
+      "Step 7: Verify no editing controls are present anywhere in the public view."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Password-protected public sessions enforce the unlock flow, reject invalid passwords, accept valid passwords, and persist access with a scoped signed cookie.",
+    "steps": [
+      "Step 1: Create or identify a training session with a password.",
+      "Step 2: Visit /s/:slug while signed out.",
+      "Step 3: Verify the user is redirected to /s/:slug/unlock.",
+      "Step 4: Submit an incorrect password.",
+      "Step 5: Verify access is denied and the unlock form shows an error.",
+      "Step 6: Submit the correct password.",
+      "Step 7: Verify the app redirects back to /s/:slug and renders the session content.",
+      "Step 8: Verify a signed, httpOnly access cookie scoped to the session path is set.",
+      "Step 9: Reload /s/:slug and verify the content still renders without re-entering the password.",
+      "Step 10: Clear cookies and revisit /s/:slug.",
+      "Step 11: Verify the password gate is required again."
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Public session downloads issue fresh signed URLs for snapshot-backed slides and prerequisite assets without exposing authoring routes.",
+    "steps": [
+      "Step 1: Visit a public session that contains at least one slide and one prerequisite asset.",
+      "Step 2: Click a slide download button.",
+      "Step 3: Verify the request goes through /training_sessions/:id/download/:attachment_id and redirects to a fresh signed file URL.",
+      "Step 4: Return to the public session and click a prerequisite asset download button.",
+      "Step 5: Verify the same signed redirect behavior occurs.",
+      "Step 6: Verify neither download path exposes editing controls or any internal authoring UI."
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Authentication pages present a polished Tailwind-styled experience with clear hierarchy, accessible inputs, and obvious primary actions.",
+    "steps": [
+      "Step 1: Navigate to /session/new and take a screenshot.",
+      "Step 2: Navigate to /passwords/new and take a screenshot.",
+      "Step 3: Navigate to /account/password/edit as a pending user and take a screenshot.",
+      "Step 4: Verify each page has consistent spacing, readable typography, visible labels, strong focus states, and a clearly dominant submit action."
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "The super admin client management area uses a clear administrative layout with readable tables, strong destructive-action affordances, and unobtrusive navigation.",
+    "steps": [
+      "Step 1: Sign in as a super admin and open /admin/clients.",
+      "Step 2: Take a screenshot of the index page.",
+      "Step 3: Open a client show page and take a screenshot.",
+      "Step 4: Verify table rows are easy to scan, metadata columns are aligned, destructive actions are visually distinct, and the admin pages feel separate from trainer workflows."
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Account settings and trainer roster screens communicate status clearly with polished form spacing, role badges, and active or inactive pills.",
+    "steps": [
+      "Step 1: Sign in as an account admin and open /account/edit.",
+      "Step 2: Take a screenshot of the account settings form.",
+      "Step 3: Open /account/trainers and take a screenshot.",
+      "Step 4: Verify the organization form is visually clean and the roster presents trainer names, emails, status pills, and row actions with strong hierarchy and alignment."
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "The trainer dashboard presents master trainings in a well-structured card grid that balances title prominence, supporting metadata, and action discoverability.",
+    "steps": [
+      "Step 1: Sign in as a trainer and open /master_trainings.",
+      "Step 2: Take a screenshot of the dashboard with multiple trainings present.",
+      "Step 3: Verify cards have consistent spacing, title hierarchy, readable metadata, and clearly discoverable primary actions for viewing or editing a training."
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "The master training detail page organizes slides, prerequisite assets, and exercises into a coherent authoring interface with intuitive upload and reorder affordances.",
+    "steps": [
+      "Step 1: Sign in as a trainer and open a populated master training detail page.",
+      "Step 2: Take screenshots of the slides, prerequisite assets, and exercises sections.",
+      "Step 3: Verify each section has a strong heading, obvious add controls, readable item metadata, visible drag handles or reorder cues, and clear separation between content types."
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "The exercise authoring experience provides a polished Trix editing surface and readable rendered content preview.",
+    "steps": [
+      "Step 1: Sign in as a trainer and open the new or edit exercise form.",
+      "Step 2: Take a screenshot of the Trix editor state.",
+      "Step 3: Open the preview panel and take a screenshot.",
+      "Step 4: Verify the editor toolbar is usable, the text area feels integrated with the app styling, and rendered content uses readable prose styles with sensible spacing for headings, lists, code, links, and images."
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "The training session list and edit pages make shareability, version information, and password state immediately legible without clutter.",
+    "steps": [
+      "Step 1: Sign in as a trainer and open a master training's session list.",
+      "Step 2: Take a screenshot of the session list.",
+      "Step 3: Open a session edit page and take a screenshot.",
+      "Step 4: Verify share links, version numbers, generated dates, password badges, and edit controls are easy to scan and the password form communicates its sensitive nature clearly."
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "The public session unlock screen feels minimal and trustworthy, with clear branding, focused password entry, and no distracting authenticated navigation.",
+    "steps": [
+      "Step 1: Visit /s/:slug/unlock for a password-protected session while signed out.",
+      "Step 2: Take a screenshot of the unlock page.",
+      "Step 3: Verify the layout is minimal, the password field and submit action are the visual focus, and authenticated application navigation is absent."
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "The public session view presents slides, prerequisites, and exercises in a clean read-only layout that works on both desktop and mobile widths.",
+    "steps": [
+      "Step 1: Visit /s/:slug for a populated session on a desktop viewport and take a screenshot.",
+      "Step 2: Visit the same page on a mobile viewport and take a screenshot.",
+      "Step 3: Verify tabs or sidebar navigation remain usable, download actions stay visible, exercise content remains readable, and the page feels intentionally designed rather than like an internal admin screen."
+    ],
+    "passes": false
+  }
+]
