@@ -2,11 +2,17 @@
 ARG RUBY_VERSION=3.4.5
 FROM ghcr.io/rails/devcontainer/images/ruby:$RUBY_VERSION
 
-# Create directories and set permissions for Claude Code
-RUN mkdir -p /commandhistory /workspaces /home/vscode/.claude /opt && \
-  touch /commandhistory/.bash_history && \
-  touch /commandhistory/.zsh_history && \
-  chown -R vscode:vscode /commandhistory /workspaces /home/vscode/.claude /opt
+USER root
+
+# Persist bash history.
+RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history" \
+  && mkdir -p /commandhistory \
+  && touch /commandhistory/.bash_history \
+  && chown -R vscode:vscode /commandhistory
+
+# Create workspace and config directories and set permissions
+RUN mkdir -p /workspaces /home/vscode/.claude && \
+  chown -R vscode:vscode /workspaces /home/vscode/.claude
 
 # Set `DEVCONTAINER` environment variable to help with orientation
 ENV DEVCONTAINER=true
