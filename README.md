@@ -1,24 +1,60 @@
-# README
+# rocket
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A multi-tenant training platform that allows organizations to manage trainers and training content.
 
-Things you may want to cover:
+## Requirements
 
-* Ruby version
+* Ruby 3.4.5
+* PostgreSQL
 
-* System dependencies
+## Getting started
 
-* Configuration
+Start the development database by running:
 
-* Database creation
+    $ docker compose -f .devcontainer/compose.yaml up postgres -d
 
-* Database initialization
+Set up the development application by running:
 
-* How to run the test suite
+    $ bin/setup
 
-* Services (job queues, cache servers, search engines, etc.)
+Start the development application server by running:
 
-* Deployment instructions
+    $ bin/dev
 
-* ...
+## Testing
+
+To run non-system tests, use:
+
+    $ bin/rails test
+
+To run system tests, use:
+
+    $ bin/rails test:system
+
+To run all tests, use:
+
+    $ bin/rails test:all
+
+## Linting
+
+RuboCop is used for linting. To run it in safe auto-correct mode, use:
+
+    $ bundle exec rubocop -a
+
+## Docs
+
+* `docs/app_spec.txt` contains the application specification.
+* `docs/feature_list.json` contains a prioritized list of features.
+
+## Skills
+
+To create a new GitHub issue, follow these steps:
+
+1. Run the `pick-feature` skill to select a feature from the feature list.
+2. Run the `draft-issue` skill to generate a draft of the new issue as a local Markdown file.
+3. Run the `submit-issue` skill to submit the issue to GitHub.
+
+To start working on an issue, follow these steps:
+
+1. Run `pick-issue` with the issue number to read the issue. If the issue contains human todos, they will be added to `docs/issues/ISSUE_NUMBER/human_todos.md`.
+2. Complete the human todos and run `commit-human-todos`.
