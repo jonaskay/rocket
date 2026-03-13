@@ -7,3 +7,8 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+# Seed a super admin user
+User.find_or_create_by!(email_address: "admin@example.com") do |u|
+  u.password = "password"
+end
