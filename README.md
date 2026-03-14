@@ -73,3 +73,9 @@ To start working on an issue, follow these steps:
 
 1. Run `pick-issue` with the issue number to read the issue. If the issue contains human todos, they will be added to `docs/issues/ISSUE_NUMBER/human_todos.md`.
 2. Complete the human todos and run `commit-human-todos`.
+3. Run `fix-issue` to implement a fix for the issue.
+
+To start reviewing work, follow these steps:
+
+1. Run `review-fix` with the issue number to review the changes. If fixes need to be made, they will be added as todos to `docs/issues/ISSUE_NUMBER/fix_todos.md`.
+2. In a new session, run `fix-todos` with the issue number to fix the findings.

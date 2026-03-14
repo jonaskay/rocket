@@ -10,7 +10,14 @@
       "Bash(git checkout:*)",
       "Bash(git commit:*)",
       "Bash(grep:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(bin/rails generate:*)",
+      "Bash(bin/rails db:*)",
+      "Bash(bin/rails test:*)",
+      "Bash(bundle exec rubocop)"
+    ],
+    "deny": [
+      "Bash(bin/rails db:drop)"
     ]
   }
 }
