@@ -39,3 +39,6 @@
 
 # Ignore local-only markdown files.
 *.local.md
+
+# Ignore node modules
+/node_modules

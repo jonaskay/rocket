@@ -20,10 +20,10 @@ jobs:
 
       - name: Scan for common Rails security vulnerabilities using static analysis
         run: bin/brakeman --no-pager
-      
+
       - name: Scan for known security vulnerabilities in gems used
         run: bin/bundler-audit
-      
+
   scan_js:
     runs-on: ubuntu-latest
 
@@ -47,6 +47,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
+      - name: Run Herb Linter
+        run: npx @herb-tools/linter
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -62,7 +65,7 @@ jobs:
           restore-keys: |
             rubocop-${{ runner.os }}-${{ env.DEPENDENCIES_HASH }}-
 
-      - name: Lint code for consistent style
+      - name: Run RuboCop Linter
         run: bin/rubocop -f github
 
   test:

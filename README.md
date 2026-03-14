@@ -37,9 +37,19 @@ To run all tests, use:
 
 ## Linting
 
-RuboCop is used for linting. To run it in safe auto-correct mode, use:
+RuboCop is used for linting Ruby files. To run it in safe auto-correct mode, use:
 
     $ bundle exec rubocop -a
+
+Herb is used for formatting and linting ERB files.
+
+To lint ERB files, use:
+
+    $ npm run herb:lint
+
+To format ERB files, use:
+
+    $ npm run herb:format
 
 ## Docs
 
