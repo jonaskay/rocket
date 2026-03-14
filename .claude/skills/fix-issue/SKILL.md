@@ -5,7 +5,7 @@ description: Implements a fix for an issue
 
 Fix issue.
 
-Every system test is expensive. Generate a system test case only for the described system test cases. Example system test case:
+Every system test is expensive. Generate a system test case only for the described system test cases (`test/system`). Example system test case:
 
 ```ruby
 require "application_system_test_case"
@@ -26,7 +26,7 @@ class ArticlesTest < ApplicationSystemTestCase
 end
 ```
 
-Generate integration tests for the described integration test cases. Example integration test case:
+Generate integration tests for the described integration test cases (`test/integration`). Example integration test case:
 
 ```ruby
 require "test_helper"
