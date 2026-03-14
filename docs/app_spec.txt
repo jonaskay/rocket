@@ -39,7 +39,8 @@
 
   <roles>
     <role name="super_admin">
-      Global administrator. Not tied to any client account.
+      Global administrator. Identified by admin: true on the User model.
+      Not tied to any client account.
       Can create and delete client accounts.
       Can create the first admin user for a client account.
     </role>
@@ -60,7 +61,8 @@
   <core_features>
 
     <super_admin_panel>
-      - Dedicated /admin area accessible only to super_admins
+      - Dedicated /admin area accessible only to users with admin: true
+      - Admin home page at /admin (Admin::HomeController#index)
       - List all client accounts with name, creation date, and trainer count
       - Create new client account: name + initial account_admin email/password
       - Delete client account (cascades: removes all users, trainings, sessions, assets)
@@ -79,13 +81,15 @@
     </account_management>
 
     <authentication>
-      - Login page for all roles (email + password), scaffolded by rails generate authentication
+      - Login page for all roles (email_address + password), scaffolded by rails generate authentication
       - Cookie-based sessions stored server-side in the sessions table
+      - After sign-in, redirect admin users to admin_root_path (/admin)
       - Password reset flow via emailed token (Action Mailer + Mailgun)
       - Forced password change on first login for invited trainers
         (user has status: pending_password_change; before_action redirects to change-password page)
       - Logout destroys the session record and clears the cookie
-      - Role-based before_action guards in controllers; unauthorized access redirects with flash notice
+      - Admin::ApplicationController inherits from ApplicationController and adds require_super_admin before-action
+      - Non-admin authenticated users redirected away from /admin with flash notice
     </authentication>
 
     <master_trainings>
@@ -173,10 +177,10 @@
       <users>
         - id (uuid, primary key)
         - client_id (uuid, fk → clients, nullable for super_admin)
-        - email (string, unique, not null)
+        - email_address (string, unique, not null)
         - password_digest (string, not null)
         - first_name, last_name (string)
-        - role (enum: super_admin | account_admin | trainer)
+        - admin (boolean, not null, default: false)
         - status (enum: active | inactive | pending_password_change)
         - created_at, updated_at
       </users>
@@ -298,7 +302,8 @@
     </auth>
 
     <super_admin>
-      (Namespaced under /admin, restricted by SuperAdminConstraint)
+      (Namespaced under /admin, restricted by require_super_admin before-action)
+      GET    /admin                      — admin home page (Admin::HomeController#index)
       GET    /admin/clients              — list all accounts
       GET    /admin/clients/new          — new account form
       POST   /admin/clients              — create account + initial admin
@@ -408,20 +413,20 @@
       <title>Project Setup and Authentication</title>
       <tasks>
         - rails new with PostgreSQL, Tailwind CSS (tailwindcss-rails), Hotwire (default in Rails 7+)
-        - Run rails generate authentication; customize User model to add role enum,
-          status enum, client_id, first_name, last_name
-        - Create clients migration; add client_id FK to users
-        - Seed one super_admin user for initial access
-        - Implement forced password change before_action; redirect pending_password_change users
-        - Role-based before_action helpers (require_super_admin!, require_account_admin!, require_trainer!)
-        - Style login and change-password pages with Tailwind
+        - Run rails generate authentication; add admin boolean column to users (not null, default: false)
+        - Seed one super_admin user (admin: true) for initial access
+        - Admin::ApplicationController with require_super_admin before-action
+        - Admin::HomeController#index as admin landing page
+        - Override post-login redirect: admin users → admin_root_path
+        - Non-admin users redirected away from /admin with flash notice
+        - Style login page with Tailwind
       </tasks>
     </step>
 
     <step number="2">
       <title>Super Admin – Client Account Management</title>
       <tasks>
-        - Admin namespace in routes; SuperAdminConstraint based on current_user.role
+        - Admin namespace in routes; require_super_admin before-action in Admin::ApplicationController
         - ClientAccounts controller: index, new, create, show, destroy
         - Views: account list table, new account form, show page with user list (read-only)
         - Cascade destroy via dependent: :destroy on associations
