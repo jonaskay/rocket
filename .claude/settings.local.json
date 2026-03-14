@@ -12,9 +12,13 @@
       "Bash(grep:*)",
       "Bash(find:*)",
       "Bash(bin/rails generate:*)",
-      "Bash(bin/rails db:*)",
-      "Bash(bin/rails test:*)",
-      "Bash(bundle exec rubocop)"
+      "Bash(bin/rails db:migrate)",
+      "Bash(bin/rails test)",
+      "Bash(bin/rails test:system)",
+      "Bash(bundle exec rubocop)",
+      "Bash(npm run herb:format)",
+      "Bash(npm run herb:format:check)",
+      "Bash(npm run herb:lint)"
     ],
     "deny": [
       "Bash(bin/rails db:drop)"
