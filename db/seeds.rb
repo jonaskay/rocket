@@ -11,4 +11,6 @@
 # Seed a super admin user
 User.find_or_create_by!(email_address: "admin@example.com") do |u|
   u.password = "password"
+end.then do |u|
+  u.update!(admin: true) unless u.admin?
 end

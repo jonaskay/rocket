@@ -1,7 +1,7 @@
 require "test_helper"
 
 class PasswordsControllerTest < ActionDispatch::IntegrationTest
-  setup { @user = User.take }
+  setup { @user = users(:one) }
 
   test "new" do
     get new_password_path
@@ -36,7 +36,7 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_password_path
 
     follow_redirect!
-    assert_notice "reset link is invalid"
+    assert_alert "reset link is invalid"
   end
 
   test "update" do
@@ -57,11 +57,19 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
     end
 
     follow_redirect!
-    assert_notice "Passwords did not match"
+    assert_alert "Passwords did not match"
   end
 
   private
+    def assert_flash(id, text)
+      assert_select "p##{id}", /#{text}/
+    end
+
     def assert_notice(text)
-      assert_select "div", /#{text}/
+      assert_flash "notice", text
+    end
+
+    def assert_alert(text)
+      assert_flash "alert", text
     end
 end
