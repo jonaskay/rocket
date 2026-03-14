@@ -78,3 +78,4 @@ To start working on an issue, follow these steps:
 To start reviewing work, follow these steps:
 
 1. Run `review-fix` with the issue number to review the changes. If fixes need to be made, they will be added as todos to `docs/issues/ISSUE_NUMBER/fix_todos.md`.
+2. In a new session, run `fix-todos` with the issue number to fix the findings.
