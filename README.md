@@ -5,6 +5,7 @@ A multi-tenant training platform that allows organizations to manage trainers an
 ## Requirements
 
 * Ruby 3.4.5
+* Node.js
 * PostgreSQL
 
 ## Getting started
@@ -12,6 +13,10 @@ A multi-tenant training platform that allows organizations to manage trainers an
 Start the development database by running:
 
     $ docker compose -f .devcontainer/compose.yaml up postgres -d
+
+Install development Node.js dependencies by running:
+
+    $ npm install
 
 Set up the development application by running:
 
