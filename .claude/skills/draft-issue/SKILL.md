@@ -1,12 +1,14 @@
 ---
 name: draft-issue
 description: Generate an issue draft for a feature
-argument-hint: [requirements]
+argument-hint: [details]
 ---
 
-Generate an issue for a feature. See if the issue contains installing or adding new dependencies or scaffolding files using install generators. Mark those steps as human todos. Move it to a markdown file `docs/issues/FEATURE.local.md`.
+Generate an issue for a feature. See if the issue contains installing or adding new dependencies or scaffolding files using install generators. Mark those steps as human todos.
 
-Include things like background, current state, requirements, and acceptance criteria.
+Move it to a markdown file `docs/issues/FEATURE.local.md`. See `docs/issues/issue.example.md` for an example issue format.
 
-Requirements:
+Every system test is expensive. Pick only one critical path to test as a system test. Write the system and integration test cases using Gherkin. Use third-person point of view for Gherkin test cases. Do not use literal URLs ("/session/new") but path or page names ("sign-in page").
+
+Details:
 $ARGUMENTS
