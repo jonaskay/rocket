@@ -68,7 +68,7 @@
       "Step 2: Navigate to /admin/clients",
       "Step 3: Verify page displays a list of client accounts with name, creation date, and trainer count"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -788,7 +788,7 @@
       "Step 3: Verify accounts are displayed in a clean table with columns for name, creation date, and trainer count",
       "Step 4: Verify delete buttons are styled as destructive actions"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
