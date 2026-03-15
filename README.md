@@ -12,7 +12,7 @@ A multi-tenant training platform that allows organizations to manage trainers an
 
 Start the development database by running:
 
-    $ docker compose -f .devcontainer/compose.yaml up postgres -d
+    $ docker compose up postgres -d
 
 Install development Node.js dependencies by running:
 
