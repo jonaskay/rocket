@@ -1,0 +1,24 @@
+<h1 class="font-bold text-4xl">Client Accounts</h1>
+
+<% if @clients.any? %>
+  <table class="mt-8 w-full text-left border-collapse">
+    <thead>
+      <tr class="border-b border-gray-300">
+        <th class="py-3 px-4 font-semibold text-gray-700">Name</th>
+        <th class="py-3 px-4 font-semibold text-gray-700">Created</th>
+        <th class="py-3 px-4 font-semibold text-gray-700">Trainers</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @clients.each do |client| %>
+        <tr class="border-b border-gray-200 hover:bg-gray-50">
+          <td class="py-3 px-4"><%= client.name %></td>
+          <td class="py-3 px-4"><%= l(client.created_at, format: :long) %></td>
+          <td class="py-3 px-4"><%= client.trainers_count %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p class="mt-8 text-gray-500">No client accounts yet.</p>
+<% end %>
