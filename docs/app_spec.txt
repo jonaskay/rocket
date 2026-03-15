@@ -88,7 +88,7 @@
       - Forced password change on first login for invited trainers
         (user has status: pending_password_change; before_action redirects to change-password page)
       - Logout destroys the session record and clears the cookie
-      - Admin::ApplicationController inherits from ApplicationController and adds require_super_admin before-action
+      - Admin::ApplicationController inherits from ApplicationController and adds require_admin before-action
       - Non-admin authenticated users redirected away from /admin with flash notice
     </authentication>
 
@@ -169,14 +169,14 @@
     <tables>
 
       <clients>
-        - id (uuid, primary key)
+        - id (bigint, primary key)
         - name (string, not null)
         - created_at, updated_at
       </clients>
 
       <users>
-        - id (uuid, primary key)
-        - client_id (uuid, fk → clients, nullable for super_admin)
+        - id (bigint, primary key)
+        - client_id (bigint, fk → clients, nullable for super_admin)
         - email_address (string, unique, not null)
         - password_digest (string, not null)
         - first_name, last_name (string)
@@ -302,7 +302,7 @@
     </auth>
 
     <super_admin>
-      (Namespaced under /admin, restricted by require_super_admin before-action)
+      (Namespaced under /admin, restricted by require_admin before-action)
       GET    /admin                      — admin home page (Admin::HomeController#index)
       GET    /admin/clients              — list all accounts
       GET    /admin/clients/new          — new account form
@@ -415,7 +415,7 @@
         - rails new with PostgreSQL, Tailwind CSS (tailwindcss-rails), Hotwire (default in Rails 7+)
         - Run rails generate authentication; add admin boolean column to users (not null, default: false)
         - Seed one super_admin user (admin: true) for initial access
-        - Admin::ApplicationController with require_super_admin before-action
+        - Admin::ApplicationController with require_admin before-action
         - Admin::HomeController#index as admin landing page
         - Override post-login redirect: admin users → admin_root_path
         - Non-admin users redirected away from /admin with flash notice
@@ -426,7 +426,7 @@
     <step number="2">
       <title>Super Admin – Client Account Management</title>
       <tasks>
-        - Admin namespace in routes; require_super_admin before-action in Admin::ApplicationController
+        - Admin namespace in routes; require_admin before-action in Admin::ApplicationController
         - ClientAccounts controller: index, new, create, show, destroy
         - Views: account list table, new account form, show page with user list (read-only)
         - Cascade destroy via dependent: :destroy on associations
