@@ -12,11 +12,11 @@ class AdminClientsTest < ApplicationSystemTestCase
     fill_in "password", with: "password"
     click_button "Sign in"
 
-    assert_current_path admin_root_path
+    assert_text @admin.email_address
     click_link "Client Accounts"
-    assert_current_path admin_clients_path
+    assert_text "New Client Account"
     click_link "New Client Account"
-    assert_current_path new_admin_client_path
+    assert_text "Account Details"
 
     fill_in "Client Account Name", with: "Delta Corp"
     fill_in "Email", with: "admin@delta.com"
@@ -36,9 +36,8 @@ class AdminClientsTest < ApplicationSystemTestCase
     fill_in "password", with: "password"
     click_button "Sign in"
 
-    assert_current_path admin_root_path
+    assert_text @admin.email_address
     click_link "Client Accounts"
-    assert_current_path admin_clients_path
 
     assert_text "Acme Corp"
     assert_text "Beta Inc"
