@@ -22,20 +22,4 @@ fi
 echo "=== Implementing fix ==="
 $CLAUDE "/fix-issue" --resume "$session_id"
 
-for i in $(seq 1 $MAX_ITERATIONS); do
-  echo "=== Review/fix iteration $i/$MAX_ITERATIONS ==="
-
-  $CLAUDE "/review-fix $ISSUE"
-
-  if [ ! -f "docs/issues/$ISSUE/fix_todos.md" ]; then
-    echo "Review passed — no todos generated"
-    break
-  fi
-
-  if ! grep -q '^\- \[ \]' "docs/issues/$ISSUE/fix_todos.md" 2>/dev/null; then
-    echo "All todos already complete"
-    break
-  fi
-
-  $CLAUDE "/fix-todos $ISSUE"
-done
+bin/review-fix-loop "$ISSUE" "$MAX_ITERATIONS"
