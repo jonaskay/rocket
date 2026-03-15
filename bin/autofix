@@ -1,0 +1,44 @@
+#!/bin/bash
+set -e
+
+ISSUE=$1
+MAX_ITERATIONS=${2:-3}
+
+if [ -z "$ISSUE" ]; then
+  echo "Usage: bin/autofix <issue_number> [max_review_iterations]"
+  exit 1
+fi
+
+CLAUDE="claude --dangerously-skip-permissions -p"
+
+echo "=== Picking issue #$ISSUE ==="
+$CLAUDE "/pick-issue $ISSUE"
+
+if [ -f "docs/issues/$ISSUE/human_todos.md" ]; then
+  echo "Human todos found — complete them manually, then run /commit-human-todos and /fix-issue"
+  exit 1
+fi
+
+echo "=== Implementing fix ==="
+$CLAUDE "/fix-issue"
+
+for i in $(seq 1 $MAX_ITERATIONS); do
+  echo "=== Review/fix iteration $i/$MAX_ITERATIONS ==="
+
+  $CLAUDE "/review-fix $ISSUE"
+
+  if [ ! -f "docs/issues/$ISSUE/fix_todos.md" ]; then
+    echo "Review passed — no todos generated"
+    break
+  fi
+
+  if ! grep -q '^\- \[ \]' "docs/issues/$ISSUE/fix_todos.md" 2>/dev/null; then
+    echo "All todos already complete"
+    break
+  fi
+
+  $CLAUDE "/fix-todos $ISSUE"
+done
+
+echo "=== Submitting PR ==="
+$CLAUDE "/submit-pr $ISSUE"
