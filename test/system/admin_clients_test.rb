@@ -14,7 +14,9 @@ class AdminClientsTest < ApplicationSystemTestCase
 
     assert_current_path admin_root_path
     click_link "Client Accounts"
+    assert_current_path admin_clients_path
     click_link "New Client Account"
+    assert_current_path new_admin_client_path
 
     fill_in "Client Account Name", with: "Delta Corp"
     fill_in "Email", with: "admin@delta.com"
@@ -36,6 +38,7 @@ class AdminClientsTest < ApplicationSystemTestCase
 
     assert_current_path admin_root_path
     click_link "Client Accounts"
+    assert_current_path admin_clients_path
 
     assert_text "Acme Corp"
     assert_text "Beta Inc"
