@@ -5,10 +5,13 @@
   },
   "permissions": {
     "allow": [
-      "Bash(gh repo:*)",
       "Bash(gh issue:*)",
+      "Bash(gh repo:*)",
+      "Bash(gh pr:*)",
+      "Bash(git add:*)",
       "Bash(git checkout:*)",
       "Bash(git commit:*)",
+      "Bash(git push:*)",
       "Bash(grep:*)",
       "Bash(find:*)",
       "Bash(bin/rails generate:*)",
