@@ -4,6 +4,6 @@ class Admin::ApplicationController < ApplicationController
   private
 
     def require_admin
-      redirect_to root_path, alert: "Not authorized." unless Current.user&.admin?
+      redirect_to root_path, alert: "Not authorized." unless Current.user&.super_admin?
     end
 end

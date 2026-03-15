@@ -4,6 +4,8 @@ FROM ghcr.io/rails/devcontainer/images/ruby:$RUBY_VERSION
 
 USER root
 
+RUN apt-get update && apt-get install -y nodejs npm
+
 # Persist bash history.
 RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history" \
   && mkdir -p /commandhistory \

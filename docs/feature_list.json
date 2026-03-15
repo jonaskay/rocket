@@ -83,7 +83,7 @@
       "Step 7: Verify the initial account admin user is created and associated with the client",
       "Step 8: Verify redirect to client accounts list with success flash"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -95,7 +95,7 @@
       "Step 4: Verify page lists all trainers and account admins (read-only)",
       "Step 5: Verify user details include name, email, and status"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -109,7 +109,7 @@
       "Step 6: Verify all associated users are deleted",
       "Step 7: Verify all associated trainings and sessions are deleted"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",

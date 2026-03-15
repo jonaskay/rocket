@@ -27,6 +27,16 @@
   </head>
 
   <body>
+    <% if notice.present? %>
+      <div class="fixed top-4 left-1/2 -translate-x-1/2 z-50 rounded-md bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-800 shadow">
+        <%= notice %>
+      </div>
+    <% end %>
+    <% if alert.present? %>
+      <div class="fixed top-4 left-1/2 -translate-x-1/2 z-50 rounded-md bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-800 shadow">
+        <%= alert %>
+      </div>
+    <% end %>
     <main class="container mx-auto mt-28 px-5 flex">
       <%= yield %>
     </main>
