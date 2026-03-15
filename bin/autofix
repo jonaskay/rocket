@@ -12,7 +12,7 @@ fi
 CLAUDE="claude --dangerously-skip-permissions -p"
 
 echo "=== Picking issue #$ISSUE ==="
-$CLAUDE "/pick-issue $ISSUE"
+session_id=$($CLAUDE "/pick-issue $ISSUE" --output-format json | jq -r '.session_id')
 
 if [ -f "docs/issues/$ISSUE/human_todos.md" ]; then
   echo "Human todos found — complete them manually, then run /commit-human-todos and /fix-issue"
@@ -20,7 +20,7 @@ if [ -f "docs/issues/$ISSUE/human_todos.md" ]; then
 fi
 
 echo "=== Implementing fix ==="
-$CLAUDE "/fix-issue"
+$CLAUDE "/fix-issue" --resume "$session_id"
 
 for i in $(seq 1 $MAX_ITERATIONS); do
   echo "=== Review/fix iteration $i/$MAX_ITERATIONS ==="
@@ -39,6 +39,3 @@ for i in $(seq 1 $MAX_ITERATIONS); do
 
   $CLAUDE "/fix-todos $ISSUE"
 done
-
-echo "=== Submitting PR ==="
-$CLAUDE "/submit-pr $ISSUE"
