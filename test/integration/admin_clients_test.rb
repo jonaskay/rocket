@@ -57,4 +57,173 @@ class AdminClientsIntegrationTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to root_path
   end
+
+  test "new client account form renders successfully" do
+    sign_in_as(@admin)
+
+    get new_admin_client_path
+
+    assert_response :success
+    assert_select "input[name='client[name]']"
+    assert_select "input[name='client[users_attributes][0][email_address]']"
+    assert_select "input[name='client[users_attributes][0][password]']"
+  end
+
+  test "valid client account and account admin user are created" do
+    sign_in_as(@admin)
+
+    assert_difference([ "Client.count", "User.count" ]) do
+      post admin_clients_path, params: {
+        client: {
+          name: "Delta Corp",
+          users_attributes: {
+            "0" => {
+              email_address: "admin@delta.com",
+              password: "securepassword",
+              password_confirmation: "securepassword"
+            }
+          }
+        }
+      }
+    end
+
+    assert_redirected_to admin_clients_path
+    assert_equal "Client account created successfully.", flash[:notice]
+    new_client = Client.find_by!(name: "Delta Corp")
+    new_user = new_client.users.first
+    assert new_user.client_admin?
+    assert_equal new_client, new_user.client
+  end
+
+  test "creation fails when client name is blank" do
+    sign_in_as(@admin)
+
+    assert_no_difference "Client.count" do
+      post admin_clients_path, params: {
+        client: {
+          name: "",
+          users_attributes: {
+            "0" => {
+              email_address: "admin@delta.com",
+              password: "securepassword",
+              password_confirmation: "securepassword"
+            }
+          }
+        }
+      }
+    end
+
+    assert_response :unprocessable_entity
+    assert_select ".text-red-700", text: /can't be blank/
+  end
+
+  test "creation fails when admin email is blank" do
+    sign_in_as(@admin)
+
+    assert_no_difference [ "Client.count", "User.count" ] do
+      post admin_clients_path, params: {
+        client: {
+          name: "Delta Corp",
+          users_attributes: {
+            "0" => {
+              email_address: "",
+              password: "securepassword",
+              password_confirmation: "securepassword"
+            }
+          }
+        }
+      }
+    end
+
+    assert_response :unprocessable_entity
+    assert_select ".text-red-700", text: /can't be blank/
+  end
+
+  test "creation fails when admin email is already taken" do
+    sign_in_as(@admin)
+
+    assert_no_difference "Client.count" do
+      post admin_clients_path, params: {
+        client: {
+          name: "Delta Corp",
+          users_attributes: {
+            "0" => {
+              email_address: users(:acme_admin).email_address,
+              password: "securepassword",
+              password_confirmation: "securepassword"
+            }
+          }
+        }
+      }
+    end
+
+    assert_response :unprocessable_entity
+  end
+
+  test "creation fails when password confirmation does not match" do
+    sign_in_as(@admin)
+
+    assert_no_difference [ "Client.count", "User.count" ] do
+      post admin_clients_path, params: {
+        client: {
+          name: "Delta Corp",
+          users_attributes: {
+            "0" => {
+              email_address: "admin@delta.com",
+              password: "securepassword",
+              password_confirmation: "wrongpassword"
+            }
+          }
+        }
+      }
+    end
+
+    assert_response :unprocessable_entity
+  end
+
+  test "show page renders client name and user list" do
+    sign_in_as(@admin)
+
+    get admin_client_path(clients(:acme))
+
+    assert_response :success
+    assert_select "h1", text: "Acme Corp"
+    assert_select "td", text: "admin@acme.com"
+    assert_select "td", text: "trainer1@acme.com"
+  end
+
+  test "show page labels client admin and trainer roles correctly" do
+    sign_in_as(@admin)
+
+    get admin_client_path(clients(:acme))
+
+    assert_response :success
+    assert_select "span", text: "Account Admin"
+    assert_select "span", text: "Trainer"
+  end
+
+  test "destroy removes client and associated users and redirects" do
+    sign_in_as(@admin)
+
+    assert_difference([ "Client.count", "User.count" ], -1) do
+      delete admin_client_path(clients(:gamma))
+    end
+
+    assert_redirected_to admin_clients_path
+    assert_equal "Client account deleted successfully.", flash[:notice]
+    assert_nil Client.find_by(name: "Gamma Ltd")
+  end
+
+  test "destroy removes client with multiple users" do
+    sign_in_as(@admin)
+
+    acme_user_count = clients(:acme).users.count
+    assert_difference("Client.count", -1) do
+      assert_difference("User.count", -acme_user_count) do
+        delete admin_client_path(clients(:acme))
+      end
+    end
+
+    assert_redirected_to admin_clients_path
+  end
 end

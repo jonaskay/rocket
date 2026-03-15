@@ -39,7 +39,7 @@
 
   <roles>
     <role name="super_admin">
-      Global administrator. Identified by admin: true on the User model.
+      Global administrator. Identified by super_admin: true on the User model.
       Not tied to any client account.
       Can create and delete client accounts.
       Can create the first admin user for a client account.
@@ -61,7 +61,7 @@
   <core_features>
 
     <super_admin_panel>
-      - Dedicated /admin area accessible only to users with admin: true
+      - Dedicated /admin area accessible only to users with super_admin: true
       - Admin home page at /admin (Admin::HomeController#index)
       - List all client accounts with name, creation date, and trainer count
       - Create new client account: name + initial account_admin email/password
@@ -83,13 +83,13 @@
     <authentication>
       - Login page for all roles (email_address + password), scaffolded by rails generate authentication
       - Cookie-based sessions stored server-side in the sessions table
-      - After sign-in, redirect admin users to admin_root_path (/admin)
+      - After sign-in, redirect super_admin users to admin_root_path (/admin)
       - Password reset flow via emailed token (Action Mailer + Mailgun)
       - Forced password change on first login for invited trainers
         (user has status: pending_password_change; before_action redirects to change-password page)
       - Logout destroys the session record and clears the cookie
-      - Admin::ApplicationController inherits from ApplicationController and adds require_admin before-action
-      - Non-admin authenticated users redirected away from /admin with flash notice
+      - Admin::ApplicationController inherits from ApplicationController and adds require_admin before-action (checks super_admin?)
+      - Non-super_admin authenticated users redirected away from /admin with flash notice
     </authentication>
 
     <master_trainings>
@@ -180,7 +180,8 @@
         - email_address (string, unique, not null)
         - password_digest (string, not null)
         - first_name, last_name (string)
-        - admin (boolean, not null, default: false)
+        - super_admin (boolean, not null, default: false)
+        - client_admin (boolean, not null, default: false)
         - status (enum: active | inactive | pending_password_change)
         - created_at, updated_at
       </users>
@@ -413,12 +414,12 @@
       <title>Project Setup and Authentication</title>
       <tasks>
         - rails new with PostgreSQL, Tailwind CSS (tailwindcss-rails), Hotwire (default in Rails 7+)
-        - Run rails generate authentication; add admin boolean column to users (not null, default: false)
-        - Seed one super_admin user (admin: true) for initial access
-        - Admin::ApplicationController with require_admin before-action
+        - Run rails generate authentication; add super_admin boolean column to users (not null, default: false); add client_admin boolean column to users (not null, default: false)
+        - Seed one super_admin user (super_admin: true) for initial access
+        - Admin::ApplicationController with require_admin before-action (checks super_admin?)
         - Admin::HomeController#index as admin landing page
-        - Override post-login redirect: admin users → admin_root_path
-        - Non-admin users redirected away from /admin with flash notice
+        - Override post-login redirect: super_admin users → admin_root_path
+        - Non-super_admin users redirected away from /admin with flash notice
         - Style login page with Tailwind
       </tasks>
     </step>

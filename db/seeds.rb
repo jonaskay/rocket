@@ -12,5 +12,5 @@
 User.find_or_create_by!(email_address: "admin@example.com") do |u|
   u.password = "password"
 end.then do |u|
-  u.update!(admin: true) unless u.admin?
+  u.update!(super_admin: true) unless u.super_admin?
 end
