@@ -12,6 +12,7 @@ class AdminClientsTest < ApplicationSystemTestCase
     fill_in "password", with: "password"
     click_button "Sign in"
 
+    assert_current_path admin_root_path
     click_link "Client Accounts"
     click_link "New Client Account"
 
@@ -33,6 +34,7 @@ class AdminClientsTest < ApplicationSystemTestCase
     fill_in "password", with: "password"
     click_button "Sign in"
 
+    assert_current_path admin_root_path
     click_link "Client Accounts"
 
     assert_text "Acme Corp"
