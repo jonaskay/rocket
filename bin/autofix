@@ -1,0 +1,25 @@
+#!/bin/bash
+set -e
+
+ISSUE=$1
+MAX_ITERATIONS=${2:-3}
+
+if [ -z "$ISSUE" ]; then
+  echo "Usage: bin/autofix <issue_number> [max_review_iterations]"
+  exit 1
+fi
+
+CLAUDE="claude --dangerously-skip-permissions -p"
+
+echo "=== Picking issue #$ISSUE ==="
+session_id=$($CLAUDE "/pick-issue $ISSUE" --output-format json | jq -r '.session_id')
+
+if [ -f "docs/issues/$ISSUE/human_todos.md" ]; then
+  echo "Human todos found — complete them manually, then run /commit-human-todos and /fix-issue"
+  exit 1
+fi
+
+echo "=== Implementing fix ==="
+$CLAUDE "/fix-issue" --resume "$session_id"
+
+bin/review-fix-loop "$ISSUE" "$MAX_ITERATIONS"

@@ -24,13 +24,13 @@ class SessionsController < ApplicationController
     def after_authentication_url
       return_url = session.delete(:return_to_after_authenticating)
 
-      if Current.user&.admin?
+      if Current.user&.super_admin?
         return_url || admin_root_url
       else
         return_url = nil if return_url && URI.parse(return_url).path.start_with?("/admin")
         return_url || root_url
       end
     rescue URI::InvalidURIError
-      Current.user&.admin? ? admin_root_url : root_url
+      Current.user&.super_admin? ? admin_root_url : root_url
     end
 end

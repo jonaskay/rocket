@@ -5,6 +5,96 @@ description: Implements a fix for an issue
 
 Fix issue.
 
+## Forms
+
+Use `accepts_nested_attributes_for` when creating and editing associated records with forms:
+
+```ruby
+class Person < ApplicationRecord
+  has_many :addresses, inverse_of: :person
+  accepts_nested_attributes_for :addresses
+end
+
+class Address < ApplicationRecord
+  belongs_to :person
+end
+```
+
+```erb
+<%= form_with model: @person do |form| %>
+  Addresses:
+  <ul>
+    <%= form.fields_for :addresses do |addresses_form| %>
+      <li>
+        <%= addresses_form.label :kind %>
+        <%= addresses_form.text_field :kind %>
+
+        <%= addresses_form.label :street %>
+        <%= addresses_form.text_field :street %>
+        ...
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+```
+
+## Controllers
+
+Example controller:
+
+```ruby
+class ProductsController < ApplicationController
+  before_action :set_product, only: %i[ show edit update destroy ]
+
+  def index
+    @products = Product.all
+  end
+
+  def show
+  end
+
+  def new
+    @product = Product.new
+  end
+
+  def create
+    @product = Product.new(product_params)
+    if @product.save
+      redirect_to @product
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  def edit
+  end
+
+  def update
+    if @product.update(product_params)
+      redirect_to @product
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @product.destroy
+    redirect_to products_path
+  end
+
+  private
+    def set_product
+      @product = Product.find(params[:id])
+    end
+
+    def product_params
+      params.expect(product: [ :name ])
+    end
+end
+```
+
+## System tests
+
 Every system test is expensive. Generate a system test case only for the described system test cases (`test/system`). Example system test case:
 
 ```ruby
@@ -25,6 +115,8 @@ class ArticlesTest < ApplicationSystemTestCase
   end
 end
 ```
+
+## Integration tests
 
 Generate integration tests for the described integration test cases (`test/integration`). Example integration test case:
 

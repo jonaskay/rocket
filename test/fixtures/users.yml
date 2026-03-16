@@ -3,33 +3,35 @@
 one:
   email_address: one@example.com
   password_digest: <%= password_digest %>
-  admin: true
+  super_admin: true
 
 two:
   email_address: two@example.com
   password_digest: <%= password_digest %>
-  admin: false
+  super_admin: false
 
 acme_trainer_one:
   email_address: trainer1@acme.com
   password_digest: <%= password_digest %>
-  admin: false
+  super_admin: false
   client: acme
 
 acme_trainer_two:
   email_address: trainer2@acme.com
   password_digest: <%= password_digest %>
-  admin: false
+  super_admin: false
   client: acme
 
 acme_admin:
   email_address: admin@acme.com
   password_digest: <%= password_digest %>
-  admin: true
+  super_admin: false
+  client_admin: true
   client: acme
 
 gamma_admin:
   email_address: admin@gamma.com
   password_digest: <%= password_digest %>
-  admin: true
+  super_admin: false
+  client_admin: true
   client: gamma

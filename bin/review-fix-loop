@@ -1,0 +1,30 @@
+#!/bin/bash
+set -e
+
+ISSUE=$1
+MAX_ITERATIONS=$2
+
+if [ -z "$ISSUE" ]; then
+  echo "Usage: bin/review-fix-loop <issue_number> [max_review_iterations]"
+  exit 1
+fi
+
+CLAUDE="claude --dangerously-skip-permissions -p"
+
+for i in $(seq 1 $MAX_ITERATIONS); do
+  echo "=== Review/fix iteration $i/$MAX_ITERATIONS ==="
+
+  $CLAUDE "/review-fix $ISSUE"
+
+  if [ ! -f "docs/issues/$ISSUE/fix_todos.md" ]; then
+    echo "Review passed — no todos generated"
+    break
+  fi
+
+  if ! grep -q '^\- \[ \]' "docs/issues/$ISSUE/fix_todos.md" 2>/dev/null; then
+    echo "All todos already complete"
+    break
+  fi
+
+  $CLAUDE "/fix-todos $ISSUE"
+done
