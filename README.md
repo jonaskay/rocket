@@ -63,11 +63,21 @@ To format ERB files, use:
 
 ## Skills
 
+Skills are organized into two namespaces:
+
+### `issue` namespace
+
+Skills for selecting a feature and submitting it as a GitHub issue:
+
 To create a new GitHub issue, follow these steps:
 
 1. Run the `pick-feature` skill to select a feature from the feature list.
 2. Run the `draft-issue` skill to generate a draft of the new issue as a local Markdown file.
 3. Run the `submit-issue` skill to submit the issue to GitHub.
+
+### `fix` namespace
+
+Skills for picking a GitHub issue and submitting a fix as a pull request:
 
 To start working on an issue, follow these steps:
 
