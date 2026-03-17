@@ -1,5 +1,5 @@
 ---
-name: feature-list
+name: init.features
 description:
 ---
 
