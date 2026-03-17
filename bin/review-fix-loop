@@ -14,7 +14,7 @@ CLAUDE="claude --dangerously-skip-permissions -p"
 for i in $(seq 1 $MAX_ITERATIONS); do
   echo "=== Review/fix iteration $i/$MAX_ITERATIONS ==="
 
-  $CLAUDE "/review-fix $ISSUE"
+  $CLAUDE "/review.start $ISSUE"
 
   if [ ! -f "docs/issues/$ISSUE/fix_todos.md" ]; then
     echo "Review passed — no todos generated"
@@ -26,5 +26,5 @@ for i in $(seq 1 $MAX_ITERATIONS); do
     break
   fi
 
-  $CLAUDE "/fix-todos $ISSUE"
+  $CLAUDE "/review.fix $ISSUE"
 done
