@@ -1,5 +1,5 @@
 ---
-name: draft-issue
+name: issue.draft
 description: Generate an issue draft for a feature
 argument-hint: [details]
 ---

@@ -1,5 +1,5 @@
 ---
-name: fix-todos
+name: review.fix
 description: Review fix suggestions and implement them
 argument-hint: [issue-number]
 ---

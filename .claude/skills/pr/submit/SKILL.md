@@ -1,5 +1,5 @@
 ---
-name: submit-pr
+name: pr.submit
 description: Commit all changes and submit a pull request
 argument-hint: [issue-number]
 ---

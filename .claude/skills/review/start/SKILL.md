@@ -1,5 +1,5 @@
 ---
-name: review-fix
+name: review.start
 description: Review current fix for an issue
 argument-hint: [issue-number]
 ---

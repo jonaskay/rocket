@@ -63,21 +63,23 @@ To format ERB files, use:
 
 ## Skills
 
-To create a new GitHub issue, follow these steps:
+### issue — Create a new GitHub issue
 
-1. Run the `pick-feature` skill to select a feature from the feature list.
-2. Run the `draft-issue` skill to generate a draft of the new issue as a local Markdown file.
-3. Run the `submit-issue` skill to submit the issue to GitHub.
+1. `issue.pick` — select a feature from the feature list
+2. `issue.draft` — generate a draft as a local Markdown file
+3. `issue.submit` — submit the issue to GitHub
 
-To start working on an issue, follow these steps:
+### dev — Work on an issue
 
-1. Run `pick-issue` with the issue number to read the issue. If the issue contains human todos, they will be added to `docs/issues/ISSUE_NUMBER/human_todos.md`.
-2. Complete the human todos and run `commit-human-todos`.
-3. Run `fix-issue` to implement a fix for the issue.
+1. `dev.pick <issue>` — read the issue; human todos → `docs/issues/ISSUE/human_todos.md`
+2. Complete the human todos, then run `dev.commit-todos`
+3. `dev.fix` — implement the fix
 
-To start reviewing work, follow these steps:
+### review — Review the work
 
-1. Run `review-fix` with the issue number to review the changes. If fixes need to be made, they will be added as todos to `docs/issues/ISSUE_NUMBER/fix_todos.md`.
-2. In a new session, run `fix-todos` with the issue number to fix the findings.
+1. `review.start <issue>` — review changes; fix todos → `docs/issues/ISSUE/fix_todos.md`
+2. In a new session, `review.fix <issue>` — address the findings
 
-Finally, to submit a pull request for the work, run `submit-pr` with the issue number.
+### pr — Ship it
+
+1. `pr.submit <issue>` — open the pull request
