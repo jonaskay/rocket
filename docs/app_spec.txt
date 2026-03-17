@@ -72,7 +72,7 @@
     <account_management>
       - Account settings page for account_admins
       - Edit organization name
-      - Trainer roster: list all trainers with name, email, status (active/inactive)
+      - Trainer roster: list all trainers with email and status (active/inactive/pending_password_change); name will be shown once first_name/last_name columns are added
       - Invite new trainer: enter name + email; Rails generates a secure random
         password, creates the user with status pending_password_change, and sends an
         invitation email via Mailgun containing a one-time setup link

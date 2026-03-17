@@ -25,7 +25,7 @@ class AdminClientsIntegrationTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select "tr", text: /Acme Corp/ do
-      assert_select "td", text: "2"
+      assert_select "td", text: "3"
     end
   end
 
