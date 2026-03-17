@@ -1,5 +1,5 @@
 ---
-name: submit-issue
+name: issue.submit
 description: Submit an issue to GitHub
 ---
 

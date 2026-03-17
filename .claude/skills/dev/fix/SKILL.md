@@ -1,5 +1,5 @@
 ---
-name: fix-issue
+name: dev.fix
 description: Implements a fix for an issue
 ---
 

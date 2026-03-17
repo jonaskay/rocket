@@ -1,5 +1,5 @@
 ---
-name: pick-issue
+name: dev.pick
 description: Pick and issue to work on
 argument-hint: [issue-number]
 ---
