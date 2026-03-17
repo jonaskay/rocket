@@ -2,7 +2,8 @@
 timeout-minutes: 5
 strict: true
 on:
-  schedule: "0 14 * * 1-5"
+  issues:
+    types: [opened, reopened]
   workflow_dispatch:
 permissions:
   issues: read
