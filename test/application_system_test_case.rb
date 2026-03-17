@@ -1,6 +1,9 @@
 require "test_helper"
+require_relative "support/capybara_helpers"
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
+  include CapybaraHelpers
+
   if ENV["CAPYBARA_SERVER_PORT"]
     served_by host: "rails-app", port: ENV["CAPYBARA_SERVER_PORT"]
 

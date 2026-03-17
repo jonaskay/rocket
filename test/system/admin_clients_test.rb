@@ -6,7 +6,7 @@ class AdminClientsTest < ApplicationSystemTestCase
   end
 
   test "super admin creates a new client account with initial account admin user" do
-    visit new_session_path
+    visit_and_confirm new_session_path, title: "Rocket"
 
     fill_in "email_address", with: @admin.email_address
     fill_in "password", with: "password"
@@ -30,7 +30,7 @@ class AdminClientsTest < ApplicationSystemTestCase
   end
 
   test "super admin sees client accounts with trainer counts" do
-    visit new_session_path
+    visit_and_confirm new_session_path, title: "Rocket"
 
     fill_in "email_address", with: @admin.email_address
     fill_in "password", with: "password"
