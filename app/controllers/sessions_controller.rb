@@ -26,11 +26,20 @@ class SessionsController < ApplicationController
 
       if Current.user&.super_admin?
         return_url || admin_root_url
+      elsif Current.user&.client_admin?
+        return_url = nil if return_url && URI.parse(return_url).path.start_with?("/admin")
+        return_url || edit_account_settings_url
       else
         return_url = nil if return_url && URI.parse(return_url).path.start_with?("/admin")
         return_url || root_url
       end
     rescue URI::InvalidURIError
-      Current.user&.super_admin? ? admin_root_url : root_url
+      if Current.user&.super_admin?
+        admin_root_url
+      elsif Current.user&.client_admin?
+        edit_account_settings_url
+      else
+        root_url
+      end
     end
 end
