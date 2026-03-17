@@ -13,8 +13,8 @@ RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhisto
   && chown -R vscode:vscode /commandhistory
 
 # Create workspace and config directories and set permissions
-RUN mkdir -p /workspaces /home/vscode/.claude && \
-  chown -R vscode:vscode /workspaces /home/vscode/.claude
+RUN mkdir -p /workspaces /home/vscode/.claude /home/vscode/.config/gh/ && \
+  chown -R vscode:vscode /workspaces /home/vscode/.claude /home/vscode/.config/gh/
 
 # Set `DEVCONTAINER` environment variable to help with orientation
 ENV DEVCONTAINER=true
