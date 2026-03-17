@@ -7,7 +7,7 @@ class AdminAuthenticationTest < ApplicationSystemTestCase
   end
 
   test "sign in and sign out successfully" do
-    visit new_session_path
+    visit_and_confirm new_session_path, title: "Rocket"
 
     fill_in "email_address", with: @admin.email_address
     fill_in "password", with: "password"
@@ -19,7 +19,7 @@ class AdminAuthenticationTest < ApplicationSystemTestCase
 
     assert_current_path new_session_path
 
-    visit admin_root_path
+    visit_and_confirm admin_root_path, title: "Rocket"
     assert_current_path new_session_path
   end
 end
