@@ -1,5 +1,5 @@
 ---
-name: pick-feature
+name: issue.pick
 description: Pick the next feature to work on
 ---
 

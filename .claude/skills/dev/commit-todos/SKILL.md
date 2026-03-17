@@ -1,5 +1,5 @@
 ---
-name: commit-human-todos
+name: dev.commit-todos
 description: Commit the completed human todos
 ---
 
