@@ -10,4 +10,4 @@ Check for contradicting requirements between `app_spec.txt` and the issue. Updat
 
 If the issue contains human todos, move them into `docs/issues/ISSUE_NUMBER/human_todos.md`. Use `docs/issues/1/human_todos.example.md` as a template.
 
-Open a new Git branch for the issue (`issue-ISSUE_NUMBER-FEATURE`).
+Open a new Git worktree for the issue (`issue-ISSUE_NUMBER-FEATURE`) by running `worktree issue-ISSUE_NUMBER-FEATURE`.
