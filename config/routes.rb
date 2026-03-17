@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   namespace :account do
     resource :settings, only: [ :edit, :update ]
+    resources :trainers, only: [ :index ]
   end
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

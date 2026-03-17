@@ -1,0 +1,32 @@
+<h1 class="font-bold text-4xl">Trainer Roster</h1>
+
+<div class="mt-8">
+  <% if @trainers.any? %>
+    <table class="w-full text-left border-collapse">
+      <thead>
+        <tr class="border-b border-gray-300">
+          <th class="py-3 px-4 font-semibold text-gray-700">Email</th>
+          <th class="py-3 px-4 font-semibold text-gray-700">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @trainers.each do |trainer| %>
+          <tr class="border-b border-gray-200 hover:bg-gray-50">
+            <td class="py-3 px-4"><%= trainer.email_address %></td>
+            <td class="py-3 px-4">
+              <% if trainer.active? %>
+                <span class="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700">Active</span>
+              <% elsif trainer.inactive? %>
+                <span class="inline-flex items-center rounded-full bg-red-50 px-2 py-1 text-xs font-medium text-red-700">Inactive</span>
+              <% else %>
+                <span class="inline-flex items-center rounded-full bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-700">Pending Password Change</span>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="text-gray-500">No trainers in this account yet.</p>
+  <% end %>
+</div>

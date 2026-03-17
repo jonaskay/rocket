@@ -945,5 +945,23 @@
       "Step 4: Verify the reset password form matches the overall design system"
     ],
     "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Account admin can view trainer roster with status",
+    "steps": [
+      "Step 1: Sign in as an account admin",
+      "Step 2: Navigate to /account/trainers",
+      "Step 3: Verify HTTP 200 response",
+      "Step 4: Verify all non-admin users belonging to the current client are listed",
+      "Step 5: Verify each row shows the trainer's email address",
+      "Step 6: Verify each row shows a status pill",
+      "Step 7: Verify active trainers show a green status pill",
+      "Step 8: Verify inactive trainers show a red status pill",
+      "Step 9: Verify pending_password_change trainers show a yellow status pill",
+      "Step 10: Verify account admin users are not shown in the list",
+      "Step 11: Verify trainers from other clients are not shown"
+    ],
+    "passes": true
   }
 ]
