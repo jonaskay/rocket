@@ -13,7 +13,7 @@ tools:
     toolsets: [issues, labels]
 safe-outputs:
   add-labels:
-    allowed: [bug, feature, enhancement, documentation, question, help-wanted, good-first-issue]
+    allowed: [bug, feature, enhancement, documentation, question, community]
   add-comment: {}
 imports:
   - shared/mood.md
@@ -24,7 +24,7 @@ engine: copilot
 
 # Issue Triage Agent
 
-List open issues in ${{ github.repository }} that have no labels. For each unlabeled issue, analyze the title and body, then add one of the allowed labels: `bug`, `feature`, `enhancement`, `documentation`, `question`, `help-wanted`, or `good-first-issue`, `community`.
+List open issues in ${{ github.repository }} that have no labels. For each unlabeled issue, analyze the title and body, then add one of the allowed labels: `bug`, `feature`, `enhancement`, `documentation`, `question`, or `community`.
 
 Skip issues that:
 - Already have any of these labels
