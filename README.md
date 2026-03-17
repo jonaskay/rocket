@@ -60,6 +60,7 @@ To format ERB files, use:
 
 * `docs/app_spec.txt` contains the application specification.
 * `docs/feature_list.json` contains a prioritized list of features.
+* `docs/glossary.md` contains definitions for important domain terms.
 
 ## Skills
 
