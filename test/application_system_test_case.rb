@@ -1,6 +1,8 @@
 require "test_helper"
 require_relative "support/capybara_helpers"
 
+Capybara.default_max_wait_time = 5
+
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   include CapybaraHelpers
 
