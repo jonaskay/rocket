@@ -65,65 +65,37 @@ class AccountTrainerInviteIntegrationTest < ActionDispatch::IntegrationTest
 
   test "blank email fails with validation error" do
     sign_in_as(@account_admin)
-
-    assert_no_difference "User.count" do
-      assert_no_emails do
-        post account_trainers_path, params: {
-          user: { first_name: "Sam", last_name: "Taylor", email_address: "" }
-        }
-      end
-    end
-
-    assert_response :unprocessable_entity
+    assert_invitation_fails(first_name: "Sam", last_name: "Taylor", email_address: "")
     assert_select ".text-red-700", text: /can't be blank/
   end
 
   test "duplicate email fails with validation error" do
     sign_in_as(@account_admin)
-
-    assert_no_difference "User.count" do
-      assert_no_emails do
-        post account_trainers_path, params: {
-          user: {
-            first_name: "Sam",
-            last_name: "Taylor",
-            email_address: users(:acme_trainer_one).email_address
-          }
-        }
-      end
-    end
-
-    assert_response :unprocessable_entity
+    assert_invitation_fails(first_name: "Sam", last_name: "Taylor", email_address: users(:acme_trainer_one).email_address)
     assert_select ".text-red-700", text: /already been taken/
   end
 
   test "blank first name fails with validation error" do
     sign_in_as(@account_admin)
-
-    assert_no_difference "User.count" do
-      assert_no_emails do
-        post account_trainers_path, params: {
-          user: { first_name: "", last_name: "Taylor", email_address: "sam@acme.com" }
-        }
-      end
-    end
-
-    assert_response :unprocessable_entity
+    assert_invitation_fails(first_name: "", last_name: "Taylor", email_address: "sam@acme.com")
     assert_select ".text-red-700", text: /can't be blank/
   end
 
   test "blank last name fails with validation error" do
     sign_in_as(@account_admin)
+    assert_invitation_fails(first_name: "Sam", last_name: "", email_address: "sam@acme.com")
+    assert_select ".text-red-700", text: /can't be blank/
+  end
 
+  private
+
+  def assert_invitation_fails(user_params)
     assert_no_difference "User.count" do
       assert_no_emails do
-        post account_trainers_path, params: {
-          user: { first_name: "Sam", last_name: "", email_address: "sam@acme.com" }
-        }
+        post account_trainers_path, params: { user: user_params }
       end
     end
 
     assert_response :unprocessable_entity
-    assert_select ".text-red-700", text: /can't be blank/
   end
 end

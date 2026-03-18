@@ -4,10 +4,7 @@ class AccountSettingsTest < ApplicationSystemTestCase
   test "account admin edits the organization name" do
     account_admin = users(:acme_admin)
 
-    visit_and_confirm new_session_path, title: "Rocket"
-    fill_in "email_address", with: account_admin.email_address
-    fill_in "password", with: "password"
-    click_button "Sign in"
+    sign_in_via_ui account_admin
     assert_current_path edit_account_settings_path
 
     fill_in "Organization Name", with: "New Org Name"

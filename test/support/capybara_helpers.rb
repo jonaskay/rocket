@@ -13,4 +13,11 @@ module CapybaraHelpers
     click_button locator
     assert_current_path path
   end
+
+  def sign_in_via_ui(user, password: "password")
+    visit_and_confirm new_session_path, title: "Rocket"
+    fill_in "email_address", with: user.email_address
+    fill_in "password", with: password
+    click_button "Sign in"
+  end
 end

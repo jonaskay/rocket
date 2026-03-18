@@ -4,10 +4,7 @@ class AccountTrainerInviteTest < ApplicationSystemTestCase
   test "account admin invites a new trainer successfully" do
     account_admin = users(:acme_admin)
 
-    visit_and_confirm new_session_path, title: "Rocket"
-    fill_in "email_address", with: account_admin.email_address
-    fill_in "password", with: "password"
-    click_button "Sign in"
+    sign_in_via_ui account_admin
 
     click_on "Trainer Roster"
     click_on "Invite Trainer"
@@ -25,10 +22,7 @@ class AccountTrainerInviteTest < ApplicationSystemTestCase
   test "invite form shows validation errors for blank fields" do
     account_admin = users(:acme_admin)
 
-    visit_and_confirm new_session_path, title: "Rocket"
-    fill_in "email_address", with: account_admin.email_address
-    fill_in "password", with: "password"
-    click_button "Sign in"
+    sign_in_via_ui account_admin
 
     click_on "Trainer Roster"
     click_on "Invite Trainer"

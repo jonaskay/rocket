@@ -73,20 +73,7 @@ class AdminClientsIntegrationTest < ActionDispatch::IntegrationTest
     sign_in_as(@admin)
 
     assert_difference([ "Client.count", "User.count" ]) do
-      post admin_clients_path, params: {
-        client: {
-          name: "Delta Corp",
-          users_attributes: {
-            "0" => {
-              first_name: "Admin",
-              last_name: "User",
-              email_address: "admin@delta.com",
-              password: "securepassword",
-              password_confirmation: "securepassword"
-            }
-          }
-        }
-      }
+      post admin_clients_path, params: valid_client_params
     end
 
     assert_redirected_to admin_clients_path
@@ -101,20 +88,7 @@ class AdminClientsIntegrationTest < ActionDispatch::IntegrationTest
     sign_in_as(@admin)
 
     assert_no_difference "Client.count" do
-      post admin_clients_path, params: {
-        client: {
-          name: "",
-          users_attributes: {
-            "0" => {
-              first_name: "Admin",
-              last_name: "User",
-              email_address: "admin@delta.com",
-              password: "securepassword",
-              password_confirmation: "securepassword"
-            }
-          }
-        }
-      }
+      post admin_clients_path, params: valid_client_params(name: "")
     end
 
     assert_response :unprocessable_entity
@@ -125,20 +99,7 @@ class AdminClientsIntegrationTest < ActionDispatch::IntegrationTest
     sign_in_as(@admin)
 
     assert_no_difference [ "Client.count", "User.count" ] do
-      post admin_clients_path, params: {
-        client: {
-          name: "Delta Corp",
-          users_attributes: {
-            "0" => {
-              first_name: "Admin",
-              last_name: "User",
-              email_address: "",
-              password: "securepassword",
-              password_confirmation: "securepassword"
-            }
-          }
-        }
-      }
+      post admin_clients_path, params: valid_client_params(user: { email_address: "" })
     end
 
     assert_response :unprocessable_entity
@@ -149,18 +110,7 @@ class AdminClientsIntegrationTest < ActionDispatch::IntegrationTest
     sign_in_as(@admin)
 
     assert_no_difference "Client.count" do
-      post admin_clients_path, params: {
-        client: {
-          name: "Delta Corp",
-          users_attributes: {
-            "0" => {
-              email_address: users(:acme_admin).email_address,
-              password: "securepassword",
-              password_confirmation: "securepassword"
-            }
-          }
-        }
-      }
+      post admin_clients_path, params: valid_client_params(user: { email_address: users(:acme_admin).email_address })
     end
 
     assert_response :unprocessable_entity
@@ -170,18 +120,7 @@ class AdminClientsIntegrationTest < ActionDispatch::IntegrationTest
     sign_in_as(@admin)
 
     assert_no_difference [ "Client.count", "User.count" ] do
-      post admin_clients_path, params: {
-        client: {
-          name: "Delta Corp",
-          users_attributes: {
-            "0" => {
-              email_address: "admin@delta.com",
-              password: "securepassword",
-              password_confirmation: "wrongpassword"
-            }
-          }
-        }
-      }
+      post admin_clients_path, params: valid_client_params(user: { password_confirmation: "wrongpassword" })
     end
 
     assert_response :unprocessable_entity
@@ -231,5 +170,19 @@ class AdminClientsIntegrationTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to admin_clients_path
+  end
+
+  private
+
+  def valid_client_params(name: "Delta Corp", user: {})
+    user_attrs = {
+      first_name: "Admin",
+      last_name: "User",
+      email_address: "admin@delta.com",
+      password: "securepassword",
+      password_confirmation: "securepassword"
+    }.merge(user)
+
+    { client: { name: name, users_attributes: { "0" => user_attrs } } }
   end
 end
