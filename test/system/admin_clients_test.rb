@@ -22,7 +22,7 @@ class AdminClientsTest < ApplicationSystemTestCase
     fill_in "Email", with: "admin@delta.com"
     fill_in "Password", with: "securepassword"
     fill_in "Password Confirmation", with: "securepassword"
-    click_button "Create Client Account"
+    click_button_and_confirm "Create Client Account", path: admin_clients_path
 
     assert_current_path admin_clients_path
     assert_text "Client account created successfully"
