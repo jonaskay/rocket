@@ -10,6 +10,11 @@ while [[ "$1" == --* ]]; do
   esac
 done
 
+if ! gh auth status &>/dev/null; then
+  echo "GitHub CLI is not authenticated. Run \`gh auth login\` to authenticate."
+  exit 1
+fi
+
 ISSUE=$1
 MAX_ITERATIONS=${2:-3}
 
