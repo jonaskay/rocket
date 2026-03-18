@@ -9,11 +9,15 @@ two:
   email_address: two@example.com
   password_digest: <%= password_digest %>
   super_admin: false
+  first_name: Jane
+  last_name: Doe
 
 acme_trainer_one:
   email_address: trainer1@acme.com
   password_digest: <%= password_digest %>
   super_admin: false
+  first_name: Alice
+  last_name: Smith
   client: acme
   status: active
 
@@ -21,6 +25,8 @@ acme_trainer_two:
   email_address: trainer2@acme.com
   password_digest: <%= password_digest %>
   super_admin: false
+  first_name: Bob
+  last_name: Jones
   client: acme
   status: inactive
 
@@ -28,6 +34,8 @@ acme_trainer_three:
   email_address: trainer3@acme.com
   password_digest: <%= password_digest %>
   super_admin: false
+  first_name: Carol
+  last_name: White
   client: acme
   status: pending_password_change
 
@@ -35,6 +43,8 @@ acme_admin:
   email_address: admin@acme.com
   password_digest: <%= password_digest %>
   super_admin: false
+  first_name: Dave
+  last_name: Brown
   client_admin: true
   client: acme
 
@@ -42,5 +52,7 @@ gamma_admin:
   email_address: admin@gamma.com
   password_digest: <%= password_digest %>
   super_admin: false
+  first_name: Eve
+  last_name: Black
   client_admin: true
   client: gamma

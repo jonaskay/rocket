@@ -401,9 +401,6 @@
       4. TrainerInvitationMailer delivers invite email via Mailgun with a
          link to /passwords/:token/edit (password reset flow)
       5. Trainer clicks link, sets their password; status updated to active
-      3. Email sent (or password displayed in UI for MVP) with login instructions
-      4. On first login, trainer is forced to the change-password screen before proceeding
-      5. Status updated to active
     </workflow>
 
   </key_workflows>
@@ -443,7 +440,7 @@
         - Configure Action Mailer with Mailgun SMTP credentials (via credentials.yml.enc)
         - TrainerInvitationMailer: invitation email with signed invite token link
         - PasswordsMailer (from auth generator): password reset email
-        - Invite flow: create pending user → deliver invitation email via Sidekiq job
+        - Invite flow: create pending user → deliver invitation email via Solid Queue (deliver_later)
         - Deactivate/reactivate via PATCH with Turbo Stream row update
         - Role badges and status pills in trainer roster view
       </tasks>

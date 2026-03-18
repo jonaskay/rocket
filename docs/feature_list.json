@@ -147,7 +147,7 @@
       "Step 6: Verify an invitation email is sent via Mailgun",
       "Step 7: Verify the email contains a signed invite token link valid for 72 hours"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -419,7 +419,7 @@
       "Step 6: Verify prerequisite_asset_snapshots are created matching current assets",
       "Step 7: Verify exercise_snapshots are created with rendered HTML body",
       "Step 8: Verify a training_session record is created linked to the version",
-      "Step 9: Verify session name is auto-generated as '{Title} – Session {N}'",
+      "Step 9: Verify session name is auto-generated as '{Title} \u2013 Session {N}'",
       "Step 10: Verify redirect to session edit page with success flash"
     ],
     "passes": false

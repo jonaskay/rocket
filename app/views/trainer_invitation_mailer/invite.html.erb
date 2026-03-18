@@ -1,0 +1,7 @@
+<p>Hello <%= @user.first_name %>,</p>
+
+<p>You've been invited to join Rocket as a trainer. Please use the link below to set your password and get started:</p>
+
+<p><%= link_to "Set your password", edit_password_url(@user.password_reset_token) %></p>
+
+<p>This link will expire in <%= distance_of_time_in_words(0, @user.password_reset_token_expires_in) %>.</p>

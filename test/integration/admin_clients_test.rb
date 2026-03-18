@@ -78,6 +78,8 @@ class AdminClientsIntegrationTest < ActionDispatch::IntegrationTest
           name: "Delta Corp",
           users_attributes: {
             "0" => {
+              first_name: "Admin",
+              last_name: "User",
               email_address: "admin@delta.com",
               password: "securepassword",
               password_confirmation: "securepassword"
@@ -104,6 +106,8 @@ class AdminClientsIntegrationTest < ActionDispatch::IntegrationTest
           name: "",
           users_attributes: {
             "0" => {
+              first_name: "Admin",
+              last_name: "User",
               email_address: "admin@delta.com",
               password: "securepassword",
               password_confirmation: "securepassword"
@@ -126,6 +130,8 @@ class AdminClientsIntegrationTest < ActionDispatch::IntegrationTest
           name: "Delta Corp",
           users_attributes: {
             "0" => {
+              first_name: "Admin",
+              last_name: "User",
               email_address: "",
               password: "securepassword",
               password_confirmation: "securepassword"
