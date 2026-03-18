@@ -37,6 +37,6 @@ class Admin::ClientsController < Admin::ApplicationController
   private
 
     def client_params
-      params.expect(client: [ :name, users_attributes: [ [ :email_address, :password, :password_confirmation ] ] ])
+      params.expect(client: [ :name, users_attributes: [ [ :first_name, :last_name, :email_address, :password, :password_confirmation ] ] ])
     end
 end

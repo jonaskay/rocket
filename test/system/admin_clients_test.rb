@@ -10,19 +10,19 @@ class AdminClientsTest < ApplicationSystemTestCase
 
     fill_in "email_address", with: @admin.email_address
     fill_in "password", with: "password"
-    click_button "Sign in"
+    click_button_and_confirm "Sign in", path: admin_root_path
 
-    assert_text @admin.email_address
-    click_link "Client Accounts"
-    assert_text "New Client Account"
-    click_link "New Client Account"
+    click_link_and_confirm "Client Accounts", path: admin_clients_path
+    click_link_and_confirm "New Client Account", path: new_admin_client_path
+
     assert_text "Account Details"
-
     fill_in "Client Account Name", with: "Delta Corp"
+    fill_in "First Name", with: "Alice"
+    fill_in "Last Name", with: "Smith"
     fill_in "Email", with: "admin@delta.com"
     fill_in "Password", with: "securepassword"
     fill_in "Password Confirmation", with: "securepassword"
-    click_button "Create Client Account"
+    click_button_and_confirm "Create Client Account", path: admin_clients_path
 
     assert_current_path admin_clients_path
     assert_text "Client account created successfully"
