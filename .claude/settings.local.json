@@ -12,6 +12,8 @@
       "Bash(bin/rails test)",
       "Bash(bin/rails test:system)",
       "Bash(bin/rails test:system *)",
+      "Bash(bundle exec:*)",
+      "Bash(bundle exec rubocop)",
       "Bash(gh issue:*)",
       "Bash(gh repo:*)",
       "Bash(gh pr:*)",
@@ -24,7 +26,6 @@
       "Bash(gh run:*)",
       "Bash(grep:*)",
       "Bash(find:*)",
-      "Bash(bundle exec rubocop)",
       "Bash(npm run herb:format)",
       "Bash(npm run herb:format:check)",
       "Bash(npm run herb:lint)"
