@@ -95,7 +95,7 @@ end
 
 ## System tests
 
-Every system test is expensive. Generate a system test case only for the described system test cases (`test/system`). Use `visit_and_confirm` instead of bare `visit` to navigate to pages to assert page has loaded before continuing. Example system test case:
+Every system test is expensive. Generate a system test case only for the described system test cases (`test/system`). Use `visit_and_confirm` instead of bare `visit`, `click_link_and_confirm` instead of bare `click_link`, and `click_button_and_confirm` instead of bare `click_button` to navigate to pages to assert page has loaded before continuing. Example system test case:
 
 ```ruby
 require "application_system_test_case"
