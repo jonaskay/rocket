@@ -35,6 +35,7 @@ tools:
   serena: ["ruby", "javascript"]
   cache-memory: true
   github:
+    lockdown: true
     toolsets: [default]
   edit:
   bash:
