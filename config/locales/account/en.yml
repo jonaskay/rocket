@@ -1,0 +1,32 @@
+en:
+  account:
+    application:
+      not_authorized: "Not authorized."
+    settings:
+      edit:
+        title: "Account Settings"
+        trainer_roster: "Trainer Roster"
+        organization: "Organization"
+        organization_name: "Organization Name"
+        submit: "Save Changes"
+      update:
+        success: "Organization name updated successfully."
+    trainers:
+      index:
+        title: "Trainer Roster"
+        invite_trainer: "Invite Trainer"
+        table_email: "Email"
+        table_status: "Status"
+        status_active: "Active"
+        status_inactive: "Inactive"
+        status_pending: "Pending Password Change"
+        empty: "No trainers in this account yet."
+      new:
+        title: "Invite Trainer"
+        first_name: "First Name"
+        last_name: "Last Name"
+        email: "Email"
+        submit: "Send Invitation"
+        cancel: "Cancel"
+      create:
+        invitation_sent: "Invitation sent to %{email}."

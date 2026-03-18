@@ -1,0 +1,14 @@
+en:
+  trainer_invitation_mailer:
+    invite:
+      subject: "You're invited to join Rocket"
+      greeting: "Hello %{name},"
+      body: "You've been invited to join Rocket as a trainer. Please use the link below to set your password and get started:"
+      link: "Set your password"
+      expiry: "This link will expire in %{time}."
+  passwords_mailer:
+    reset:
+      subject: "Reset your password"
+      body_prefix: "You can reset your password on"
+      link: "this password reset page"
+      expiry: "This link will expire in %{time}."

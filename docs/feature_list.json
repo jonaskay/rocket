@@ -963,5 +963,21 @@
       "Step 11: Verify trainers from other clients are not shown"
     ],
     "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "All user-facing strings are extracted into Rails locale files with English translations",
+    "steps": [
+      "Step 1: Verify config/application.rb sets config.i18n.default_locale = :en and config.i18n.available_locales = [:en]",
+      "Step 2: Verify config/locales/en.yml contains shared/global keys (app_name, common buttons, labels)",
+      "Step 3: Verify config/locales/sessions/en.yml contains sign-in page strings and flash messages",
+      "Step 4: Verify config/locales/passwords/en.yml contains password reset page strings and flash messages",
+      "Step 5: Verify config/locales/admin/en.yml contains admin dashboard and client account page strings",
+      "Step 6: Verify config/locales/account/en.yml contains account settings and trainer management strings",
+      "Step 7: Verify config/locales/mailers/en.yml contains mailer strings",
+      "Step 8: Load any view or page and verify no hardcoded English strings remain in views or controllers",
+      "Step 9: Verify t() lazy lookup calls resolve correctly in all views"
+    ],
+    "passes": true
   }
 ]

@@ -1,0 +1,19 @@
+en:
+  passwords:
+    new:
+      title: "Forgot your password?"
+      email_placeholder: "Enter your email address"
+      submit: "Email reset instructions"
+    edit:
+      title: "Update your password"
+      password_placeholder: "Enter new password"
+      password_confirmation_placeholder: "Repeat new password"
+      submit: "Save"
+    create:
+      rate_limit_exceeded: "Try again later."
+      success: "Password reset instructions sent (if user with that email address exists)."
+    update:
+      success: "Password has been reset."
+      passwords_mismatch: "Passwords did not match."
+    set_user_by_token:
+      invalid_token: "Password reset link is invalid or has expired."

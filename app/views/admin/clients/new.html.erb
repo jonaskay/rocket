@@ -1,4 +1,4 @@
-<h1 class="font-bold text-4xl">New Client Account</h1>
+<h1 class="font-bold text-4xl"><%= t(".title") %></h1>
 
 <%= form_with model: [:admin, @client], class: "mt-8 max-w-lg space-y-6" do |form| %>
   <% errors = @client.errors.reject { |e| e.attribute.to_s.start_with?("users.") }.map(&:full_message) +
@@ -14,35 +14,35 @@
   <% end %>
 
   <div>
-    <h2 class="text-lg font-semibold text-gray-800 mb-4">Account Details</h2>
+    <h2 class="text-lg font-semibold text-gray-800 mb-4"><%= t(".account_details") %></h2>
     <div>
-      <%= form.label :name, "Client Account Name", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= form.label :name, t(".client_account_name"), class: "block text-sm font-medium text-gray-700 mb-1" %>
       <%= form.text_field :name, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" %>
     </div>
   </div>
 
   <div>
-    <h2 class="text-lg font-semibold text-gray-800 mb-4">Initial Account Admin</h2>
+    <h2 class="text-lg font-semibold text-gray-800 mb-4"><%= t(".initial_account_admin") %></h2>
     <%= form.fields_for :users do |user_form| %>
       <div class="space-y-4">
         <div>
-          <%= user_form.label :first_name, "First Name", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= user_form.label :first_name, t(".first_name"), class: "block text-sm font-medium text-gray-700 mb-1" %>
           <%= user_form.text_field :first_name, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" %>
         </div>
         <div>
-          <%= user_form.label :last_name, "Last Name", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= user_form.label :last_name, t(".last_name"), class: "block text-sm font-medium text-gray-700 mb-1" %>
           <%= user_form.text_field :last_name, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" %>
         </div>
         <div>
-          <%= user_form.label :email_address, "Email", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= user_form.label :email_address, t(".email"), class: "block text-sm font-medium text-gray-700 mb-1" %>
           <%= user_form.email_field :email_address, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" %>
         </div>
         <div>
-          <%= user_form.label :password, "Password", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= user_form.label :password, t(".password"), class: "block text-sm font-medium text-gray-700 mb-1" %>
           <%= user_form.password_field :password, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" %>
         </div>
         <div>
-          <%= user_form.label :password_confirmation, "Password Confirmation", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= user_form.label :password_confirmation, t(".password_confirmation"), class: "block text-sm font-medium text-gray-700 mb-1" %>
           <%= user_form.password_field :password_confirmation, class: "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" %>
         </div>
       </div>
@@ -50,7 +50,7 @@
   </div>
 
   <div class="flex items-center gap-4">
-    <%= form.submit "Create Client Account", class: "rounded-md px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium cursor-pointer" %>
-    <%= link_to "Cancel", admin_clients_path, class: "text-sm text-gray-600 hover:text-gray-900" %>
+    <%= form.submit t(".submit"), class: "rounded-md px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium cursor-pointer" %>
+    <%= link_to t(".cancel"), admin_clients_path, class: "text-sm text-gray-600 hover:text-gray-900" %>
   </div>
 <% end %>

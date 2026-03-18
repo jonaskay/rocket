@@ -13,6 +13,11 @@
     <framework>Ruby on Rails (full-stack, not API mode)</framework>
     <ruby_version>3.4.5</ruby_version>
     <rails_version>8.1.2</rails_version>
+    <i18n>
+      Rails built-in i18n with default_locale :en and available_locales [:en].
+      All user-facing strings extracted to namespace-scoped YAML locale files under config/locales/.
+      Views use lazy lookup (t(".key")); controllers use fully qualified keys.
+    </i18n>
     <database>PostgreSQL</database>
     <frontend>
       <views>ERB templates with Rails layouts</views>
@@ -527,6 +532,25 @@
     </step>
 
     <step number="10">
+      <title>i18n Support (English)</title>
+      <tasks>
+        - Set config.i18n.default_locale = :en and config.i18n.available_locales = [:en] in config/application.rb
+        - Replace config/locales/en.yml with namespace-scoped locale files:
+            config/locales/en.yml — shared/global keys (app name, generic labels, common buttons, date/time formats)
+            config/locales/sessions/en.yml — sign-in page strings and session flash messages
+            config/locales/passwords/en.yml — password reset/forgot-password page strings and flash messages
+            config/locales/admin/en.yml — admin dashboard, client account pages, flash messages
+            config/locales/account/en.yml — account settings, trainer roster pages, flash messages
+            config/locales/mailers/en.yml — mailer subject lines and body text
+        - Replace all hardcoded user-facing strings in views with t(".key") lazy lookup
+        - Replace all hardcoded flash messages in controllers with t() fully qualified keys
+        - Use activerecord.attributes and activerecord.errors namespaces for model attribute names and validation messages
+        - Use t() with interpolation for confirmation dialogs (e.g., t(".confirm_delete", name: client.name))
+        - Shared partials and layouts use top-level keys under layouts namespace
+      </tasks>
+    </step>
+
+    <step number="11">
       <title>Polish, Error Handling, and Security</title>
       <tasks>
         - Flash notification Stimulus controller: slide-in toast, auto-dismiss after 4s
