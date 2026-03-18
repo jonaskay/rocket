@@ -90,8 +90,9 @@
       - Cookie-based sessions stored server-side in the sessions table
       - After sign-in, redirect super_admin users to admin_root_path (/admin)
       - Password reset flow via emailed token (Action Mailer + Mailgun)
-      - Forced password change on first login for invited trainers
-        (user has status: pending_password_change; before_action redirects to change-password page)
+      - Invited trainers set their password via the invite link (/passwords/:token/edit) before
+        their first login; PasswordsController#update sets status to active upon success
+      - Inactive users (status: inactive) are blocked from logging in and see a deactivation message
       - Logout destroys the session record and clears the cookie
       - Admin::ApplicationController inherits from ApplicationController and adds require_admin before-action (checks super_admin?)
       - Non-super_admin authenticated users redirected away from /admin with flash notice
@@ -301,10 +302,8 @@
       DELETE /session                            — destroy session (logout)
       GET    /passwords/new                      — request password reset
       POST   /passwords                          — send reset email via Mailgun
-      GET    /passwords/:token/edit              — reset password form
-      PATCH  /passwords/:token                   — apply new password
-      GET    /account/password/edit              — forced change-password page
-      PATCH  /account/password                   — save new password + clear pending status
+      GET    /passwords/:token/edit              — reset password form (also used for invite link)
+      PATCH  /passwords/:token                   — apply new password; activates pending_password_change users
     </auth>
 
     <super_admin>

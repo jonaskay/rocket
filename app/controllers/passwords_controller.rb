@@ -18,12 +18,14 @@ class PasswordsController < ApplicationController
   end
 
   def update
-    if @user.update(params.permit(:password, :password_confirmation))
+    ApplicationRecord.transaction do
+      @user.update!(params.permit(:password, :password_confirmation))
+      @user.active! if @user.pending_password_change?
       @user.sessions.destroy_all
-      redirect_to new_session_path, notice: t("passwords.update.success")
-    else
-      redirect_to edit_password_path(params[:token]), alert: t("passwords.update.passwords_mismatch")
     end
+    redirect_to new_session_path, notice: t("passwords.update.success")
+  rescue ActiveRecord::RecordInvalid
+    redirect_to edit_password_path(params[:token]), alert: t("passwords.update.passwords_mismatch")
   end
 
   private
