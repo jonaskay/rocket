@@ -16,6 +16,8 @@ safe-outputs:
   add-labels:
     allowed: [bug, feature, enhancement, documentation, question, community]
   add-comment: {}
+  noop:
+    report-as-issue: false
 imports:
   - shared/mood.md
   - shared/reporting.md
