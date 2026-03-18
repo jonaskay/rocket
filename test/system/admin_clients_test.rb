@@ -34,16 +34,16 @@ class AdminClientsTest < ApplicationSystemTestCase
 
     fill_in "email_address", with: @admin.email_address
     fill_in "password", with: "password"
-    click_button "Sign in"
+    click_button_and_confirm "Sign in", path: admin_root_path
 
     assert_text @admin.email_address
-    click_link "Client Accounts"
+    click_link_and_confirm "Client Accounts", path: admin_clients_path
 
     assert_text "Acme Corp"
     assert_text "Beta Inc"
 
     within "tr", text: "Acme Corp" do
-      assert_text "2"
+      assert_text "3"
     end
 
     within "tr", text: "Beta Inc" do
