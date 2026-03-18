@@ -5,7 +5,7 @@ class Account::ApplicationController < ApplicationController
 
     def require_client_admin
       unless Current.user&.client_admin?
-        redirect_to root_path, alert: "Not authorized."
+        redirect_to root_path, alert: t("account.application.not_authorized")
       end
     end
 

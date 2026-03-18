@@ -16,7 +16,7 @@ class Account::TrainersController < Account::ApplicationController
 
     if @user.save
       TrainerInvitationMailer.invite(@user).deliver_later
-      redirect_to account_trainers_path, notice: "Invitation sent to #{@user.email_address}."
+      redirect_to account_trainers_path, notice: t("account.trainers.create.invitation_sent", email: @user.email_address)
     else
       render :new, status: :unprocessable_entity
     end

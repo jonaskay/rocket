@@ -1,15 +1,15 @@
 <div class="flex items-center justify-between">
-  <h1 class="font-bold text-4xl">Client Accounts</h1>
-  <%= link_to "New Client Account", new_admin_client_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-medium text-sm" %>
+  <h1 class="font-bold text-4xl"><%= t(".title") %></h1>
+  <%= link_to t(".new_client_account"), new_admin_client_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-medium text-sm" %>
 </div>
 
 <% if @clients.any? %>
   <table class="mt-8 w-full text-left border-collapse">
     <thead>
       <tr class="border-b border-gray-300">
-        <th class="py-3 px-4 font-semibold text-gray-700">Name</th>
-        <th class="py-3 px-4 font-semibold text-gray-700">Created</th>
-        <th class="py-3 px-4 font-semibold text-gray-700">Trainers</th>
+        <th class="py-3 px-4 font-semibold text-gray-700"><%= t(".table_name") %></th>
+        <th class="py-3 px-4 font-semibold text-gray-700"><%= t(".table_created") %></th>
+        <th class="py-3 px-4 font-semibold text-gray-700"><%= t(".table_trainers") %></th>
         <th class="py-3 px-4"></th>
       </tr>
     </thead>
@@ -20,8 +20,8 @@
           <td class="py-3 px-4"><%= l(client.created_at, format: :long) %></td>
           <td class="py-3 px-4"><%= client.trainers_count %></td>
           <td class="py-3 px-4 text-right">
-            <%= button_to "Delete", admin_client_path(client), method: :delete,
-                data: { turbo_confirm: "Are you sure you want to delete #{client.name}? This will remove all users, trainings, sessions, and assets." },
+            <%= button_to t(".delete"), admin_client_path(client), method: :delete,
+                data: { turbo_confirm: t(".confirm_delete", name: client.name) },
                 class: "text-sm text-red-600 hover:text-red-800" %>
           </td>
         </tr>
@@ -29,5 +29,5 @@
     </tbody>
   </table>
 <% else %>
-  <p class="mt-8 text-gray-500">No client accounts yet.</p>
+  <p class="mt-8 text-gray-500"><%= t(".empty") %></p>
 <% end %>

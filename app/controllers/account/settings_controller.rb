@@ -6,7 +6,7 @@ class Account::SettingsController < Account::ApplicationController
   def update
     @client = current_client
     if @client.update(client_params)
-      redirect_to edit_account_settings_path, notice: "Organization name updated successfully."
+      redirect_to edit_account_settings_path, notice: t("account.settings.update.success")
     else
       render :edit, status: :unprocessable_entity
     end

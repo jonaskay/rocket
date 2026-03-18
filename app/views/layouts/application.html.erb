@@ -2,11 +2,11 @@
 
 <html>
   <head>
-    <title><%= content_for(:title) || "Rocket" %></title>
+    <title><%= content_for(:title) || t("app_name") %></title>
 
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Rocket">
+    <meta name="application-name" content="<%= t("app_name") %>">
     <meta name="mobile-web-app-capable" content="yes">
 
     <%= csrf_meta_tags %>

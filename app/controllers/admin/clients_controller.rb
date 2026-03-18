@@ -17,7 +17,7 @@ class Admin::ClientsController < Admin::ApplicationController
     @client.users.first&.client_admin = true
 
     if @client.save
-      redirect_to admin_clients_path, notice: "Client account created successfully."
+      redirect_to admin_clients_path, notice: t("admin.clients.create.success")
     else
       render :new, status: :unprocessable_entity
     end
@@ -31,7 +31,7 @@ class Admin::ClientsController < Admin::ApplicationController
   def destroy
     @client = Client.find(params[:id])
     @client.destroy
-    redirect_to admin_clients_path, notice: "Client account deleted successfully."
+    redirect_to admin_clients_path, notice: t("admin.clients.destroy.success")
   end
 
   private

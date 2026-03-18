@@ -1,0 +1,47 @@
+en:
+  admin:
+    application:
+      not_authorized: "Not authorized."
+    home:
+      index:
+        title: "Admin"
+        welcome: "Welcome, %{email}."
+        client_accounts: "Client Accounts"
+        sign_out: "Sign out"
+    clients:
+      index:
+        title: "Client Accounts"
+        new_client_account: "New Client Account"
+        table_name: "Name"
+        table_created: "Created"
+        table_trainers: "Trainers"
+        delete: "Delete"
+        confirm_delete: "Are you sure you want to delete %{name}? This will remove all users, trainings, sessions, and assets."
+        empty: "No client accounts yet."
+      new:
+        title: "New Client Account"
+        account_details: "Account Details"
+        initial_account_admin: "Initial Account Admin"
+        client_account_name: "Client Account Name"
+        first_name: "First Name"
+        last_name: "Last Name"
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Password Confirmation"
+        submit: "Create Client Account"
+        cancel: "Cancel"
+      show:
+        back: "Back to Client Accounts"
+        delete_account: "Delete Account"
+        confirm_delete: "Are you sure you want to delete %{name}? This will remove all associated users."
+        users: "Users"
+        table_email: "Email"
+        table_role: "Role"
+        table_joined: "Joined"
+        role_account_admin: "Account Admin"
+        role_trainer: "Trainer"
+        empty_users: "No users for this client account."
+      create:
+        success: "Client account created successfully."
+      destroy:
+        success: "Client account deleted successfully."
