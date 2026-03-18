@@ -42,11 +42,15 @@ Important domain terms for the Rocket training platform.
 
 **Status** — A user status enum with three values: `active` (can log in normally), `inactive` (soft-deactivated by an account admin; cannot log in), and `pending_password_change` (newly invited trainer who must set a password before accessing the application).
 
+**Status Pill** — A color-coded inline badge displayed in the trainer roster to indicate a trainer's current status. Green indicates `active`, red indicates `inactive`, and yellow indicates `pending_password_change`.
+
 **Super Admin** — A global system administrator identified by `super_admin: true` on the User model. Not associated with any client organization. Can create and delete client accounts.
 
 **Training Session** — A generated, shareable instance of a master training based on a specific version snapshot. Identified by a unique session slug. Can optionally be password-protected. Deleting a session does not affect the master training or other sessions.
 
 **Trainer** — A user belonging to exactly one client organization who creates master trainings, manages training content (slides, prerequisite assets, exercises), and generates training sessions.
+
+**Trainer Roster** — The page at `/account/trainers` where account admins can view all non-admin users in their organization. Displays each trainer's email and a color-coded status pill.
 
 **Trix Editor** — The rich text editor used for authoring exercise content, provided by Rails' Action Text library. Produces sanitized HTML output.
 
