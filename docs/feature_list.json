@@ -1,983 +1,442 @@
-[
-  {
-    "category": "functional",
-    "description": "Super admin login redirects to admin dashboard",
-    "steps": [
-      "Step 1: Navigate to /session/new",
-      "Step 2: Enter super admin email and password",
-      "Step 3: Submit the login form",
-      "Step 4: Verify redirect to /admin",
-      "Step 5: Verify admin dashboard page is displayed"
-    ],
-    "passes": true
-  },
-  {
-    "category": "functional",
-    "description": "Non-admin user cannot access /admin area",
-    "steps": [
-      "Step 1: Log in as a non-admin user",
-      "Step 2: Navigate to /admin",
-      "Step 3: Verify user is redirected away from /admin",
-      "Step 4: Verify a flash notice is displayed indicating access denied"
-    ],
-    "passes": true
-  },
-  {
-    "category": "functional",
-    "description": "User can log in and log out",
-    "steps": [
-      "Step 1: Navigate to /session/new",
-      "Step 2: Enter valid email and password",
-      "Step 3: Submit login form",
-      "Step 4: Verify user is logged in and redirected",
-      "Step 5: Click logout / DELETE /session",
-      "Step 6: Verify session is destroyed and user is redirected to login page"
-    ],
-    "passes": true
-  },
-  {
-    "category": "functional",
-    "description": "Password reset flow via emailed token",
-    "steps": [
-      "Step 1: Navigate to /passwords/new",
-      "Step 2: Enter a valid user email address",
-      "Step 3: Submit the form",
-      "Step 4: Verify a password reset email is sent",
-      "Step 5: Navigate to /passwords/:token/edit with the reset token",
-      "Step 6: Enter a new password and confirmation",
-      "Step 7: Submit the form",
-      "Step 8: Verify password is updated and user can log in with new password"
-    ],
-    "passes": true
-  },
-  {
-    "category": "functional",
-    "description": "Login rate limiting blocks excessive attempts",
-    "steps": [
-      "Step 1: Navigate to /session/new",
-      "Step 2: Submit 11 invalid login attempts rapidly from the same IP",
-      "Step 3: Verify that requests are throttled after 10 attempts per 3 minutes"
-    ],
-    "passes": true
-  },
-  {
-    "category": "functional",
-    "description": "Super admin can view list of all client accounts",
-    "steps": [
-      "Step 1: Log in as super admin",
-      "Step 2: Navigate to /admin/clients",
-      "Step 3: Verify page displays a list of client accounts with name, creation date, and trainer count"
-    ],
-    "passes": true
-  },
-  {
-    "category": "functional",
-    "description": "Super admin can create a new client account with initial admin user",
-    "steps": [
-      "Step 1: Log in as super admin",
-      "Step 2: Navigate to /admin/clients/new",
-      "Step 3: Fill in client account name",
-      "Step 4: Fill in initial account admin email and password",
-      "Step 5: Submit the form",
-      "Step 6: Verify the client account is created",
-      "Step 7: Verify the initial account admin user is created and associated with the client",
-      "Step 8: Verify redirect to client accounts list with success flash"
-    ],
-    "passes": true
-  },
-  {
-    "category": "functional",
-    "description": "Super admin can view client account details with user list",
-    "steps": [
-      "Step 1: Log in as super admin",
-      "Step 2: Navigate to /admin/clients/:id for an existing client account",
-      "Step 3: Verify page shows client account name and creation date",
-      "Step 4: Verify page lists all trainers and account admins (read-only)",
-      "Step 5: Verify user details include name, email, and status"
-    ],
-    "passes": true
-  },
-  {
-    "category": "functional",
-    "description": "Super admin can delete a client account with cascade",
-    "steps": [
-      "Step 1: Log in as super admin",
-      "Step 2: Create a client account with an admin, a trainer, a master training, and a session",
-      "Step 3: Navigate to /admin/clients",
-      "Step 4: Delete the client account",
-      "Step 5: Verify the client account is removed from the list",
-      "Step 6: Verify all associated users are deleted",
-      "Step 7: Verify all associated trainings and sessions are deleted"
-    ],
-    "passes": true
-  },
-  {
-    "category": "functional",
-    "description": "Account admin can edit organization name",
-    "steps": [
-      "Step 1: Log in as account admin",
-      "Step 2: Navigate to /account/edit",
-      "Step 3: Change the organization name",
-      "Step 4: Submit the form",
-      "Step 5: Verify the organization name is updated",
-      "Step 6: Verify a success flash message is displayed"
-    ],
-    "passes": true
-  },
-  {
-    "category": "functional",
-    "description": "Account admin can view trainer roster with status",
-    "steps": [
-      "Step 1: Log in as account admin",
-      "Step 2: Navigate to /account/trainers",
-      "Step 3: Verify the page lists all trainers for the account",
-      "Step 4: Verify each trainer shows name, email, and status (active/inactive/pending)"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Account admin can invite a new trainer via email",
-    "steps": [
-      "Step 1: Log in as account admin",
-      "Step 2: Navigate to /account/trainers/new",
-      "Step 3: Fill in trainer first name, last name, and email",
-      "Step 4: Submit the form",
-      "Step 5: Verify user is created with status pending_password_change",
-      "Step 6: Verify an invitation email is sent via Mailgun",
-      "Step 7: Verify the email contains a signed invite token link valid for 72 hours"
-    ],
-    "passes": true
-  },
-  {
-    "category": "functional",
-    "description": "Invited trainer can set password via invite link and log in",
-    "steps": [
-      "Step 1: Account admin invites a trainer",
-      "Step 2: Trainer clicks the invite link from the email",
-      "Step 3: Trainer sets a new password on the password reset form",
-      "Step 4: Verify trainer status changes from pending_password_change to active",
-      "Step 5: Trainer logs in with new password",
-      "Step 6: Verify trainer is not redirected to change-password page"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Forced password change on first login for invited trainers",
-    "steps": [
-      "Step 1: Create a trainer user with status pending_password_change",
-      "Step 2: Log in as the trainer",
-      "Step 3: Verify redirect to /account/password/edit (change-password page)",
-      "Step 4: Verify the trainer cannot navigate to any other page",
-      "Step 5: Enter and confirm a new password",
-      "Step 6: Submit the form",
-      "Step 7: Verify status is updated to active",
-      "Step 8: Verify trainer can now access the application normally"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Account admin can deactivate and reactivate a trainer",
-    "steps": [
-      "Step 1: Log in as account admin",
-      "Step 2: Navigate to /account/trainers",
-      "Step 3: Deactivate an active trainer via PATCH",
-      "Step 4: Verify trainer status changes to inactive",
-      "Step 5: Verify deactivated trainer cannot log in",
-      "Step 6: Reactivate the trainer",
-      "Step 7: Verify trainer status changes back to active",
-      "Step 8: Verify reactivated trainer can log in again"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Account admin can permanently remove a trainer",
-    "steps": [
-      "Step 1: Log in as account admin",
-      "Step 2: Navigate to /account/trainers",
-      "Step 3: Click remove on a trainer",
-      "Step 4: Verify a confirmation modal is displayed",
-      "Step 5: Confirm the deletion",
-      "Step 6: Verify the trainer is permanently deleted",
-      "Step 7: Verify the trainer no longer appears in the roster"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Account admin cannot access another client account's data",
-    "steps": [
-      "Step 1: Create two client accounts, each with an admin",
-      "Step 2: Log in as admin of account A",
-      "Step 3: Attempt to access account B's trainer roster or settings",
-      "Step 4: Verify access is denied or data is not visible"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Trainer can view dashboard listing all master trainings for their account",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Navigate to /master_trainings",
-      "Step 3: Verify the page shows all master trainings for the trainer's account",
-      "Step 4: Verify each training shows title, description, session count, and timestamps"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Trainer can create a new master training",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Navigate to /master_trainings/new",
-      "Step 3: Enter a title and optional description",
-      "Step 4: Submit the form",
-      "Step 5: Verify the master training is created and appears in the dashboard"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Trainer can edit master training metadata",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Navigate to /master_trainings/:id/edit",
-      "Step 3: Change the title and description",
-      "Step 4: Submit the form",
-      "Step 5: Verify changes are saved and displayed"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Trainer can delete a master training with no sessions",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Create a master training with no sessions",
-      "Step 3: Navigate to the master training",
-      "Step 4: Delete the master training",
-      "Step 5: Verify the training is removed from the dashboard"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Trainer cannot delete a master training that has sessions",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Create a master training and generate a session from it",
-      "Step 3: Attempt to delete the master training",
-      "Step 4: Verify deletion is blocked with a warning message"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Trainer can upload slide files to a master training",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Navigate to a master training's detail page",
-      "Step 3: Upload a PDF slide file via direct upload",
-      "Step 4: Verify the slide appears in the slides list with display name, upload date, file size",
-      "Step 5: Verify the download button works and generates a signed URL"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Trainer can reorder slides via drag-and-drop",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Upload three slide files to a master training",
-      "Step 3: Drag slide 3 to position 1",
-      "Step 4: Verify the new order is persisted via PATCH request",
-      "Step 5: Refresh the page and verify order is maintained"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Trainer can delete individual slide files",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Navigate to a master training with uploaded slides",
-      "Step 3: Delete one slide file",
-      "Step 4: Verify the slide is removed from the list",
-      "Step 5: Verify other slides remain unaffected"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Trainer can upload prerequisite assets of any file type",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Navigate to a master training's detail page",
-      "Step 3: Upload a prerequisite asset (PDF, video, ZIP, etc.)",
-      "Step 4: Verify the asset appears with display name, optional description, upload date, file size",
-      "Step 5: Verify the download button generates a signed GCS URL"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Trainer can reorder prerequisite assets via drag-and-drop",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Upload three prerequisite assets to a master training",
-      "Step 3: Drag asset 3 to position 1",
-      "Step 4: Verify the new order is persisted",
-      "Step 5: Refresh the page and verify order is maintained"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Trainer can delete individual prerequisite assets",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Navigate to a master training with uploaded assets",
-      "Step 3: Delete one prerequisite asset",
-      "Step 4: Verify the asset is removed from the list"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Trainer can add exercises with rich text content via Trix editor",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Navigate to a master training's detail page",
-      "Step 3: Click to add a new exercise",
-      "Step 4: Enter an exercise title",
-      "Step 5: Use the Trix editor to add rich HTML content (bold, italic, lists, links)",
-      "Step 6: Submit the form",
-      "Step 7: Verify the exercise is created with the formatted content preserved"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Trainer can edit exercises",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Navigate to a master training with an existing exercise",
-      "Step 3: Click edit on the exercise",
-      "Step 4: Modify the title and body content",
-      "Step 5: Submit the form",
-      "Step 6: Verify changes are saved and displayed"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Trainer can reorder exercises via drag-and-drop",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Add three exercises to a master training",
-      "Step 3: Drag exercise 3 to position 1",
-      "Step 4: Verify the new order is persisted",
-      "Step 5: Refresh the page and verify order is maintained"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Trainer can delete exercises",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Navigate to a master training with exercises",
-      "Step 3: Delete an exercise",
-      "Step 4: Verify the exercise is removed from the list"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Trainer can preview exercise content as it will appear to participants",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Navigate to a master training with exercises",
-      "Step 3: Click preview on an exercise",
-      "Step 4: Verify a Turbo Frame panel renders the exercise content as styled HTML"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Generating a training session creates an immutable version snapshot",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Create a master training with slides, prerequisite assets, and exercises",
-      "Step 3: Click 'Generate Session' on the master training",
-      "Step 4: Verify a version snapshot is created with version_number incremented",
-      "Step 5: Verify slide_snapshots are created matching current slides",
-      "Step 6: Verify prerequisite_asset_snapshots are created matching current assets",
-      "Step 7: Verify exercise_snapshots are created with rendered HTML body",
-      "Step 8: Verify a training_session record is created linked to the version",
-      "Step 9: Verify session name is auto-generated as '{Title} \u2013 Session {N}'",
-      "Step 10: Verify redirect to session edit page with success flash"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Editing master training after session generation does not alter existing sessions",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Create a master training with title 'Original Title' and an exercise",
-      "Step 3: Generate a training session",
-      "Step 4: Edit the master training title to 'Updated Title' and modify the exercise",
-      "Step 5: Verify the existing session's snapshot still shows 'Original Title'",
-      "Step 6: Verify the existing session's exercise snapshot is unchanged",
-      "Step 7: Generate a second session",
-      "Step 8: Verify the second session's snapshot shows 'Updated Title'"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Deleting a slide from master training does not corrupt existing session snapshots",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Create a master training with two slides",
-      "Step 3: Generate a training session",
-      "Step 4: Delete one slide from the master training",
-      "Step 5: Verify the session's slide snapshots still reference both original slides",
-      "Step 6: Verify the snapshot slide download still works via the cloud key"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Trainer can view version history of a master training",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Create a master training and generate two sessions",
-      "Step 3: Navigate to /master_trainings/:id/versions",
-      "Step 4: Verify the page shows a read-only list of all versions",
-      "Step 5: Verify each version shows timestamp and linked session count"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Trainer can view session list for a master training",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Navigate to /master_trainings/:id/training_sessions",
-      "Step 3: Verify the page lists all sessions for the master training",
-      "Step 4: Verify each session shows name, generated date, version number, password status, and share link"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Trainer can rename a training session",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Generate a training session",
-      "Step 3: Navigate to /training_sessions/:id/edit",
-      "Step 4: Change the session name",
-      "Step 5: Submit the form",
-      "Step 6: Verify the name is updated"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Trainer can set, change, and remove session password",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Generate a training session with no password",
-      "Step 3: Navigate to session edit page",
-      "Step 4: Set a password and submit",
-      "Step 5: Verify password_digest is stored (bcrypt-hashed)",
-      "Step 6: Change the password to a new value",
-      "Step 7: Verify the new password works",
-      "Step 8: Remove the password (make session open-access)",
-      "Step 9: Verify session is accessible without a password"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Trainer can delete a training session without affecting master training",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Generate a training session from a master training",
-      "Step 3: Delete the training session",
-      "Step 4: Verify confirmation dialog is shown before deletion",
-      "Step 5: Verify the session is deleted",
-      "Step 6: Verify the master training and other sessions are unaffected"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Public session view renders snapshot content without authentication",
-    "steps": [
-      "Step 1: Generate a training session without a password",
-      "Step 2: Navigate to /s/:slug as an unauthenticated user",
-      "Step 3: Verify the session content is rendered without login",
-      "Step 4: Verify slides are listed with download buttons",
-      "Step 5: Verify prerequisite assets are listed with download buttons",
-      "Step 6: Verify exercises are rendered as styled HTML navigable by tab or sidebar"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Password-protected session requires password gate before showing content",
-    "steps": [
-      "Step 1: Generate a training session with a password set",
-      "Step 2: Navigate to /s/:slug as an unauthenticated user",
-      "Step 3: Verify redirect to /s/:slug/unlock (password gate form)",
-      "Step 4: Enter an incorrect password",
-      "Step 5: Verify access is denied with an error message",
-      "Step 6: Enter the correct password",
-      "Step 7: Verify a signed httpOnly cookie is set with 24-hour expiry",
-      "Step 8: Verify redirect to /s/:slug with full content rendered",
-      "Step 9: Refresh the page and verify content is still accessible (cookie persists)"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Session view download buttons serve files via expiring signed URLs",
-    "steps": [
-      "Step 1: Generate a session with slides and prerequisite assets",
-      "Step 2: Access the public session view",
-      "Step 3: Click a download button for a slide",
-      "Step 4: Verify the request hits /training_sessions/:id/download/:attachment_id",
-      "Step 5: Verify the response redirects to a signed GCS URL with 15-minute expiry"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Session view exercises are navigable by sidebar",
-    "steps": [
-      "Step 1: Generate a session with three exercises",
-      "Step 2: Access the public session view",
-      "Step 3: Navigate to the Exercises tab",
-      "Step 4: Verify a sidebar lists all exercises by title",
-      "Step 5: Click on different exercises in the sidebar",
-      "Step 6: Verify the main panel renders the selected exercise's body_html as sanitized HTML"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Session view is read-only with no editing capabilities",
-    "steps": [
-      "Step 1: Access a public session view",
-      "Step 2: Verify no edit buttons or forms are present",
-      "Step 3: Verify content cannot be modified from this view"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Complete end-to-end trainer workflow: create training, add content, generate session, share",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Create a new master training with title and description",
-      "Step 3: Upload two slide files",
-      "Step 4: Upload a prerequisite asset with description",
-      "Step 5: Add two exercises with rich text content",
-      "Step 6: Reorder the exercises",
-      "Step 7: Generate a training session",
-      "Step 8: Set a password for the session",
-      "Step 9: Copy the share link",
-      "Step 10: Open the share link in a new browser (unauthenticated)",
-      "Step 11: Enter the session password",
-      "Step 12: Verify all content (slides, assets, exercises) is displayed correctly",
-      "Step 13: Download a slide and verify it works"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Complete end-to-end super admin workflow: create account, add admin, verify access",
-    "steps": [
-      "Step 1: Log in as super admin",
-      "Step 2: Create a new client account with initial admin email and password",
-      "Step 3: Verify the account appears in the clients list",
-      "Step 4: Log out",
-      "Step 5: Log in as the new account admin",
-      "Step 6: Verify the admin can access account settings",
-      "Step 7: Verify the admin can view the trainer roster",
-      "Step 8: Invite a trainer",
-      "Step 9: Log out and log in as super admin",
-      "Step 10: Delete the client account",
-      "Step 11: Verify all associated data is cascade-deleted"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Trainer scoping: trainers can only see their own account's trainings",
-    "steps": [
-      "Step 1: Create two client accounts, each with a trainer",
-      "Step 2: Trainer A creates a master training",
-      "Step 3: Log in as Trainer B",
-      "Step 4: Navigate to /master_trainings",
-      "Step 5: Verify Trainer A's training is not visible to Trainer B"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Active Storage direct upload with progress indicator",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Navigate to a master training detail page",
-      "Step 3: Start uploading a large file",
-      "Step 4: Verify a progress bar is displayed during upload",
-      "Step 5: Verify the file appears in the list after upload completes"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Trix editor supports headings, bold, italic, lists, links, and image attachments",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Navigate to create a new exercise",
-      "Step 3: Add a heading in the Trix editor",
-      "Step 4: Add bold and italic text",
-      "Step 5: Add a bullet list and a numbered list",
-      "Step 6: Add a hyperlink",
-      "Step 7: Upload an image attachment",
-      "Step 8: Submit the form",
-      "Step 9: Verify all formatting is preserved when viewing the exercise"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "User status enum works correctly: active, inactive, pending_password_change",
-    "steps": [
-      "Step 1: Create a user with status active",
-      "Step 2: Verify the user can log in",
-      "Step 3: Change status to inactive",
-      "Step 4: Verify the user cannot log in",
-      "Step 5: Change status to pending_password_change",
-      "Step 6: Log in and verify redirect to change-password page"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Session unlock rate limiting blocks excessive password attempts",
-    "steps": [
-      "Step 1: Create a password-protected training session",
-      "Step 2: Navigate to /s/:slug/unlock",
-      "Step 3: Submit 11 incorrect password attempts rapidly",
-      "Step 4: Verify requests are throttled via Rack::Attack (10 req/min per IP)"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Session passwords are bcrypt-hashed and never exposed in views or logs",
-    "steps": [
-      "Step 1: Set a password on a training session",
-      "Step 2: Verify password_digest is stored as a bcrypt hash in the database",
-      "Step 3: Navigate to the session edit page",
-      "Step 4: Verify the plaintext password is not visible in the form or page source"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "All destructive actions show confirmation dialogs",
-    "steps": [
-      "Step 1: Attempt to delete a client account",
-      "Step 2: Verify a confirmation dialog appears before proceeding",
-      "Step 3: Attempt to delete a master training",
-      "Step 4: Verify a confirmation dialog appears",
-      "Step 5: Attempt to delete a training session",
-      "Step 6: Verify a confirmation dialog appears",
-      "Step 7: Attempt to remove a trainer permanently",
-      "Step 8: Verify a confirmation modal appears"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Form validation shows errors with red field borders and inline messages",
-    "steps": [
-      "Step 1: Navigate to the login form",
-      "Step 2: Submit with empty fields",
-      "Step 3: Verify validation errors are displayed with red field borders and inline messages",
-      "Step 4: Navigate to create a master training",
-      "Step 5: Submit with empty title",
-      "Step 6: Verify validation error is shown"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Empty state partials displayed when no data exists",
-    "steps": [
-      "Step 1: Log in as super admin",
-      "Step 2: Navigate to /admin/clients with no client accounts",
-      "Step 3: Verify an empty state message or partial is displayed",
-      "Step 4: Log in as a trainer with no master trainings",
-      "Step 5: Navigate to /master_trainings",
-      "Step 6: Verify an empty state message is displayed"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Flash notifications appear as slide-in toasts and auto-dismiss",
-    "steps": [
-      "Step 1: Perform an action that triggers a flash notice (e.g., create a training)",
-      "Step 2: Verify a slide-in toast notification appears",
-      "Step 3: Wait 4 seconds",
-      "Step 4: Verify the notification auto-dismisses"
-    ],
-    "passes": false
-  },
-  {
-    "category": "functional",
-    "description": "Copy-to-clipboard works for session share links",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Navigate to the session list page",
-      "Step 3: Click the copy share link button for a session",
-      "Step 4: Verify the session URL is copied to the clipboard",
-      "Step 5: Verify visual feedback is shown (e.g., button text changes)"
-    ],
-    "passes": false
-  },
-  {
-    "category": "style",
-    "description": "Login page is styled with Tailwind CSS",
-    "steps": [
-      "Step 1: Navigate to /session/new",
-      "Step 2: Verify the login form has Tailwind-styled inputs, button, and layout",
-      "Step 3: Verify the page is visually polished with proper spacing, colors, and typography"
-    ],
-    "passes": true
-  },
-  {
-    "category": "style",
-    "description": "Admin dashboard has a clean, professional layout",
-    "steps": [
-      "Step 1: Log in as super admin",
-      "Step 2: Navigate to /admin",
-      "Step 3: Verify the admin home page has a well-structured layout",
-      "Step 4: Verify navigation and signout are clearly visible"
-    ],
-    "passes": true
-  },
-  {
-    "category": "style",
-    "description": "Client accounts list is displayed as a styled table",
-    "steps": [
-      "Step 1: Log in as super admin",
-      "Step 2: Navigate to /admin/clients with existing accounts",
-      "Step 3: Verify accounts are displayed in a clean table with columns for name, creation date, and trainer count",
-      "Step 4: Verify delete buttons are styled as destructive actions"
-    ],
-    "passes": true
-  },
-  {
-    "category": "style",
-    "description": "Trainer roster has role badges and status pills",
-    "steps": [
-      "Step 1: Log in as account admin",
-      "Step 2: Navigate to /account/trainers",
-      "Step 3: Verify each trainer has a colored status pill (active=green, inactive=red, pending=yellow)",
-      "Step 4: Verify role badges are displayed alongside user names"
-    ],
-    "passes": false
-  },
-  {
-    "category": "style",
-    "description": "Master training dashboard shows card grid layout",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Navigate to /master_trainings with multiple trainings",
-      "Step 3: Verify trainings are displayed as cards in a grid layout",
-      "Step 4: Verify each card shows title, description, session count, and timestamps"
-    ],
-    "passes": false
-  },
-  {
-    "category": "style",
-    "description": "Master training detail page has tabbed layout for slides, assets, and exercises",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Navigate to a master training detail page",
-      "Step 3: Verify the page has tabs or sections for Slides, Prerequisite Assets, and Exercises",
-      "Step 4: Verify each section has clear upload controls and list displays"
-    ],
-    "passes": false
-  },
-  {
-    "category": "style",
-    "description": "Trix editor is styled with Tailwind prose classes",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Navigate to the exercise editor",
-      "Step 3: Verify the Trix editor toolbar is well-styled",
-      "Step 4: Verify the content area uses Tailwind prose classes for readable typography"
-    ],
-    "passes": false
-  },
-  {
-    "category": "style",
-    "description": "Public session view uses a clean layout with no navigation bar",
-    "steps": [
-      "Step 1: Access a public session view at /s/:slug",
-      "Step 2: Verify the page has a minimal, clean layout with no main navigation bar",
-      "Step 3: Verify content is well-organized with clear sections for slides, assets, and exercises"
-    ],
-    "passes": false
-  },
-  {
-    "category": "style",
-    "description": "Public session view has tabbed layout with Stimulus tab controller",
-    "steps": [
-      "Step 1: Access a public session view",
-      "Step 2: Verify tabs for Slides, Prerequisites, and Exercises are displayed",
-      "Step 3: Click between tabs",
-      "Step 4: Verify content switches smoothly without full page reload"
-    ],
-    "passes": false
-  },
-  {
-    "category": "style",
-    "description": "Password gate page is styled and user-friendly",
-    "steps": [
-      "Step 1: Navigate to /s/:slug/unlock for a password-protected session",
-      "Step 2: Verify the password form is centered and well-styled",
-      "Step 3: Verify error messages for incorrect passwords are clearly displayed"
-    ],
-    "passes": false
-  },
-  {
-    "category": "style",
-    "description": "File upload has progress bar and clear feedback",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Start uploading a file via direct upload",
-      "Step 3: Verify a progress bar is visible during upload",
-      "Step 4: Verify success feedback is displayed after upload completes",
-      "Step 5: Verify error feedback is displayed if upload fails"
-    ],
-    "passes": false
-  },
-  {
-    "category": "style",
-    "description": "Drag-and-drop reordering has smooth visual feedback",
-    "steps": [
-      "Step 1: Log in as a trainer",
-      "Step 2: Navigate to a master training with multiple slides",
-      "Step 3: Start dragging a slide",
-      "Step 4: Verify visual feedback (e.g., ghost element, highlight) during drag",
-      "Step 5: Drop the slide in a new position",
-      "Step 6: Verify the list updates smoothly"
-    ],
-    "passes": false
-  },
-  {
-    "category": "style",
-    "description": "Responsive layout: all pages work on mobile viewports",
-    "steps": [
-      "Step 1: Open the application on a mobile viewport (375px width)",
-      "Step 2: Navigate through login, admin, trainer dashboard, and public session view",
-      "Step 3: Verify sidebars collapse appropriately",
-      "Step 4: Verify tables scroll horizontally on small screens",
-      "Step 5: Verify touch targets are large enough for mobile interaction"
-    ],
-    "passes": false
-  },
-  {
-    "category": "style",
-    "description": "Accessible markup: ARIA roles, labels, and focus traps",
-    "steps": [
-      "Step 1: Navigate through key pages with a screen reader or inspect HTML",
-      "Step 2: Verify modals have ARIA roles and focus traps",
-      "Step 3: Verify all form inputs have associated labels",
-      "Step 4: Verify interactive elements are keyboard-navigable"
-    ],
-    "passes": false
-  },
-  {
-    "category": "style",
-    "description": "Confirmation modals are styled with clear destructive action indicators",
-    "steps": [
-      "Step 1: Trigger a delete action (e.g., delete training session)",
-      "Step 2: Verify the confirmation modal has a clear warning message",
-      "Step 3: Verify the confirm button is styled as a destructive action (e.g., red)",
-      "Step 4: Verify the cancel button is clearly distinguishable"
-    ],
-    "passes": false
-  },
-  {
-    "category": "style",
-    "description": "Flash toast notifications are visually appealing slide-in toasts",
-    "steps": [
-      "Step 1: Trigger a success flash (e.g., create a resource)",
-      "Step 2: Verify toast slides in from the top or corner",
-      "Step 3: Verify toast has appropriate color (green for success, red for error)",
-      "Step 4: Verify toast auto-dismisses after 4 seconds with a fade animation"
-    ],
-    "passes": false
-  },
-  {
-    "category": "style",
-    "description": "Password reset and forgot password pages are styled consistently",
-    "steps": [
-      "Step 1: Navigate to /passwords/new",
-      "Step 2: Verify the forgot password form is styled consistently with the login page",
-      "Step 3: Navigate to /passwords/:token/edit",
-      "Step 4: Verify the reset password form matches the overall design system"
-    ],
-    "passes": true
-  },
-  {
-    "category": "functional",
-    "description": "Account admin can view trainer roster with status",
-    "steps": [
-      "Step 1: Sign in as an account admin",
-      "Step 2: Navigate to /account/trainers",
-      "Step 3: Verify HTTP 200 response",
-      "Step 4: Verify all non-admin users belonging to the current client are listed",
-      "Step 5: Verify each row shows the trainer's email address",
-      "Step 6: Verify each row shows a status pill",
-      "Step 7: Verify active trainers show a green status pill",
-      "Step 8: Verify inactive trainers show a red status pill",
-      "Step 9: Verify pending_password_change trainers show a yellow status pill",
-      "Step 10: Verify account admin users are not shown in the list",
-      "Step 11: Verify trainers from other clients are not shown"
-    ],
-    "passes": true
-  },
-  {
-    "category": "functional",
-    "description": "All user-facing strings are extracted into Rails locale files with English translations",
-    "steps": [
-      "Step 1: Verify config/application.rb sets config.i18n.default_locale = :en and config.i18n.available_locales = [:en]",
-      "Step 2: Verify config/locales/en.yml contains shared/global keys (app_name, common buttons, labels)",
-      "Step 3: Verify config/locales/sessions/en.yml contains sign-in page strings and flash messages",
-      "Step 4: Verify config/locales/passwords/en.yml contains password reset page strings and flash messages",
-      "Step 5: Verify config/locales/admin/en.yml contains admin dashboard and client account page strings",
-      "Step 6: Verify config/locales/account/en.yml contains account settings and trainer management strings",
-      "Step 7: Verify config/locales/mailers/en.yml contains mailer strings",
-      "Step 8: Load any view or page and verify no hardcoded English strings remain in views or controllers",
-      "Step 9: Verify t() lazy lookup calls resolve correctly in all views"
-    ],
-    "passes": true
-  }
-]
+[ { "category": "functional", "description": "Super admin login redirects to
+admin dashboard", "steps": [ "Step 1: Navigate to /session/new", "Step 2: Enter
+super admin email and password", "Step 3: Submit the login form", "Step 4:
+Verify redirect to /admin", "Step 5: Verify admin dashboard page is displayed"
+], "passes": true }, { "category": "functional", "description": "Non-admin user
+cannot access /admin area", "steps": [ "Step 1: Log in as a non-admin user",
+"Step 2: Navigate to /admin", "Step 3: Verify user is redirected away from
+/admin", "Step 4: Verify a flash notice is displayed indicating access denied"
+], "passes": true }, { "category": "functional", "description": "User can log in
+and log out", "steps": [ "Step 1: Navigate to /session/new", "Step 2: Enter
+valid email and password", "Step 3: Submit login form", "Step 4: Verify user is
+logged in and redirected", "Step 5: Click logout / DELETE /session", "Step 6:
+Verify session is destroyed and user is redirected to login page" ], "passes":
+true }, { "category": "functional", "description": "Password reset flow via
+emailed token", "steps": [ "Step 1: Navigate to /passwords/new", "Step 2: Enter
+a valid user email address", "Step 3: Submit the form", "Step 4: Verify a
+password reset email is sent", "Step 5: Navigate to /passwords/:token/edit with
+the reset token", "Step 6: Enter a new password and confirmation", "Step 7:
+Submit the form", "Step 8: Verify password is updated and user can log in with
+new password" ], "passes": true }, { "category": "functional", "description":
+"Login rate limiting blocks excessive attempts", "steps": [ "Step 1: Navigate to
+/session/new", "Step 2: Submit 11 invalid login attempts rapidly from the same
+IP", "Step 3: Verify that requests are throttled after 10 attempts per 3
+minutes" ], "passes": true }, { "category": "functional", "description": "Super
+admin can view list of all client accounts", "steps": [ "Step 1: Log in as super
+admin", "Step 2: Navigate to /admin/clients", "Step 3: Verify page displays a
+list of client accounts with name, creation date, and trainer count" ],
+"passes": true }, { "category": "functional", "description": "Super admin can
+create a new client account with initial admin user", "steps": [ "Step 1: Log in
+as super admin", "Step 2: Navigate to /admin/clients/new", "Step 3: Fill in
+client account name", "Step 4: Fill in initial account admin email and
+password", "Step 5: Submit the form", "Step 6: Verify the client account is
+created", "Step 7: Verify the initial account admin user is created and
+associated with the client", "Step 8: Verify redirect to client accounts list
+with success flash" ], "passes": true }, { "category": "functional",
+"description": "Super admin can view client account details with user list",
+"steps": [ "Step 1: Log in as super admin", "Step 2: Navigate to
+/admin/clients/:id for an existing client account", "Step 3: Verify page shows
+client account name and creation date", "Step 4: Verify page lists all trainers
+and account admins (read-only)", "Step 5: Verify user details include name,
+email, and status" ], "passes": true }, { "category": "functional",
+"description": "Super admin can delete a client account with cascade", "steps":
+[ "Step 1: Log in as super admin", "Step 2: Create a client account with an
+admin, a trainer, a master training, and a session", "Step 3: Navigate to
+/admin/clients", "Step 4: Delete the client account", "Step 5: Verify the client
+account is removed from the list", "Step 6: Verify all associated users are
+deleted", "Step 7: Verify all associated trainings and sessions are deleted" ],
+"passes": true }, { "category": "functional", "description": "Account admin can
+edit organization name", "steps": [ "Step 1: Log in as account admin", "Step 2:
+Navigate to /account/edit", "Step 3: Change the organization name", "Step 4:
+Submit the form", "Step 5: Verify the organization name is updated", "Step 6:
+Verify a success flash message is displayed" ], "passes": true }, { "category":
+"functional", "description": "Account admin can view trainer roster with
+status", "steps": [ "Step 1: Log in as account admin", "Step 2: Navigate to
+/account/trainers", "Step 3: Verify the page lists all trainers for the
+account", "Step 4: Verify each trainer shows name, email, and status
+(active/inactive/pending)" ], "passes": false }, { "category": "functional",
+"description": "Account admin can invite a new trainer via email", "steps": [
+"Step 1: Log in as account admin", "Step 2: Navigate to /account/trainers/new",
+"Step 3: Fill in trainer first name, last name, and email", "Step 4: Submit the
+form", "Step 5: Verify user is created with status pending_password_change",
+"Step 6: Verify an invitation email is sent via Mailgun", "Step 7: Verify the
+email contains a signed invite token link valid for 72 hours" ], "passes": true
+}, { "category": "functional", "description": "Invited trainer can set password
+via invite link and log in", "steps": [ "Step 1: Account admin invites a
+trainer", "Step 2: Trainer clicks the invite link from the email", "Step 3:
+Trainer sets a new password on the password reset form", "Step 4: Verify trainer
+status changes from pending_password_change to active", "Step 5: Trainer logs in
+with new password", "Step 6: Verify trainer is not redirected to change-password
+page" ], "passes": true }, { "category": "functional", "description": "Forced
+password change on first login for invited trainers", "steps": [ "Step 1: Create
+a trainer user with status pending_password_change", "Step 2: Log in as the
+trainer", "Step 3: Verify redirect to /account/password/edit (change-password
+page)", "Step 4: Verify the trainer cannot navigate to any other page", "Step 5:
+Enter and confirm a new password", "Step 6: Submit the form", "Step 7: Verify
+status is updated to active", "Step 8: Verify trainer can now access the
+application normally" ], "passes": false }, { "category": "functional",
+"description": "Account admin can deactivate and reactivate a trainer", "steps":
+[ "Step 1: Log in as account admin", "Step 2: Navigate to /account/trainers",
+"Step 3: Deactivate an active trainer via PATCH", "Step 4: Verify trainer status
+changes to inactive", "Step 5: Verify deactivated trainer cannot log in", "Step
+6: Reactivate the trainer", "Step 7: Verify trainer status changes back to
+active", "Step 8: Verify reactivated trainer can log in again" ], "passes":
+false }, { "category": "functional", "description": "Account admin can
+permanently remove a trainer", "steps": [ "Step 1: Log in as account admin",
+"Step 2: Navigate to /account/trainers", "Step 3: Click remove on a trainer",
+"Step 4: Verify a confirmation modal is displayed", "Step 5: Confirm the
+deletion", "Step 6: Verify the trainer is permanently deleted", "Step 7: Verify
+the trainer no longer appears in the roster" ], "passes": false }, { "category":
+"functional", "description": "Account admin cannot access another client
+account's data", "steps": [ "Step 1: Create two client accounts, each with an
+admin", "Step 2: Log in as admin of account A", "Step 3: Attempt to access
+account B's trainer roster or settings", "Step 4: Verify access is denied or
+data is not visible" ], "passes": false }, { "category": "functional",
+"description": "Trainer can view dashboard listing all master trainings for
+their account", "steps": [ "Step 1: Log in as a trainer", "Step 2: Navigate to
+/master_trainings", "Step 3: Verify the page shows all master trainings for the
+trainer's account", "Step 4: Verify each training shows title, description,
+session count, and timestamps" ], "passes": false }, { "category": "functional",
+"description": "Trainer can create a new master training", "steps": [ "Step 1:
+Log in as a trainer", "Step 2: Navigate to /master_trainings/new", "Step 3:
+Enter a title and optional description", "Step 4: Submit the form", "Step 5:
+Verify the master training is created and appears in the dashboard" ], "passes":
+false }, { "category": "functional", "description": "Trainer can edit master
+training metadata", "steps": [ "Step 1: Log in as a trainer", "Step 2: Navigate
+to /master_trainings/:id/edit", "Step 3: Change the title and description",
+"Step 4: Submit the form", "Step 5: Verify changes are saved and displayed" ],
+"passes": false }, { "category": "functional", "description": "Trainer can
+delete a master training with no sessions", "steps": [ "Step 1: Log in as a
+trainer", "Step 2: Create a master training with no sessions", "Step 3: Navigate
+to the master training", "Step 4: Delete the master training", "Step 5: Verify
+the training is removed from the dashboard" ], "passes": false }, { "category":
+"functional", "description": "Trainer cannot delete a master training that has
+sessions", "steps": [ "Step 1: Log in as a trainer", "Step 2: Create a master
+training and generate a session from it", "Step 3: Attempt to delete the master
+training", "Step 4: Verify deletion is blocked with a warning message" ],
+"passes": false }, { "category": "functional", "description": "Trainer can
+upload slide files to a master training", "steps": [ "Step 1: Log in as a
+trainer", "Step 2: Navigate to a master training's detail page", "Step 3: Upload
+a PDF slide file via direct upload", "Step 4: Verify the slide appears in the
+slides list with display name, upload date, file size", "Step 5: Verify the
+download button works and generates a signed URL" ], "passes": false }, {
+"category": "functional", "description": "Trainer can reorder slides via
+drag-and-drop", "steps": [ "Step 1: Log in as a trainer", "Step 2: Upload three
+slide files to a master training", "Step 3: Drag slide 3 to position 1", "Step
+4: Verify the new order is persisted via PATCH request", "Step 5: Refresh the
+page and verify order is maintained" ], "passes": false }, { "category":
+"functional", "description": "Trainer can delete individual slide files",
+"steps": [ "Step 1: Log in as a trainer", "Step 2: Navigate to a master training
+with uploaded slides", "Step 3: Delete one slide file", "Step 4: Verify the
+slide is removed from the list", "Step 5: Verify other slides remain unaffected"
+], "passes": false }, { "category": "functional", "description": "Trainer can
+upload prerequisite assets of any file type", "steps": [ "Step 1: Log in as a
+trainer", "Step 2: Navigate to a master training's detail page", "Step 3: Upload
+a prerequisite asset (PDF, video, ZIP, etc.)", "Step 4: Verify the asset appears
+with display name, optional description, upload date, file size", "Step 5:
+Verify the download button generates a signed GCS URL" ], "passes": false }, {
+"category": "functional", "description": "Trainer can reorder prerequisite
+assets via drag-and-drop", "steps": [ "Step 1: Log in as a trainer", "Step 2:
+Upload three prerequisite assets to a master training", "Step 3: Drag asset 3 to
+position 1", "Step 4: Verify the new order is persisted", "Step 5: Refresh the
+page and verify order is maintained" ], "passes": false }, { "category":
+"functional", "description": "Trainer can delete individual prerequisite
+assets", "steps": [ "Step 1: Log in as a trainer", "Step 2: Navigate to a master
+training with uploaded assets", "Step 3: Delete one prerequisite asset", "Step
+4: Verify the asset is removed from the list" ], "passes": false }, {
+"category": "functional", "description": "Trainer can add exercises with rich
+text content via Trix editor", "steps": [ "Step 1: Log in as a trainer", "Step
+2: Navigate to a master training's detail page", "Step 3: Click to add a new
+exercise", "Step 4: Enter an exercise title", "Step 5: Use the Trix editor to
+add rich HTML content (bold, italic, lists, links)", "Step 6: Submit the form",
+"Step 7: Verify the exercise is created with the formatted content preserved" ],
+"passes": false }, { "category": "functional", "description": "Trainer can edit
+exercises", "steps": [ "Step 1: Log in as a trainer", "Step 2: Navigate to a
+master training with an existing exercise", "Step 3: Click edit on the
+exercise", "Step 4: Modify the title and body content", "Step 5: Submit the
+form", "Step 6: Verify changes are saved and displayed" ], "passes": false }, {
+"category": "functional", "description": "Trainer can reorder exercises via
+drag-and-drop", "steps": [ "Step 1: Log in as a trainer", "Step 2: Add three
+exercises to a master training", "Step 3: Drag exercise 3 to position 1", "Step
+4: Verify the new order is persisted", "Step 5: Refresh the page and verify
+order is maintained" ], "passes": false }, { "category": "functional",
+"description": "Trainer can delete exercises", "steps": [ "Step 1: Log in as a
+trainer", "Step 2: Navigate to a master training with exercises", "Step 3:
+Delete an exercise", "Step 4: Verify the exercise is removed from the list" ],
+"passes": false }, { "category": "functional", "description": "Trainer can
+preview exercise content as it will appear to participants", "steps": [ "Step 1:
+Log in as a trainer", "Step 2: Navigate to a master training with exercises",
+"Step 3: Click preview on an exercise", "Step 4: Verify a Turbo Frame panel
+renders the exercise content as styled HTML" ], "passes": false }, { "category":
+"functional", "description": "Generating a training session creates an immutable
+version snapshot", "steps": [ "Step 1: Log in as a trainer", "Step 2: Create a
+master training with slides, prerequisite assets, and exercises", "Step 3: Click
+'Generate Session' on the master training", "Step 4: Verify a version snapshot
+is created with version_number incremented", "Step 5: Verify slide_snapshots are
+created matching current slides", "Step 6: Verify prerequisite_asset_snapshots
+are created matching current assets", "Step 7: Verify exercise_snapshots are
+created with rendered HTML body", "Step 8: Verify a training_session record is
+created linked to the version", "Step 9: Verify session name is auto-generated
+as '{Title} \u2013 Session {N}'", "Step 10: Verify redirect to session edit page
+with success flash" ], "passes": false }, { "category": "functional",
+"description": "Editing master training after session generation does not alter
+existing sessions", "steps": [ "Step 1: Log in as a trainer", "Step 2: Create a
+master training with title 'Original Title' and an exercise", "Step 3: Generate
+a training session", "Step 4: Edit the master training title to 'Updated Title'
+and modify the exercise", "Step 5: Verify the existing session's snapshot still
+shows 'Original Title'", "Step 6: Verify the existing session's exercise
+snapshot is unchanged", "Step 7: Generate a second session", "Step 8: Verify the
+second session's snapshot shows 'Updated Title'" ], "passes": false }, {
+"category": "functional", "description": "Deleting a slide from master training
+does not corrupt existing session snapshots", "steps": [ "Step 1: Log in as a
+trainer", "Step 2: Create a master training with two slides", "Step 3: Generate
+a training session", "Step 4: Delete one slide from the master training", "Step
+5: Verify the session's slide snapshots still reference both original slides",
+"Step 6: Verify the snapshot slide download still works via the cloud key" ],
+"passes": false }, { "category": "functional", "description": "Trainer can view
+version history of a master training", "steps": [ "Step 1: Log in as a trainer",
+"Step 2: Create a master training and generate two sessions", "Step 3: Navigate
+to /master_trainings/:id/versions", "Step 4: Verify the page shows a read-only
+list of all versions", "Step 5: Verify each version shows timestamp and linked
+session count" ], "passes": false }, { "category": "functional", "description":
+"Trainer can view session list for a master training", "steps": [ "Step 1: Log
+in as a trainer", "Step 2: Navigate to /master_trainings/:id/training_sessions",
+"Step 3: Verify the page lists all sessions for the master training", "Step 4:
+Verify each session shows name, generated date, version number, password status,
+and share link" ], "passes": false }, { "category": "functional", "description":
+"Trainer can rename a training session", "steps": [ "Step 1: Log in as a
+trainer", "Step 2: Generate a training session", "Step 3: Navigate to
+/training_sessions/:id/edit", "Step 4: Change the session name", "Step 5: Submit
+the form", "Step 6: Verify the name is updated" ], "passes": false }, {
+"category": "functional", "description": "Trainer can set, change, and remove
+session password", "steps": [ "Step 1: Log in as a trainer", "Step 2: Generate a
+training session with no password", "Step 3: Navigate to session edit page",
+"Step 4: Set a password and submit", "Step 5: Verify password_digest is stored
+(bcrypt-hashed)", "Step 6: Change the password to a new value", "Step 7: Verify
+the new password works", "Step 8: Remove the password (make session
+open-access)", "Step 9: Verify session is accessible without a password" ],
+"passes": false }, { "category": "functional", "description": "Trainer can
+delete a training session without affecting master training", "steps": [ "Step
+1: Log in as a trainer", "Step 2: Generate a training session from a master
+training", "Step 3: Delete the training session", "Step 4: Verify confirmation
+dialog is shown before deletion", "Step 5: Verify the session is deleted", "Step
+6: Verify the master training and other sessions are unaffected" ], "passes":
+false }, { "category": "functional", "description": "Public session view renders
+snapshot content without authentication", "steps": [ "Step 1: Generate a
+training session without a password", "Step 2: Navigate to /s/:slug as an
+unauthenticated user", "Step 3: Verify the session content is rendered without
+login", "Step 4: Verify slides are listed with download buttons", "Step 5:
+Verify prerequisite assets are listed with download buttons", "Step 6: Verify
+exercises are rendered as styled HTML navigable by tab or sidebar" ], "passes":
+false }, { "category": "functional", "description": "Password-protected session
+requires password gate before showing content", "steps": [ "Step 1: Generate a
+training session with a password set", "Step 2: Navigate to /s/:slug as an
+unauthenticated user", "Step 3: Verify redirect to /s/:slug/unlock (password
+gate form)", "Step 4: Enter an incorrect password", "Step 5: Verify access is
+denied with an error message", "Step 6: Enter the correct password", "Step 7:
+Verify a signed httpOnly cookie is set with 24-hour expiry", "Step 8: Verify
+redirect to /s/:slug with full content rendered", "Step 9: Refresh the page and
+verify content is still accessible (cookie persists)" ], "passes": false }, {
+"category": "functional", "description": "Session view download buttons serve
+files via expiring signed URLs", "steps": [ "Step 1: Generate a session with
+slides and prerequisite assets", "Step 2: Access the public session view", "Step
+3: Click a download button for a slide", "Step 4: Verify the request hits
+/training_sessions/:id/download/:attachment_id", "Step 5: Verify the response
+redirects to a signed GCS URL with 15-minute expiry" ], "passes": false }, {
+"category": "functional", "description": "Session view exercises are navigable
+by sidebar", "steps": [ "Step 1: Generate a session with three exercises", "Step
+2: Access the public session view", "Step 3: Navigate to the Exercises tab",
+"Step 4: Verify a sidebar lists all exercises by title", "Step 5: Click on
+different exercises in the sidebar", "Step 6: Verify the main panel renders the
+selected exercise's body_html as sanitized HTML" ], "passes": false }, {
+"category": "functional", "description": "Session view is read-only with no
+editing capabilities", "steps": [ "Step 1: Access a public session view", "Step
+2: Verify no edit buttons or forms are present", "Step 3: Verify content cannot
+be modified from this view" ], "passes": false }, { "category": "functional",
+"description": "Complete end-to-end trainer workflow: create training, add
+content, generate session, share", "steps": [ "Step 1: Log in as a trainer",
+"Step 2: Create a new master training with title and description", "Step 3:
+Upload two slide files", "Step 4: Upload a prerequisite asset with description",
+"Step 5: Add two exercises with rich text content", "Step 6: Reorder the
+exercises", "Step 7: Generate a training session", "Step 8: Set a password for
+the session", "Step 9: Copy the share link", "Step 10: Open the share link in a
+new browser (unauthenticated)", "Step 11: Enter the session password", "Step 12:
+Verify all content (slides, assets, exercises) is displayed correctly", "Step
+13: Download a slide and verify it works" ], "passes": false }, { "category":
+"functional", "description": "Complete end-to-end super admin workflow: create
+account, add admin, verify access", "steps": [ "Step 1: Log in as super admin",
+"Step 2: Create a new client account with initial admin email and password",
+"Step 3: Verify the account appears in the clients list", "Step 4: Log out",
+"Step 5: Log in as the new account admin", "Step 6: Verify the admin can access
+account settings", "Step 7: Verify the admin can view the trainer roster", "Step
+8: Invite a trainer", "Step 9: Log out and log in as super admin", "Step 10:
+Delete the client account", "Step 11: Verify all associated data is
+cascade-deleted" ], "passes": false }, { "category": "functional",
+"description": "Trainer scoping: trainers can only see their own account's
+trainings", "steps": [ "Step 1: Create two client accounts, each with a
+trainer", "Step 2: Trainer A creates a master training", "Step 3: Log in as
+Trainer B", "Step 4: Navigate to /master_trainings", "Step 5: Verify Trainer A's
+training is not visible to Trainer B" ], "passes": false }, { "category":
+"functional", "description": "Active Storage direct upload with progress
+indicator", "steps": [ "Step 1: Log in as a trainer", "Step 2: Navigate to a
+master training detail page", "Step 3: Start uploading a large file", "Step 4:
+Verify a progress bar is displayed during upload", "Step 5: Verify the file
+appears in the list after upload completes" ], "passes": false }, { "category":
+"functional", "description": "Trix editor supports headings, bold, italic,
+lists, links, and image attachments", "steps": [ "Step 1: Log in as a trainer",
+"Step 2: Navigate to create a new exercise", "Step 3: Add a heading in the Trix
+editor", "Step 4: Add bold and italic text", "Step 5: Add a bullet list and a
+numbered list", "Step 6: Add a hyperlink", "Step 7: Upload an image attachment",
+"Step 8: Submit the form", "Step 9: Verify all formatting is preserved when
+viewing the exercise" ], "passes": false }, { "category": "functional",
+"description": "User status enum works correctly: active, inactive,
+pending_password_change", "steps": [ "Step 1: Create a user with status active",
+"Step 2: Verify the user can log in", "Step 3: Change status to inactive", "Step
+4: Verify the user cannot log in", "Step 5: Change status to
+pending_password_change", "Step 6: Log in and verify redirect to change-password
+page" ], "passes": false }, { "category": "functional", "description": "Session
+unlock rate limiting blocks excessive password attempts", "steps": [ "Step 1:
+Create a password-protected training session", "Step 2: Navigate to
+/s/:slug/unlock", "Step 3: Submit 11 incorrect password attempts rapidly", "Step
+4: Verify requests are throttled via Rack::Attack (10 req/min per IP)" ],
+"passes": false }, { "category": "functional", "description": "Session passwords
+are bcrypt-hashed and never exposed in views or logs", "steps": [ "Step 1: Set a
+password on a training session", "Step 2: Verify password_digest is stored as a
+bcrypt hash in the database", "Step 3: Navigate to the session edit page", "Step
+4: Verify the plaintext password is not visible in the form or page source" ],
+"passes": false }, { "category": "functional", "description": "All destructive
+actions show confirmation dialogs", "steps": [ "Step 1: Attempt to delete a
+client account", "Step 2: Verify a confirmation dialog appears before
+proceeding", "Step 3: Attempt to delete a master training", "Step 4: Verify a
+confirmation dialog appears", "Step 5: Attempt to delete a training session",
+"Step 6: Verify a confirmation dialog appears", "Step 7: Attempt to remove a
+trainer permanently", "Step 8: Verify a confirmation modal appears" ], "passes":
+false }, { "category": "functional", "description": "Form validation shows
+errors with red field borders and inline messages", "steps": [ "Step 1: Navigate
+to the login form", "Step 2: Submit with empty fields", "Step 3: Verify
+validation errors are displayed with red field borders and inline messages",
+"Step 4: Navigate to create a master training", "Step 5: Submit with empty
+title", "Step 6: Verify validation error is shown" ], "passes": false }, {
+"category": "functional", "description": "Empty state partials displayed when no
+data exists", "steps": [ "Step 1: Log in as super admin", "Step 2: Navigate to
+/admin/clients with no client accounts", "Step 3: Verify an empty state message
+or partial is displayed", "Step 4: Log in as a trainer with no master
+trainings", "Step 5: Navigate to /master_trainings", "Step 6: Verify an empty
+state message is displayed" ], "passes": false }, { "category": "functional",
+"description": "Flash notifications appear as slide-in toasts and auto-dismiss",
+"steps": [ "Step 1: Perform an action that triggers a flash notice (e.g., create
+a training)", "Step 2: Verify a slide-in toast notification appears", "Step 3:
+Wait 4 seconds", "Step 4: Verify the notification auto-dismisses" ], "passes":
+false }, { "category": "functional", "description": "Copy-to-clipboard works for
+session share links", "steps": [ "Step 1: Log in as a trainer", "Step 2:
+Navigate to the session list page", "Step 3: Click the copy share link button
+for a session", "Step 4: Verify the session URL is copied to the clipboard",
+"Step 5: Verify visual feedback is shown (e.g., button text changes)" ],
+"passes": false }, { "category": "style", "description": "Login page is styled
+with Tailwind CSS", "steps": [ "Step 1: Navigate to /session/new", "Step 2:
+Verify the login form has Tailwind-styled inputs, button, and layout", "Step 3:
+Verify the page is visually polished with proper spacing, colors, and
+typography" ], "passes": true }, { "category": "style", "description": "Admin
+dashboard has a clean, professional layout", "steps": [ "Step 1: Log in as super
+admin", "Step 2: Navigate to /admin", "Step 3: Verify the admin home page has a
+well-structured layout", "Step 4: Verify navigation and signout are clearly
+visible" ], "passes": true }, { "category": "style", "description": "Client
+accounts list is displayed as a styled table", "steps": [ "Step 1: Log in as
+super admin", "Step 2: Navigate to /admin/clients with existing accounts", "Step
+3: Verify accounts are displayed in a clean table with columns for name,
+creation date, and trainer count", "Step 4: Verify delete buttons are styled as
+destructive actions" ], "passes": true }, { "category": "style", "description":
+"Trainer roster has role badges and status pills", "steps": [ "Step 1: Log in as
+account admin", "Step 2: Navigate to /account/trainers", "Step 3: Verify each
+trainer has a colored status pill (active=green, inactive=red, pending=yellow)",
+"Step 4: Verify role badges are displayed alongside user names" ], "passes":
+false }, { "category": "style", "description": "Master training dashboard shows
+card grid layout", "steps": [ "Step 1: Log in as a trainer", "Step 2: Navigate
+to /master_trainings with multiple trainings", "Step 3: Verify trainings are
+displayed as cards in a grid layout", "Step 4: Verify each card shows title,
+description, session count, and timestamps" ], "passes": false }, { "category":
+"style", "description": "Master training detail page has tabbed layout for
+slides, assets, and exercises", "steps": [ "Step 1: Log in as a trainer", "Step
+2: Navigate to a master training detail page", "Step 3: Verify the page has tabs
+or sections for Slides, Prerequisite Assets, and Exercises", "Step 4: Verify
+each section has clear upload controls and list displays" ], "passes": false },
+{ "category": "style", "description": "Trix editor is styled with Tailwind prose
+classes", "steps": [ "Step 1: Log in as a trainer", "Step 2: Navigate to the
+exercise editor", "Step 3: Verify the Trix editor toolbar is well-styled", "Step
+4: Verify the content area uses Tailwind prose classes for readable typography"
+], "passes": false }, { "category": "style", "description": "Public session view
+uses a clean layout with no navigation bar", "steps": [ "Step 1: Access a public
+session view at /s/:slug", "Step 2: Verify the page has a minimal, clean layout
+with no main navigation bar", "Step 3: Verify content is well-organized with
+clear sections for slides, assets, and exercises" ], "passes": false }, {
+"category": "style", "description": "Public session view has tabbed layout with
+Stimulus tab controller", "steps": [ "Step 1: Access a public session view",
+"Step 2: Verify tabs for Slides, Prerequisites, and Exercises are displayed",
+"Step 3: Click between tabs", "Step 4: Verify content switches smoothly without
+full page reload" ], "passes": false }, { "category": "style", "description":
+"Password gate page is styled and user-friendly", "steps": [ "Step 1: Navigate
+to /s/:slug/unlock for a password-protected session", "Step 2: Verify the
+password form is centered and well-styled", "Step 3: Verify error messages for
+incorrect passwords are clearly displayed" ], "passes": false }, { "category":
+"style", "description": "File upload has progress bar and clear feedback",
+"steps": [ "Step 1: Log in as a trainer", "Step 2: Start uploading a file via
+direct upload", "Step 3: Verify a progress bar is visible during upload", "Step
+4: Verify success feedback is displayed after upload completes", "Step 5: Verify
+error feedback is displayed if upload fails" ], "passes": false }, { "category":
+"style", "description": "Drag-and-drop reordering has smooth visual feedback",
+"steps": [ "Step 1: Log in as a trainer", "Step 2: Navigate to a master training
+with multiple slides", "Step 3: Start dragging a slide", "Step 4: Verify visual
+feedback (e.g., ghost element, highlight) during drag", "Step 5: Drop the slide
+in a new position", "Step 6: Verify the list updates smoothly" ], "passes":
+false }, { "category": "style", "description": "Responsive layout: all pages
+work on mobile viewports", "steps": [ "Step 1: Open the application on a mobile
+viewport (375px width)", "Step 2: Navigate through login, admin, trainer
+dashboard, and public session view", "Step 3: Verify sidebars collapse
+appropriately", "Step 4: Verify tables scroll horizontally on small screens",
+"Step 5: Verify touch targets are large enough for mobile interaction" ],
+"passes": false }, { "category": "style", "description": "Accessible markup:
+ARIA roles, labels, and focus traps", "steps": [ "Step 1: Navigate through key
+pages with a screen reader or inspect HTML", "Step 2: Verify modals have ARIA
+roles and focus traps", "Step 3: Verify all form inputs have associated labels",
+"Step 4: Verify interactive elements are keyboard-navigable" ], "passes": false
+}, { "category": "style", "description": "Confirmation modals are styled with
+clear destructive action indicators", "steps": [ "Step 1: Trigger a delete
+action (e.g., delete training session)", "Step 2: Verify the confirmation modal
+has a clear warning message", "Step 3: Verify the confirm button is styled as a
+destructive action (e.g., red)", "Step 4: Verify the cancel button is clearly
+distinguishable" ], "passes": false }, { "category": "style", "description":
+"Flash toast notifications are visually appealing slide-in toasts", "steps": [
+"Step 1: Trigger a success flash (e.g., create a resource)", "Step 2: Verify
+toast slides in from the top or corner", "Step 3: Verify toast has appropriate
+color (green for success, red for error)", "Step 4: Verify toast auto-dismisses
+after 4 seconds with a fade animation" ], "passes": false }, { "category":
+"style", "description": "Password reset and forgot password pages are styled
+consistently", "steps": [ "Step 1: Navigate to /passwords/new", "Step 2: Verify
+the forgot password form is styled consistently with the login page", "Step 3:
+Navigate to /passwords/:token/edit", "Step 4: Verify the reset password form
+matches the overall design system" ], "passes": true }, { "category":
+"functional", "description": "Account admin can view trainer roster with
+status", "steps": [ "Step 1: Sign in as an account admin", "Step 2: Navigate to
+/account/trainers", "Step 3: Verify HTTP 200 response", "Step 4: Verify all
+non-admin users belonging to the current client are listed", "Step 5: Verify
+each row shows the trainer's email address", "Step 6: Verify each row shows a
+status pill", "Step 7: Verify active trainers show a green status pill", "Step
+8: Verify inactive trainers show a red status pill", "Step 9: Verify
+pending_password_change trainers show a yellow status pill", "Step 10: Verify
+account admin users are not shown in the list", "Step 11: Verify trainers from
+other clients are not shown" ], "passes": true }, { "category": "functional",
+"description": "All user-facing strings are extracted into Rails locale files
+with English translations", "steps": [ "Step 1: Verify config/application.rb
+sets config.i18n.default_locale = :en and config.i18n.available_locales =
+[:en]", "Step 2: Verify config/locales/en.yml contains shared/global keys
+(app_name, common buttons, labels)", "Step 3: Verify
+config/locales/sessions/en.yml contains sign-in page strings and flash
+messages", "Step 4: Verify config/locales/passwords/en.yml contains password
+reset page strings and flash messages", "Step 5: Verify
+config/locales/admin/en.yml contains admin dashboard and client account page
+strings", "Step 6: Verify config/locales/account/en.yml contains account
+settings and trainer management strings", "Step 7: Verify
+config/locales/mailers/en.yml contains mailer strings", "Step 8: Load any view
+or page and verify no hardcoded English strings remain in views or controllers",
+"Step 9: Verify t() lazy lookup calls resolve correctly in all views" ],
+"passes": true } ]

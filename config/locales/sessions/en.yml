@@ -8,4 +8,6 @@ en:
       forgot_password: "Forgot password?"
     create:
       invalid_credentials: "Try another email address or password."
+      account_deactivated: "Your account has been deactivated."
+      account_not_activated: "Your account has not been activated yet. Please use the invite link sent to your email."
       rate_limit_exceeded: "Try again later."

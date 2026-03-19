@@ -3,6 +3,19 @@
     "commit": "",
     "pr": ""
   },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path' | xargs -I {} sh -c 'bundle exec rubocop -a {}; npm run herb:format -- {}'"
+          }
+        ]
+      }
+    ]
+  },
   "permissions": {
     "allow": [
       "Bash(bin/bundler-audit 2>&1)",
