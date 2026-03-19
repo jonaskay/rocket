@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   namespace :account do
     resource :settings, only: [ :edit, :update ]
+    resource :password, only: [ :edit, :update ]
     resources :trainers, only: [ :index, :new, :create ]
   end
 
