@@ -16,7 +16,7 @@ Important domain terms for the Rocket training platform.
 
 **Exercise Snapshot** — An immutable HTML copy of an exercise's rich text body captured at the time a training session is generated. Stored on the `exercise_snapshots` table as sanitized HTML.
 
-**Invitation Flow** — The process by which an account admin adds a new trainer to their organization. The system creates the trainer's account with `status: pending_password_change` and sends an invitation email containing a signed, time-limited link for the trainer to set their own password.
+**Invitation Flow** — The process by which an account admin adds a new trainer to their organization. The system creates the trainer's account with `status: pending_password_change` and sends an invitation email containing a signed, time-limited link. When the trainer follows the link and sets their password, their status is automatically transitioned to `active`, allowing them to log in immediately.
 
 **Master Training** — A reusable training template created and owned by a trainer. Contains slides, prerequisite assets, and exercises. Multiple training sessions can be generated from a single master training at different points in time.
 
