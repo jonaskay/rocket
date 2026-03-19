@@ -7,6 +7,7 @@ A multi-tenant training platform that allows organizations to manage trainers an
 * Ruby 3.4.5
 * Node.js
 * PostgreSQL
+* Playwright CLI (optional)
 
 ## Getting started
 
