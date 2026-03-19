@@ -20,4 +20,8 @@ module CapybaraHelpers
     fill_in "password", with: password
     click_button "Sign in"
   end
+
+  def sign_out_via_ui
+    click_button "Sign out"
+  end
 end

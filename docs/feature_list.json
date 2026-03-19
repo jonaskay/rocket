@@ -74,7 +74,7 @@ trainer", "Step 3: Verify redirect to /account/password/edit (change-password
 page)", "Step 4: Verify the trainer cannot navigate to any other page", "Step 5:
 Enter and confirm a new password", "Step 6: Submit the form", "Step 7: Verify
 status is updated to active", "Step 8: Verify trainer can now access the
-application normally" ], "passes": false }, { "category": "functional",
+application normally" ], "passes": true }, { "category": "functional",
 "description": "Account admin can deactivate and reactivate a trainer", "steps":
 [ "Step 1: Log in as account admin", "Step 2: Navigate to /account/trainers",
 "Step 3: Deactivate an active trainer via PATCH", "Step 4: Verify trainer status

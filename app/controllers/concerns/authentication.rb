@@ -3,12 +3,17 @@ module Authentication
 
   included do
     before_action :require_authentication
+    before_action :require_password_change_if_pending
     helper_method :authenticated?
   end
 
   class_methods do
     def allow_unauthenticated_access(**options)
       skip_before_action :require_authentication, **options
+    end
+
+    def allow_pending_password_change_access(**options)
+      skip_before_action :require_password_change_if_pending, **options
     end
   end
 
@@ -44,5 +49,12 @@ module Authentication
     def terminate_session
       Current.session.destroy
       cookies.delete(:session_id)
+    end
+
+    def require_password_change_if_pending
+      resume_session
+      return unless Current.user&.pending_password_change?
+
+      redirect_to edit_account_password_path
     end
 end

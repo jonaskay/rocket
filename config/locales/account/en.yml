@@ -30,3 +30,11 @@ en:
         cancel: "Cancel"
       create:
         invitation_sent: "Invitation sent to %{email}."
+    passwords:
+      edit:
+        title: "Change Your Password"
+        password_placeholder: "New password"
+        password_confirmation_placeholder: "Confirm new password"
+        submit: "Save"
+      update:
+        success: "Password has been changed."

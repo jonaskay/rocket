@@ -47,25 +47,6 @@ class TrainerInviteActivationIntegrationTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "pending_password_change user cannot log in" do
-    user = users(:acme_trainer_three)
-    assert user.pending_password_change?
-
-    post session_path, params: { email_address: user.email_address, password: "password" }
-
-    assert_redirected_to new_session_path
-    follow_redirect!
-    assert_select "#alert", text: /not been activated/
-  end
-
-  test "pending_password_change user login creates no session" do
-    user = users(:acme_trainer_three)
-
-    assert_no_difference "Session.count" do
-      post session_path, params: { email_address: user.email_address, password: "password" }
-    end
-  end
-
   test "active user can log in" do
     user = users(:acme_trainer_one)
 

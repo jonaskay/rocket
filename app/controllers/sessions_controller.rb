@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
   allow_unauthenticated_access only: %i[ new create ]
+  allow_pending_password_change_access only: :destroy
   rate_limit to: 10, within: 3.minutes, only: :create, with: -> { redirect_to new_session_path, alert: t("sessions.create.rate_limit_exceeded") }
 
   def new
@@ -10,7 +11,8 @@ class SessionsController < ApplicationController
       if user.inactive?
         redirect_to new_session_path, alert: t("sessions.create.account_deactivated")
       elsif user.pending_password_change?
-        redirect_to new_session_path, alert: t("sessions.create.account_not_activated")
+        start_new_session_for user
+        redirect_to edit_account_password_path
       else
         start_new_session_for user
         redirect_to after_authentication_url
