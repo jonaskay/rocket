@@ -10,7 +10,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "jq -r '.tool_input.file_path' | xargs -I {} sh -c 'bundle exec rubocop -a {}; npm run herb:format -- {}'"
+            "command": ".claude/hooks/lint.sh"
           }
         ]
       }
