@@ -43,6 +43,9 @@
 # Ignore node modules
 /node_modules
 
+# Ignore vendor bundle
+/vendor/bundle
+
 # Ignore macOS files.
 .DS_Store
 
