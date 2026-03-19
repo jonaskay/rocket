@@ -45,3 +45,7 @@
 
 # Ignore macOS files.
 .DS_Store
+
+# Ignore Playwright assets.
+.playwright/
+.playwright-cli/
