@@ -4,10 +4,7 @@ class AccountTrainersTest < ApplicationSystemTestCase
   test "account admin sees trainers listed with their status" do
     account_admin = users(:acme_admin)
 
-    visit_and_confirm new_session_path, title: "Rocket"
-    fill_in "email_address", with: account_admin.email_address
-    fill_in "password", with: "password"
-    click_button "Sign in"
+    sign_in_via_ui account_admin
     assert_current_path edit_account_settings_path
 
     click_on "Trainer Roster"
