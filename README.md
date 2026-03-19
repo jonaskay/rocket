@@ -84,4 +84,5 @@ To format ERB files, use:
 ### pr — Ship it
 
 1. `pr.submit <issue>` — open the pull request
+2. `pr.walkthrough <pull-request>` — record a walkthrough video
 2. `pr.fix <pull-request>` — fix failing jobs
