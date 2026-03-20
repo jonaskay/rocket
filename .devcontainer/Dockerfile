@@ -6,6 +6,9 @@ USER root
 
 RUN apt-get update && apt-get install -y nodejs npm
 
+# Install Playwright dependencies
+RUN apt-get update && apt-get install -y libatk1.0-0t64 libatk-bridge2.0-0t64 libcups2t64 libatspi2.0-0t64 libxdamage1
+
 # Persist bash history.
 RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history" \
   && mkdir -p /commandhistory \
@@ -25,6 +28,9 @@ USER vscode
 
 # Install Claude Code
 RUN curl -fsSL https://claude.ai/install.sh | bash
+
+# Install Playwright
+RUN npx playwright install
 
 # Ensure binding is always 0.0.0.0
 # Binds the server to all IP addresses of the container, so it can be accessed from outside the container.

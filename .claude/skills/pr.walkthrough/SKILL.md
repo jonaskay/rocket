@@ -1,10 +1,7 @@
 ---
 name: pr.walkthrough
-description: Commit all changes and submit a pull request
+description: Generate a video and screenshot walkthrough of the implemented feature
 argument-hint: [pull-request-number]
 ---
 
-Open a browser. Walk through the new feature step by step, and save video recording of the session using `playwright-cli`. Save the video in `docs/issues/$ARGUMENTS/walkthrough.webm`.
-
-Commit the video and add a link to it in the pull request body.
-
+Write a Playwright test that walks through the feature step by step. Take screenshots and save them in `docs/issues/$ARGUMENTS/`. Save the generated video in `docs/issues/$ARGUMENTS/walkthrough.webm`. Generate a markdown file `docs/issues/$ARGUMENTS/demo.md` that acts a storyboard for the feature.

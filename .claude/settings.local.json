@@ -9,6 +9,8 @@
       "Bash(bin/rails generate:*)",
       "Bash(bin/rails db:migrate)",
       "Bash(bin/rails db:seed)",
+      "Bash(bin/rails runner:*)",
+      "Bash(bin/rails server:*)",
       "Bash(bin/rails test:*)",
       "Bash(bin/rails test)",
       "Bash(bin/rails test:system)",
@@ -29,9 +31,7 @@
       "Bash(find:*)",
       "Bash(npm run herb:format)",
       "Bash(npm run herb:format:check)",
-      "Bash(npm run herb:lint)",
-      "Skill(playwright-cli)",
-      "Bash(bin/rails runner:*)"
+      "Bash(npm run herb:lint)"
     ],
     "deny": [
       "Bash(bin/rails db:drop)"

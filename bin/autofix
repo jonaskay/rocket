@@ -40,5 +40,6 @@ bin/review-fix-loop "$ISSUE" "$MAX_ITERATIONS"
 
 if [ "$SUBMIT_PR" = true ]; then
   echo "=== Submitting pull request ==="
-  $CLAUDE "/pr.submit $ISSUE"
+  session_id=$($CLAUDE "/pr.walkthrough $ISSUE" --output-format json | jq -r '.session_id')
+  $CLAUDE "/pr.submit $ISSUE" --resume "$session_id"
 fi

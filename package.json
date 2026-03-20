@@ -25,6 +25,8 @@
   "homepage": "https://github.com/jonaskay/rocket#readme",
   "devDependencies": {
     "@herb-tools/formatter": "^0.9.0",
-    "@herb-tools/linter": "^0.9.0"
+    "@herb-tools/linter": "^0.9.0",
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.5.0"
   }
 }
