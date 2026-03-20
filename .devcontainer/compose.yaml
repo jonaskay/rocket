@@ -25,6 +25,14 @@ services:
     image: selenium/standalone-chromium
     restart: unless-stopped
 
+  playwright:
+    image: mcr.microsoft.com/playwright:v1.50.0-jammy
+    command: sleep infinity
+    volumes:
+    - ../../rocket:/workspaces/rocket:cached
+    depends_on:
+    - rails-app
+
   postgres:
     image: postgres:16.1
     restart: unless-stopped

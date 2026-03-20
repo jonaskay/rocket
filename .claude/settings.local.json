@@ -31,7 +31,9 @@
       "Bash(npm run herb:format:check)",
       "Bash(npm run herb:lint)",
       "Skill(playwright-cli)",
-      "Bash(bin/rails runner:*)"
+      "Bash(bin/rails runner:*)",
+      "Bash(docker compose -f .devcontainer/compose.yaml exec playwright:*)",
+      "Skill(pr.playwright-walkthrough)"
     ],
     "deny": [
       "Bash(bin/rails db:drop)"
