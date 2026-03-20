@@ -14,7 +14,7 @@ class AdminAuthenticationTest < ApplicationSystemTestCase
 
     assert_current_path new_session_path
 
-    visit_and_confirm admin_root_path, title: "Rocket"
+    visit_and_confirm admin_root_path, title: I18n.t("sessions.new.title")
     assert_current_path new_session_path
   end
 end

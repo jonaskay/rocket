@@ -11,7 +11,7 @@ class ForcedPasswordChangeTest < ApplicationSystemTestCase
 
     fill_in I18n.t("account.passwords.edit.password_placeholder"), with: "newpassword123!"
     fill_in I18n.t("account.passwords.edit.password_confirmation_placeholder"), with: "newpassword123!"
-    click_button_and_confirm I18n.t("account.passwords.edit.submit"), path: root_path
+    click_button_and_confirm I18n.t("account.passwords.edit.submit"), title: I18n.t("sessions.new.title")
 
     assert_text I18n.t("account.passwords.update.success")
 
