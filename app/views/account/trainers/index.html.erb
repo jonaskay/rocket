@@ -8,21 +8,67 @@
     <table class="w-full text-left border-collapse">
       <thead>
         <tr class="border-b border-gray-300">
-          <th class="py-3 px-4 font-semibold text-gray-700"><%= t(".table_email") %></th>
-          <th class="py-3 px-4 font-semibold text-gray-700"><%= t(".table_status") %></th>
+          <th class="py-3 px-4 font-semibold text-gray-700">
+            <%= t(".table_email") %>
+          </th>
+
+          <th class="py-3 px-4 font-semibold text-gray-700">
+            <%= t(".table_status") %>
+          </th>
+
+          <th class="py-3 px-4 font-semibold text-gray-700">
+            <%= t(".table_actions") %>
+          </th>
         </tr>
       </thead>
+
       <tbody>
         <% @trainers.each do |trainer| %>
           <tr class="border-b border-gray-200 hover:bg-gray-50">
             <td class="py-3 px-4"><%= trainer.email_address %></td>
+
             <td class="py-3 px-4">
               <% if trainer.active? %>
-                <span class="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700"><%= t(".status_active") %></span>
+                <span
+                  class="
+                    inline-flex items-center rounded-full bg-green-50 px-2
+                    py-1 text-xs font-medium text-green-700
+                  "
+                >
+                  <%= t(".status_active") %>
+                </span>
               <% elsif trainer.inactive? %>
-                <span class="inline-flex items-center rounded-full bg-red-50 px-2 py-1 text-xs font-medium text-red-700"><%= t(".status_inactive") %></span>
+                <span
+                  class="
+                    inline-flex items-center rounded-full bg-red-50 px-2
+                    py-1 text-xs font-medium text-red-700
+                  "
+                >
+                  <%= t(".status_inactive") %>
+                </span>
               <% else %>
-                <span class="inline-flex items-center rounded-full bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-700"><%= t(".status_pending") %></span>
+                <span
+                  class="
+                    inline-flex items-center rounded-full bg-yellow-50 px-2
+                    py-1 text-xs font-medium text-yellow-700
+                  "
+                >
+                  <%= t(".status_pending") %>
+                </span>
+              <% end %>
+            </td>
+
+            <td class="py-3 px-4">
+              <% if trainer.active? %>
+                <%= button_to t(".deactivate"), account_trainer_path(trainer),
+                    method: :patch,
+                    class: "text-sm text-red-600 hover:text-red-800 font-medium",
+                    data: { turbo_confirm: t(".confirm_deactivate", email: trainer.email_address) } %>
+              <% elsif trainer.inactive? %>
+                <%= button_to t(".reactivate"), account_trainer_path(trainer),
+                    method: :patch,
+                    class: "text-sm text-green-600 hover:text-green-800 font-medium",
+                    data: { turbo_confirm: t(".confirm_reactivate", email: trainer.email_address) } %>
               <% end %>
             </td>
           </tr>

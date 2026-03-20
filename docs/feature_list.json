@@ -133,7 +133,7 @@
       "Step 3: Verify the page lists all trainers for the account",
       "Step 4: Verify each trainer shows name, email, and status (active/inactive/pending)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -190,7 +190,7 @@
       "Step 7: Verify trainer status changes back to active",
       "Step 8: Verify reactivated trainer can log in again"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -799,7 +799,7 @@
       "Step 3: Verify each trainer has a colored status pill (active=green, inactive=red, pending=yellow)",
       "Step 4: Verify role badges are displayed alongside user names"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
