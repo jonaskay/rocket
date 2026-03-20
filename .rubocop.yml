@@ -7,3 +7,10 @@ plugins: rubocop-minitest
 # # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
 # Layout/SpaceInsideArrayLiteralBrackets:
 #   Enabled: false
+
+# Enforce i18n usage for locale-specific strings in models, controllers, and
+# mailers. Prevents hardcoded strings in redirect_to notice:/alert:, flash
+# assignments, validates message:, and mail subject: — patterns that caused
+# repeated review findings in closed PRs.
+Rails/I18nLocaleTexts:
+  Enabled: true
