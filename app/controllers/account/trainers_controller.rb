@@ -22,6 +22,24 @@ class Account::TrainersController < Account::ApplicationController
     end
   end
 
+  def update
+    @trainer = current_client.users.trainers.find(params[:id])
+
+    if @trainer.pending_password_change?
+      redirect_to account_trainers_path, alert: t("account.trainers.update.cannot_deactivate_pending")
+      return
+    end
+
+    if @trainer.active?
+      @trainer.inactive!
+      @trainer.sessions.destroy_all
+      redirect_to account_trainers_path, notice: t("account.trainers.update.deactivated", email: @trainer.email_address)
+    else
+      @trainer.active!
+      redirect_to account_trainers_path, notice: t("account.trainers.update.reactivated", email: @trainer.email_address)
+    end
+  end
+
   private
 
   def trainer_params

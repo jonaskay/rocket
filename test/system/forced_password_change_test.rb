@@ -11,10 +11,9 @@ class ForcedPasswordChangeTest < ApplicationSystemTestCase
 
     fill_in I18n.t("account.passwords.edit.password_placeholder"), with: "newpassword123!"
     fill_in I18n.t("account.passwords.edit.password_confirmation_placeholder"), with: "newpassword123!"
-    click_button I18n.t("account.passwords.edit.submit")
+    click_button_and_confirm I18n.t("account.passwords.edit.submit"), path: root_path
 
     assert_text I18n.t("account.passwords.update.success")
-    assert_current_path root_path
 
     trainer.reload
     assert trainer.active?

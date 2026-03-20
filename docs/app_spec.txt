@@ -103,7 +103,9 @@
       email; Rails generates a secure random password, creates the user with
       status pending_password_change, and sends an invitation email via Mailgun
       containing a one-time setup link - Deactivate / reactivate trainer (soft
-      deactivation; deactivated trainers cannot log in) - Remove trainer
+      deactivation; deactivating destroys all active sessions immediately;
+      deactivated trainers cannot log in and are rejected at session resume;
+      pending_password_change trainers cannot be deactivated) - Remove trainer
       permanently (hard delete with confirmation modal)
     </account_management>
 

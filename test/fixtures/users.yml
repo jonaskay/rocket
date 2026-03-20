@@ -56,3 +56,12 @@ gamma_admin:
   last_name: Black
   client_admin: true
   client: gamma
+
+beta_trainer_one:
+  email_address: trainer1@beta.com
+  password_digest: <%= password_digest %>
+  super_admin: false
+  first_name: Frank
+  last_name: Green
+  client: beta
+  status: active
