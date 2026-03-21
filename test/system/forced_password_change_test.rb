@@ -5,7 +5,7 @@ class ForcedPasswordChangeTest < ApplicationSystemTestCase
     trainer = users(:acme_trainer_three)
     assert trainer.pending_password_change?
 
-    sign_in_via_ui trainer
+    sign_in_via_ui trainer, title: I18n.t("account.passwords.edit.title")
 
     assert_current_path edit_account_password_path
 
