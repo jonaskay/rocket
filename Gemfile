@@ -57,6 +57,9 @@ group :development, :test do
 
   # Minitest linting
   gem "rubocop-minitest", require: false
+
+  # Customize minitest outputs
+  gem "minitest-reporters", require: false
 end
 
 group :development do
