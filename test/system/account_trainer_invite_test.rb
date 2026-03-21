@@ -25,7 +25,7 @@ class AccountTrainerInviteTest < ApplicationSystemTestCase
 
     token = trainer.password_reset_token
 
-    visit_and_confirm edit_password_path(token), title: "Rocket"
+    visit_and_confirm edit_password_path(token), title: I18n.t("passwords.edit.title")
 
     fill_in "password", with: "newpassword123!"
     fill_in "password_confirmation", with: "newpassword123!"

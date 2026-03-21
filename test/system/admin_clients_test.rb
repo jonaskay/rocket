@@ -9,8 +9,8 @@ class AdminClientsTest < ApplicationSystemTestCase
     sign_in_via_ui @admin
     assert_current_path admin_root_path
 
-    click_link_and_confirm "Client Accounts", path: admin_clients_path
-    click_link_and_confirm "New Client Account", path: new_admin_client_path
+    click_link_and_confirm "Client Accounts", title: I18n.t("admin.clients.index.title")
+    click_link_and_confirm "New Client Account", title: I18n.t("admin.clients.new.title")
 
     assert_text "Account Details"
     fill_in "Client Account Name", with: "Delta Corp"
@@ -19,7 +19,7 @@ class AdminClientsTest < ApplicationSystemTestCase
     fill_in "Email", with: "admin@delta.com"
     fill_in "Password", with: "securepassword"
     fill_in "Password Confirmation", with: "securepassword"
-    click_button_and_confirm "Create Client Account", path: admin_clients_path
+    click_button_and_confirm "Create Client Account", title: I18n.t("admin.clients.index.title")
 
     assert_current_path admin_clients_path
     assert_text "Client account created successfully"
@@ -30,7 +30,7 @@ class AdminClientsTest < ApplicationSystemTestCase
     sign_in_via_ui @admin
 
     assert_text @admin.email_address
-    click_link_and_confirm "Client Accounts", path: admin_clients_path
+    click_link_and_confirm "Client Accounts", title: I18n.t("admin.clients.index.title")
 
     assert_text "Acme Corp"
     assert_text "Beta Inc"
