@@ -60,7 +60,7 @@
               <% end %>
             </td>
 
-            <td class="py-3 px-4">
+            <td class="py-3 px-4 flex gap-3">
               <% if trainer.active? %>
                 <%= button_to t(".deactivate"), account_trainer_path(trainer),
                     method: :patch,
@@ -72,6 +72,11 @@
                     class: "text-sm text-green-600 hover:text-green-800 font-medium",
                     data: { turbo_confirm: t(".confirm_reactivate", email: trainer.email_address) } %>
               <% end %>
+
+              <%= button_to t(".remove"), account_trainer_path(trainer),
+                  method: :delete,
+                  class: "text-sm text-red-600 hover:text-red-800 font-medium",
+                  data: { turbo_confirm: t(".confirm_remove", email: trainer.email_address) } %>
             </td>
           </tr>
         <% end %>

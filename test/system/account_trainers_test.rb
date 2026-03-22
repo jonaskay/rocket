@@ -17,6 +17,27 @@ class AccountTrainersTest < ApplicationSystemTestCase
     assert_text "Pending Password Change"
   end
 
+  test "admin removes a trainer from the roster" do
+    account_admin = users(:acme_admin)
+    trainer = users(:acme_trainer_one)
+
+    sign_in_via_ui account_admin
+    assert_current_path edit_account_settings_path
+
+    click_on "Trainer Roster"
+    assert_current_path account_trainers_path
+
+    assert_text trainer.email_address
+    within("tr", text: trainer.email_address) do
+      accept_confirm do
+        click_button "Remove"
+      end
+    end
+
+    assert_text "has been removed"
+    within("table") { assert_no_text trainer.email_address }
+  end
+
   test "admin deactivates an active trainer and reactivates them" do
     account_admin = users(:acme_admin)
     trainer = users(:acme_trainer_one)

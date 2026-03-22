@@ -40,6 +40,15 @@ class Account::TrainersController < Account::ApplicationController
     end
   end
 
+  def destroy
+    @trainer = current_client.users.trainers.find(params[:id])
+    if @trainer.destroy
+      redirect_to account_trainers_path, notice: t("account.trainers.destroy.removed", email: @trainer.email_address)
+    else
+      redirect_to account_trainers_path, alert: t("account.trainers.destroy.remove_failed", email: @trainer.email_address)
+    end
+  end
+
   private
 
   def trainer_params

@@ -25,7 +25,12 @@ en:
         reactivate: "Reactivate"
         confirm_deactivate: "Deactivate %{email}? They will be logged out immediately."
         confirm_reactivate: "Reactivate %{email}?"
+        remove: "Remove"
+        confirm_remove: "Permanently remove %{email}? This action cannot be undone."
         empty: "No trainers in this account yet."
+      destroy:
+        removed: "%{email} has been removed."
+        remove_failed: "%{email} could not be removed."
       update:
         deactivated: "%{email} has been deactivated."
         reactivated: "%{email} has been reactivated."
