@@ -1,5 +1,11 @@
 require "test_helper"
 require_relative "support/capybara_helpers"
+require_relative "support/minitest/reporters/failed_tests_reporter"
+
+Minitest::Reporters.use! [
+  Minitest::Reporters::ProgressReporter.new,
+  FailedTestsReporter.new
+]
 
 Capybara.default_max_wait_time = 5
 
