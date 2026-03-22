@@ -53,4 +53,15 @@ class AccountSettingsIntegrationTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
     assert_equal "Not authorized.", flash[:alert]
   end
+
+  test "settings page shows own account name and not other accounts" do
+    sign_in_as(@account_admin)
+
+    get edit_account_settings_path
+
+    assert_response :success
+    assert_match clients(:acme).name, response.body
+    assert_no_match clients(:beta).name, response.body
+    assert_no_match clients(:gamma).name, response.body
+  end
 end

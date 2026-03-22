@@ -215,7 +215,7 @@
       "Step 3: Attempt to access account B's trainer roster or settings",
       "Step 4: Verify access is denied or data is not visible"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",

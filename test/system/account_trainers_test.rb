@@ -15,6 +15,7 @@ class AccountTrainersTest < ApplicationSystemTestCase
     assert_text "Active"
     assert_text "Inactive"
     assert_text "Pending Password Change"
+    assert_no_text users(:beta_trainer_one).email_address
   end
 
   test "admin removes a trainer from the roster" do
