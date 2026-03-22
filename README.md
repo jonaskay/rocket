@@ -67,9 +67,9 @@ To format ERB files, use:
 
 ### issue — Create a new GitHub issue
 
-1. `issue.pick` — select a feature from the feature list
-2. `issue.draft` — generate a draft as a local Markdown file
-3. `issue.submit` — submit the issue to GitHub
+1. `plan.pick` — select a feature from the feature list
+2. `plan.draft` — generate a draft as a local Markdown file
+3. `plan.submit` — submit the issue to GitHub
 
 ### dev — Work on an issue
 
