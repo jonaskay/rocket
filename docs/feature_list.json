@@ -992,5 +992,18 @@
       "Step 6: Trigger a CI run where all system tests pass and verify .minitest_failed_tests is not created"
     ],
     "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Account admin can permanently remove a trainer from the roster",
+    "steps": [
+      "Step 1: Sign in as an account admin",
+      "Step 2: Navigate to the trainer roster via Account Settings > Trainer Roster",
+      "Step 3: Click the Remove button next to a trainer",
+      "Step 4: Confirm the irreversible action in the dialog",
+      "Step 5: Verify a success notice is shown and the trainer no longer appears in the roster",
+      "Step 6: Verify the trainer cannot be removed from another client account (returns 404)"
+    ],
+    "passes": true
   }
 ]
