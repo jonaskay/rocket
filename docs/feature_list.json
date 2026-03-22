@@ -979,5 +979,18 @@
       "Step 9: Verify t() lazy lookup calls resolve correctly in all views"
     ],
     "passes": true
+  },
+  {
+    "category": "tooling",
+    "description": "CI automatically reruns only failed system tests on first failure",
+    "steps": [
+      "Step 1: Trigger a CI run where at least one system test fails",
+      "Step 2: Verify the 'Run System Tests' step continues on error",
+      "Step 3: Verify .minitest_failed_tests is created with the failed test locations",
+      "Step 4: Verify the 'Rerun failed system tests' step runs only the failed tests",
+      "Step 5: Verify the CI job fails if tests fail on rerun",
+      "Step 6: Trigger a CI run where all system tests pass and verify .minitest_failed_tests is not created"
+    ],
+    "passes": true
   }
 ]
