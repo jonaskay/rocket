@@ -1,5 +1,5 @@
 ---
-name: issue.pick
+name: plan.pick
 description: Pick the next feature to work on
 ---
 

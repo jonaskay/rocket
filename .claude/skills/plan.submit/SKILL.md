@@ -1,5 +1,5 @@
 ---
-name: issue.submit
+name: plan.submit
 description: Submit an issue to GitHub
 ---
 
