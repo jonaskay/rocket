@@ -52,7 +52,9 @@ Important domain terms for the Rocket training platform.
 
 **Trainer** — A user belonging to exactly one client organization who creates master trainings, manages training content (slides, prerequisite assets, exercises), and generates training sessions.
 
-**Trainer Roster** — The page at `/account/trainers` where account admins can view all non-admin users in their organization. Displays each trainer's email and a color-coded status pill.
+**Trainer Removal** — The permanent, irreversible deletion of a trainer's user record initiated by an account admin from the Trainer Roster. Hard-deletes the user and all associated sessions. A confirmation dialog warns that the action cannot be undone before proceeding. Distinct from deactivation, which sets the trainer's status to `inactive` while preserving the record.
+
+**Trainer Roster** — The page at `/account/trainers` where account admins can view all non-admin users in their organization. Displays each trainer's email, a color-coded status pill, and an actions column. Active trainers show a Deactivate button; inactive trainers show a Reactivate button. All trainers show a Remove button that permanently deletes the trainer (see *Trainer Removal*).
 
 **Trix Editor** — The rich text editor used for authoring exercise content, provided by Rails' Action Text library. Produces sanitized HTML output.
 
