@@ -106,7 +106,7 @@
       deactivation; deactivating destroys all active sessions immediately;
       deactivated trainers cannot log in and are rejected at session resume;
       pending_password_change trainers cannot be deactivated) - Remove trainer
-      permanently (hard delete with confirmation modal)
+      permanently (hard delete with browser-native confirmation dialog)
     </account_management>
 
     <authentication>
