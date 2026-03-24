@@ -155,7 +155,7 @@ jobs:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432
           # RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           # REDIS_URL: redis://localhost:6379/0
-        run: '[ -s .minitest_failed_tests ] && bin/rails test:system $(cat .minitest_failed_tests)'
+        run: '[ -s .minitest_failed_tests ] && bin/rails test $(cat .minitest_failed_tests)'
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v7
