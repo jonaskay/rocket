@@ -18,7 +18,10 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     driven_by :selenium, using: :headless_chrome, screen_size: [ 1400, 1400 ], options: {
       browser: :remote,
       url: "http://#{ENV["SELENIUM_HOST"]}:4444"
-    }
+    } do |driver_option|
+      driver_option.add_preference("credentials_enable_service", false)
+      driver_option.add_preference("profile.password_manager_enabled", false)
+    end
   else
     driven_by :selenium, using: :headless_chrome, screen_size: [ 1400, 1400 ] do |driver_option|
       driver_option.add_preference("credentials_enable_service", false)
