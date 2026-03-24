@@ -26,6 +26,6 @@ module CapybaraHelpers
   end
 
   def sign_out_via_ui
-    click_button "Sign out"
+    click_button_and_confirm "Sign out", title: I18n.t("sessions.new.title")
   end
 end

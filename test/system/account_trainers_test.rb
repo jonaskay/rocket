@@ -7,7 +7,7 @@ class AccountTrainersTest < ApplicationSystemTestCase
     sign_in_via_ui account_admin
     assert_current_path edit_account_settings_path
 
-    click_on "Trainer Roster"
+    click_link_and_confirm "Trainer Roster", title: I18n.t("account.trainers.index.title")
 
     assert_text users(:acme_trainer_one).email_address
     assert_text users(:acme_trainer_two).email_address
@@ -25,8 +25,7 @@ class AccountTrainersTest < ApplicationSystemTestCase
     sign_in_via_ui account_admin
     assert_current_path edit_account_settings_path
 
-    click_on "Trainer Roster"
-    assert_current_path account_trainers_path
+    click_link_and_confirm "Trainer Roster", title: I18n.t("account.trainers.index.title")
 
     assert_text trainer.email_address
     within("tr", text: trainer.email_address) do
@@ -46,8 +45,7 @@ class AccountTrainersTest < ApplicationSystemTestCase
     sign_in_via_ui account_admin
     assert_current_path edit_account_settings_path
 
-    click_on "Trainer Roster"
-    assert_current_path account_trainers_path
+    click_link_and_confirm "Trainer Roster", title: I18n.t("account.trainers.index.title")
 
     assert_text trainer.email_address
     within("tr", text: trainer.email_address) do

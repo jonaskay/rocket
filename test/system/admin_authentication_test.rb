@@ -10,7 +10,7 @@ class AdminAuthenticationTest < ApplicationSystemTestCase
     sign_in_via_ui @admin
     assert_current_path admin_root_path
 
-    click_button "Sign out"
+    sign_out_via_ui
 
     assert_current_path new_session_path
 
