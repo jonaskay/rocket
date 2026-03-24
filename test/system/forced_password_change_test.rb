@@ -20,7 +20,7 @@ class ForcedPasswordChangeTest < ApplicationSystemTestCase
 
     # Sign out and sign back in to verify no longer forced to change password
     sign_out_via_ui
-    sign_in_via_ui trainer, password: "newpassword123!"
-    assert_current_path root_path
+    sign_in_via_ui trainer, password: "newpassword123!", title: I18n.t("master_trainings.index.title")
+    assert_current_path master_trainings_path
   end
 end
