@@ -10,7 +10,7 @@ class Account::PasswordsController < ApplicationController
       Current.user.update!(password_params)
       Current.user.active!
     end
-    redirect_to root_path, notice: t("account.passwords.update.success")
+    redirect_to master_trainings_path, notice: t("account.passwords.update.success")
   rescue ActiveRecord::RecordInvalid
     render :edit, status: :unprocessable_entity
   end

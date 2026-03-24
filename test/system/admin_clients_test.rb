@@ -6,7 +6,7 @@ class AdminClientsTest < ApplicationSystemTestCase
   end
 
   test "super admin creates a new client account with initial account admin user" do
-    sign_in_via_ui @admin
+    sign_in_via_ui @admin, title: I18n.t("admin.home.index.title")
     assert_current_path admin_root_path
 
     click_link_and_confirm "Client Accounts", title: I18n.t("admin.clients.index.title")

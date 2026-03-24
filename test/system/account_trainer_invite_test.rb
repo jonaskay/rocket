@@ -34,9 +34,9 @@ class AccountTrainerInviteTest < ApplicationSystemTestCase
 
     fill_in "email_address", with: trainer.email_address
     fill_in "password", with: "newpassword123!"
-    click_button "Sign in"
+    click_button_and_confirm "Sign in", title: I18n.t("master_trainings.index.title")
 
-    assert_current_path root_path
+    assert_current_path master_trainings_path
 
     trainer.reload
     assert trainer.active?

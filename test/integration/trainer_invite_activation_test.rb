@@ -54,6 +54,6 @@ class TrainerInviteActivationIntegrationTest < ActionDispatch::IntegrationTest
       post session_path, params: { email_address: user.email_address, password: "password" }
     end
 
-    assert_redirected_to root_url
+    assert_redirected_to master_trainings_url
   end
 end

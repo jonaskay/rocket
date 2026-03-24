@@ -226,7 +226,7 @@
       "Step 3: Verify the page shows all master trainings for the trainer's account",
       "Step 4: Verify each training shows title, description, session count, and timestamps"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -629,7 +629,7 @@
       "Step 4: Navigate to /master_trainings",
       "Step 5: Verify Trainer A's training is not visible to Trainer B"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",

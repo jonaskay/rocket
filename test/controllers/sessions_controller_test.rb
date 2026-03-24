@@ -11,7 +11,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   test "create with valid credentials" do
     post session_path, params: { email_address: @user.email_address, password: "password" }
 
-    assert_redirected_to root_path
+    assert_redirected_to master_trainings_path
     assert cookies[:session_id]
   end
 
@@ -20,6 +20,14 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     post session_path, params: { email_address: admin.email_address, password: "password" }
 
     assert_redirected_to admin_root_url
+    assert cookies[:session_id]
+  end
+
+  test "create with valid client admin credentials redirects to account settings" do
+    client_admin = users(:acme_admin)
+    post session_path, params: { email_address: client_admin.email_address, password: "password" }
+
+    assert_redirected_to edit_account_settings_url
     assert cookies[:session_id]
   end
 

@@ -25,13 +25,13 @@ class AdminAuthenticationIntegrationTest < ActionDispatch::IntegrationTest
     assert_equal "Not authorized.", flash[:alert]
   end
 
-  test "non-admin user visiting admin then logging in is redirected to root" do
+  test "non-admin user visiting admin then logging in is redirected to master trainings" do
     get admin_root_path
     assert_redirected_to new_session_path
 
     post session_path, params: { email_address: users(:two).email_address, password: "password" }
 
-    assert_redirected_to root_path
+    assert_redirected_to master_trainings_path
   end
 
   test "admin user is redirected to admin home after login" do

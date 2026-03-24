@@ -12,8 +12,14 @@ class UserTest < ActiveSupport::TestCase
     assert_includes user.errors[:client], "can't be blank"
   end
 
-  test "non-admin user without a client is valid" do
-    user = User.new(email_address: "user@example.com", password: "password", client_admin: false, client: nil)
+  test "trainer without a client is invalid" do
+    user = User.new(email_address: "user@example.com", password: "password", client_admin: false, super_admin: false, client: nil)
+    assert_not user.valid?
+    assert_includes user.errors[:client], "can't be blank"
+  end
+
+  test "super admin without a client is valid" do
+    user = User.new(email_address: "admin@example.com", password: "password", super_admin: true, client: nil)
     user.valid?
     assert_empty user.errors[:client]
   end

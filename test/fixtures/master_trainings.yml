@@ -1,0 +1,11 @@
+acme_training_one:
+  client: acme
+  trainer_id: <%= ActiveRecord::FixtureSet.identify('acme_trainer_one') %>
+  title: "Safety Training"
+  description: "Comprehensive safety training program"
+
+acme_training_two:
+  client: acme
+  trainer_id: <%= ActiveRecord::FixtureSet.identify('acme_trainer_one') %>
+  title: "Onboarding"
+  description: "New employee onboarding"
