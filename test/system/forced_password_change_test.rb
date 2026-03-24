@@ -9,8 +9,8 @@ class ForcedPasswordChangeTest < ApplicationSystemTestCase
 
     assert_current_path edit_account_password_path
 
-    find('input[name="user[password]"]').set("newpassword123!")
-    find('input[name="user[password_confirmation]"]').set("newpassword123!")
+    fill_in I18n.t("account.passwords.edit.password_placeholder"), with: "newpassword123!"
+    fill_in I18n.t("account.passwords.edit.password_confirmation_placeholder"), with: "newpassword123!"
     click_button_and_confirm I18n.t("account.passwords.edit.submit"), title: I18n.t("sessions.new.title")
 
     assert_text I18n.t("account.passwords.update.success")
