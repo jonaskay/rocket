@@ -1,0 +1,53 @@
+#!/bin/bash
+set -e
+
+SUBMIT_PR=false
+
+while [[ "$1" == --* ]]; do
+  case "$1" in
+    --pr) SUBMIT_PR=true; shift ;;
+    *) echo "Unknown option: $1"; exit 1 ;;
+  esac
+done
+
+FEATURE=${1:-}
+MAX_ITERATIONS=${2:-3}
+
+if ! gh auth status &>/dev/null; then
+  echo "GitHub CLI is not authenticated. Run \`gh auth login\` to authenticate."
+  exit 1
+fi
+
+CLAUDE="claude --dangerously-skip-permissions -p"
+
+# === Plan phase (single conversation) ===
+echo "=== Picking next feature ==="
+if [ -n "$FEATURE" ]; then
+  session_id=$($CLAUDE "/plan.pick $FEATURE" --output-format json | jq -r '.session_id')
+else
+  session_id=$($CLAUDE "/plan.pick" --output-format json | jq -r '.session_id')
+fi
+
+echo "=== Drafting issue ==="
+$CLAUDE "/plan.draft" --resume "$session_id" --output-format json > /dev/null
+
+echo "=== Submitting issue ==="
+output=$($CLAUDE "/plan.submit" --resume "$session_id" --output-format json)
+issue_url=$(echo "$output" | jq -r '.result' | grep -oE 'https://github.com/[^/]+/[^/]+/issues/[0-9]+' | head -1)
+
+if [ -z "$issue_url" ]; then
+  echo "Could not extract issue URL from plan.submit output. Trying to find it from recent issues..."
+  issue_url=$(gh issue list --limit 1 --json url --jq '.[0].url')
+fi
+
+ISSUE=$(echo "$issue_url" | grep -oE '[0-9]+$')
+
+if [ -z "$ISSUE" ]; then
+  echo "Failed to determine issue number"
+  exit 1
+fi
+
+echo "=== Created issue #$ISSUE ==="
+
+# === Dev phase (via autofix) ===
+bin/autofix $([ "$SUBMIT_PR" = true ] && echo "--pr") "$ISSUE" "$MAX_ITERATIONS"
