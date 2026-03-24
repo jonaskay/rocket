@@ -50,7 +50,7 @@ class ForcedPasswordChangeTest < ActionDispatch::IntegrationTest
 
     patch account_password_path, params: { user: { password: "newpassword123!", password_confirmation: "newpassword123!" } }
 
-    assert_redirected_to root_path
+    assert_redirected_to master_trainings_path
     assert_equal I18n.t("account.passwords.update.success"), flash[:notice]
 
     user.reload

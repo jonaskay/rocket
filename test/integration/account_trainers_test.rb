@@ -103,6 +103,7 @@ class AccountTrainersIntegrationTest < ActionDispatch::IntegrationTest
   ensure
     User.reset_callbacks(:destroy)
     User.has_many :sessions, dependent: :destroy
+    User.has_many :master_trainings, foreign_key: :trainer_id, dependent: :destroy
   end
 
   test "admin cannot remove a trainer from another account" do
