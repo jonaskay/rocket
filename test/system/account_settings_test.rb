@@ -8,7 +8,7 @@ class AccountSettingsTest < ApplicationSystemTestCase
     assert_current_path edit_account_settings_path
 
     fill_in "Organization Name", with: "New Org Name"
-    click_button "Save Changes"
+    click_button_and_confirm "Save Changes", title: I18n.t("account.settings.edit.title")
 
     assert_text "Organization name updated successfully."
     assert_selector "input[value='New Org Name']"

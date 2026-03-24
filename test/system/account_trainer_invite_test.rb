@@ -6,15 +6,14 @@ class AccountTrainerInviteTest < ApplicationSystemTestCase
 
     sign_in_via_ui account_admin
 
-    click_on "Trainer Roster"
-    click_on "Invite Trainer"
+    click_link_and_confirm "Trainer Roster", title: I18n.t("account.trainers.index.title")
+    click_link_and_confirm "Invite Trainer", title: I18n.t("account.trainers.new.title")
 
     fill_in "First Name", with: "Sam"
     fill_in "Last Name", with: "Taylor"
     fill_in "Email", with: "sam@acme.com"
-    click_button "Send Invitation"
+    click_button_and_confirm "Send Invitation", title: I18n.t("account.trainers.index.title")
 
-    assert_current_path account_trainers_path
     assert_text "Invitation sent to sam@acme.com."
     assert_text "sam@acme.com"
   end
@@ -29,9 +28,8 @@ class AccountTrainerInviteTest < ApplicationSystemTestCase
 
     fill_in "password", with: "newpassword123!"
     fill_in "password_confirmation", with: "newpassword123!"
-    click_button "Save"
+    click_button_and_confirm "Save", title: I18n.t("sessions.new.title")
 
-    assert_current_path new_session_path
     assert_text I18n.t("passwords.update.success")
 
     fill_in "email_address", with: trainer.email_address
@@ -49,8 +47,8 @@ class AccountTrainerInviteTest < ApplicationSystemTestCase
 
     sign_in_via_ui account_admin
 
-    click_on "Trainer Roster"
-    click_on "Invite Trainer"
+    click_link_and_confirm "Trainer Roster", title: I18n.t("account.trainers.index.title")
+    click_link_and_confirm "Invite Trainer", title: I18n.t("account.trainers.new.title")
 
     click_button "Send Invitation"
 

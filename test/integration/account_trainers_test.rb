@@ -13,7 +13,7 @@ class AccountTrainersIntegrationTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "td", text: users(:acme_trainer_one).email_address
     assert_select "td", text: users(:acme_trainer_two).email_address
-    assert_select "td", text: users(:gamma_admin).email_address, count: 0
+    assert_select "td", text: users(:beta_trainer_one).email_address, count: 0
   end
 
   test "trainer roster displays correct status for each trainer" do
@@ -114,5 +114,16 @@ class AccountTrainersIntegrationTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :not_found
+  end
+
+  test "admin cannot update a trainer from another account" do
+    sign_in_as(@account_admin)
+    other_trainer = users(:beta_trainer_one)
+    original_attributes = other_trainer.attributes
+
+    patch account_trainer_path(other_trainer), params: { user: { first_name: "Hacked" } }
+
+    assert_response :not_found
+    assert_equal original_attributes, other_trainer.reload.attributes
   end
 end
