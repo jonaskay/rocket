@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     resources :clients, only: [ :index, :new, :create, :show, :destroy ]
   end
 
+  resources :master_trainings, only: [ :index ]
+
   namespace :account do
     resource :settings, only: [ :edit, :update ]
     resource :password, only: [ :edit, :update ]

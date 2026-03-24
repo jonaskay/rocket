@@ -1,0 +1,53 @@
+<% content_for(:title) { t(".title") } %>
+
+<div class="flex items-center justify-between">
+  <h1 class="font-bold text-4xl"><%= t(".title") %></h1>
+</div>
+
+<div class="mt-8">
+  <% if @master_trainings.any? %>
+    <table class="w-full text-left border-collapse">
+      <thead>
+        <tr class="border-b border-gray-300">
+          <th class="py-3 px-4 font-semibold text-gray-700">
+            <%= t(".table.title") %>
+          </th>
+
+          <th class="py-3 px-4 font-semibold text-gray-700">
+            <%= t(".table.description") %>
+          </th>
+
+          <th class="py-3 px-4 font-semibold text-gray-700">
+            <%= t(".table.created_at") %>
+          </th>
+
+          <th class="py-3 px-4 font-semibold text-gray-700">
+            <%= t(".table.updated_at") %>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @master_trainings.each do |training| %>
+          <tr class="border-b border-gray-200 hover:bg-gray-50">
+            <td class="py-3 px-4 font-medium"><%= training.title %></td>
+
+            <td class="py-3 px-4 text-gray-600">
+              <%= truncate(training.description, length: 80) %>
+            </td>
+
+            <td class="py-3 px-4 text-gray-600">
+              <%= l(training.created_at, format: :long) %>
+            </td>
+
+            <td class="py-3 px-4 text-gray-600">
+              <%= l(training.updated_at, format: :long) %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <%= render "empty" %>
+  <% end %>
+</div>

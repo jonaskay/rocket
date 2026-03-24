@@ -1,0 +1,11 @@
+en:
+  master_trainings:
+    unauthorized: "You are not authorized to access this page."
+    empty: "No master trainings yet."
+    index:
+      title: "Master Trainings"
+      table:
+        title: "Title"
+        description: "Description"
+        created_at: "Created"
+        updated_at: "Updated"

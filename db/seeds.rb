@@ -22,14 +22,25 @@ User.find_or_create_by!(email_address: "admin@acme.com") do |u|
   u.client_admin = true
 end
 
-[ { email: "trainer1@acme.com", first: "Alice", last: "Smith", status: :active },
-  { email: "trainer2@acme.com", first: "Bob", last: "Jones", status: :inactive },
-  { email: "trainer3@acme.com", first: "Carol", last: "White", status: :pending_password_change } ].each do |t|
+trainers = [ { email: "trainer1@acme.com", first: "Alice", last: "Smith", status: :active },
+             { email: "trainer2@acme.com", first: "Bob", last: "Jones", status: :inactive },
+             { email: "trainer3@acme.com", first: "Carol", last: "White", status: :pending_password_change } ].map do |t|
   User.find_or_create_by!(email_address: t[:email]) do |u|
     u.first_name = t[:first]
     u.last_name = t[:last]
     u.password = "password"
     u.client = acme
     u.status = t[:status]
+  end
+end
+
+# Seed master trainings for the demo account
+alice = trainers.first
+[ { title: "Safety Training", description: "Comprehensive safety training program covering workplace hazards, emergency procedures, and protective equipment." },
+  { title: "Onboarding", description: "New employee onboarding program introducing company culture, policies, and day-to-day workflows." },
+  { title: "Strength & Conditioning", description: "Progressive strength and conditioning program designed to build functional fitness and athletic performance." } ].each do |mt|
+  MasterTraining.find_or_create_by!(title: mt[:title], client: acme) do |m|
+    m.trainer = alice
+    m.description = mt[:description]
   end
 end

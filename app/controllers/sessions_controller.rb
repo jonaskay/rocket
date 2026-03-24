@@ -39,7 +39,7 @@ class SessionsController < ApplicationController
         return_url || edit_account_settings_url
       else
         return_url = nil if return_url && URI.parse(return_url).path.start_with?("/admin")
-        return_url || root_url
+        return_url || master_trainings_url
       end
     rescue URI::InvalidURIError
       if Current.user&.super_admin?
@@ -47,7 +47,7 @@ class SessionsController < ApplicationController
       elsif Current.user&.client_admin?
         edit_account_settings_url
       else
-        root_url
+        master_trainings_url
       end
     end
 end

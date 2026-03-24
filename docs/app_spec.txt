@@ -113,7 +113,9 @@
       - Login page for all roles (email_address + password), scaffolded by rails
       generate authentication - Cookie-based sessions stored server-side in the
       sessions table - After sign-in, redirect super_admin users to
-      admin_root_path (/admin) - Password reset flow via emailed token (Action
+      admin_root_path (/admin) - After sign-in, redirect trainer users
+      (non-admin, non-client-admin) to master_trainings_path (/master_trainings)
+      - Password reset flow via emailed token (Action
       Mailer + Mailgun) - Invited trainers set their password via the invite
       link (/passwords/:token/edit) before their first login;
       PasswordsController#update sets status to active upon success - Forced
@@ -230,8 +232,8 @@
       </sessions>
 
       <master_trainings>
-        - id (uuid, primary key) - client_id (uuid, fk → clients) - trainer_id
-        (uuid, fk → users) - title (string, not null) - description (text) -
+        - id (uuid, primary key) - client_id (bigint, fk → clients) - trainer_id
+        (bigint, fk → users) - title (string, not null) - description (text) -
         created_at, updated_at
       </master_trainings>
 
