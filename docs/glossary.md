@@ -10,6 +10,8 @@ Important domain terms for the Rocket training platform.
 
 **Client** — A tenant organization in the multi-tenant system (also referred to as a "client account"). Each client has one account admin and one or more trainers. Managed by super admins.
 
+**Cross-Tenant Isolation** — The security mechanism that ensures each client organization's data remains strictly separate. Trainers can only access master trainings, training sessions, and other resources belonging to their own account; they cannot view or interact with another client's data.
+
 **Direct Upload** — A file upload method where files are sent directly from the browser to Google Cloud Storage using Active Storage's signed URL feature, bypassing the Rails server.
 
 **Exercise** — Rich text content associated with a master training, authored using the Trix editor and stored via Action Text. Supports headings, bold, italic, lists, links, image attachments, and code formatting.
@@ -21,6 +23,8 @@ Important domain terms for the Rocket training platform.
 **Invitation Flow** — The process by which an account admin adds a new trainer to their organization. The system creates the trainer's account with `status: pending_password_change` and sends an invitation email containing a signed, time-limited link. When the trainer follows the link and sets their password, their status is automatically transitioned to `active`, allowing them to log in immediately.
 
 **Master Training** — A reusable training template created and owned by a trainer. Contains slides, prerequisite assets, and exercises. Multiple training sessions can be generated from a single master training at different points in time.
+
+**Master Trainings Dashboard** — The page at `/master_trainings` where trainers can view all master trainings belonging to their account, displayed in a table ordered by most recently updated. This is the default landing page for trainers after login. Access is restricted to trainers; account admins and unauthenticated users are redirected away.
 
 **Password Gate** — The password entry page shown at `/s/:slug/unlock` when a training session is password-protected. Participants must submit the correct password before the session content is revealed.
 
