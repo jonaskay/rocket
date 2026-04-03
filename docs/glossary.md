@@ -16,11 +16,13 @@ Important domain terms for the Rocket training platform.
 
 **Exercise Snapshot** — An immutable HTML copy of an exercise's rich text body captured at the time a training session is generated. Stored on the `exercise_snapshots` table as sanitized HTML.
 
-**Forced Password Change** — A security gate applied to trainers with `status: pending_password_change`. When such a trainer logs in, they are immediately redirected to `/account/password/edit` and cannot navigate to any other page until they set a new password. After submitting a valid password, their status is automatically transitioned to `active` and they are redirected to the home page.
+**Forced Password Change** — A security gate applied to trainers with `status: pending_password_change`. When such a trainer logs in, they are immediately redirected to `/account/password/edit` and cannot navigate to any other page until they set a new password. After submitting a valid password, their status is automatically transitioned to `active` and they are redirected to the master trainings dashboard.
 
 **Invitation Flow** — The process by which an account admin adds a new trainer to their organization. The system creates the trainer's account with `status: pending_password_change` and sends an invitation email containing a signed, time-limited link. When the trainer follows the link and sets their password, their status is automatically transitioned to `active`, allowing them to log in immediately.
 
 **Master Training** — A reusable training template created and owned by a trainer. Contains slides, prerequisite assets, and exercises. Multiple training sessions can be generated from a single master training at different points in time.
+
+**Master Trainings Dashboard** — The page at `/master_trainings` where trainers can view all master trainings belonging to their client account, displayed in a table ordered by most recently updated. Trainers are redirected here after signing in and after completing a forced password change. Account admins and unauthenticated users are redirected away from this page.
 
 **Password Gate** — The password entry page shown at `/s/:slug/unlock` when a training session is password-protected. Participants must submit the correct password before the session content is revealed.
 
