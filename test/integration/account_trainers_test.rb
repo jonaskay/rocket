@@ -3,11 +3,10 @@ require "test_helper"
 class AccountTrainersIntegrationTest < ActionDispatch::IntegrationTest
   setup do
     @account_admin = users(:acme_admin)
+    sign_in_as(@account_admin)
   end
 
   test "trainer roster lists all trainers for the current client only" do
-    sign_in_as(@account_admin)
-
     get account_trainers_path
 
     assert_response :success
@@ -17,8 +16,6 @@ class AccountTrainersIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   test "trainer roster displays correct status for each trainer" do
-    sign_in_as(@account_admin)
-
     get account_trainers_path
 
     assert_response :success
@@ -28,8 +25,6 @@ class AccountTrainersIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   test "account admin users are not shown in the trainer roster" do
-    sign_in_as(@account_admin)
-
     get account_trainers_path
 
     assert_response :success
@@ -46,7 +41,6 @@ class AccountTrainersIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   test "admin removes an active trainer" do
-    sign_in_as(@account_admin)
     trainer = users(:acme_trainer_one)
 
     assert_difference "User.count", -1 do
@@ -60,7 +54,6 @@ class AccountTrainersIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   test "admin removes an inactive trainer" do
-    sign_in_as(@account_admin)
     trainer = users(:acme_trainer_two)
 
     assert_difference "User.count", -1 do
@@ -74,7 +67,6 @@ class AccountTrainersIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   test "admin removes a pending trainer" do
-    sign_in_as(@account_admin)
     trainer = users(:acme_trainer_three)
 
     assert_difference "User.count", -1 do
@@ -88,7 +80,6 @@ class AccountTrainersIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   test "admin fails to remove a trainer when destroy fails" do
-    sign_in_as(@account_admin)
     trainer = users(:acme_trainer_one)
 
     User.before_destroy { throw :abort }
@@ -107,7 +98,6 @@ class AccountTrainersIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   test "admin cannot remove a trainer from another account" do
-    sign_in_as(@account_admin)
     other_trainer = users(:beta_trainer_one)
 
     assert_no_difference "User.count" do
@@ -118,7 +108,6 @@ class AccountTrainersIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   test "admin cannot update a trainer from another account" do
-    sign_in_as(@account_admin)
     other_trainer = users(:beta_trainer_one)
     original_attributes = other_trainer.attributes
 

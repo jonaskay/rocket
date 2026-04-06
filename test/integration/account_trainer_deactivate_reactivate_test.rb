@@ -7,11 +7,10 @@ class AccountTrainerDeactivateReactivateTest < ActionDispatch::IntegrationTest
     @inactive_trainer = users(:acme_trainer_two)
     @pending_trainer = users(:acme_trainer_three)
     @other_account_trainer = users(:beta_trainer_one)
+    sign_in_as(@account_admin)
   end
 
   test "admin deactivates an active trainer" do
-    sign_in_as(@account_admin)
-
     patch account_trainer_path(@active_trainer)
 
     assert_redirected_to account_trainers_path
@@ -24,7 +23,6 @@ class AccountTrainerDeactivateReactivateTest < ActionDispatch::IntegrationTest
 
   test "deactivating a trainer destroys all their sessions" do
     @active_trainer.sessions.create!
-    sign_in_as(@account_admin)
 
     assert_difference "@active_trainer.sessions.count", -1 do
       patch account_trainer_path(@active_trainer)
@@ -34,8 +32,6 @@ class AccountTrainerDeactivateReactivateTest < ActionDispatch::IntegrationTest
   end
 
   test "admin reactivates an inactive trainer" do
-    sign_in_as(@account_admin)
-
     patch account_trainer_path(@inactive_trainer)
 
     assert_redirected_to account_trainers_path
@@ -47,8 +43,6 @@ class AccountTrainerDeactivateReactivateTest < ActionDispatch::IntegrationTest
   end
 
   test "admin cannot deactivate a pending_password_change trainer" do
-    sign_in_as(@account_admin)
-
     patch account_trainer_path(@pending_trainer)
 
     assert_redirected_to account_trainers_path
@@ -60,8 +54,6 @@ class AccountTrainerDeactivateReactivateTest < ActionDispatch::IntegrationTest
   end
 
   test "admin cannot toggle a trainer from another account" do
-    sign_in_as(@account_admin)
-
     patch account_trainer_path(@other_account_trainer)
 
     assert_response :not_found
