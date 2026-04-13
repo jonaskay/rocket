@@ -46,45 +46,15 @@ class AccountTrainersIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   test "admin removes an active trainer" do
-    sign_in_as(@account_admin)
-    trainer = users(:acme_trainer_one)
-
-    assert_difference "User.count", -1 do
-      delete account_trainer_path(trainer)
-    end
-
-    assert_redirected_to account_trainers_path
-    follow_redirect!
-    assert_match trainer.email_address, flash[:notice]
-    assert_raises(ActiveRecord::RecordNotFound) { trainer.reload }
+    assert_trainer_successfully_removed(users(:acme_trainer_one))
   end
 
   test "admin removes an inactive trainer" do
-    sign_in_as(@account_admin)
-    trainer = users(:acme_trainer_two)
-
-    assert_difference "User.count", -1 do
-      delete account_trainer_path(trainer)
-    end
-
-    assert_redirected_to account_trainers_path
-    follow_redirect!
-    assert_match trainer.email_address, flash[:notice]
-    assert_raises(ActiveRecord::RecordNotFound) { trainer.reload }
+    assert_trainer_successfully_removed(users(:acme_trainer_two))
   end
 
   test "admin removes a pending trainer" do
-    sign_in_as(@account_admin)
-    trainer = users(:acme_trainer_three)
-
-    assert_difference "User.count", -1 do
-      delete account_trainer_path(trainer)
-    end
-
-    assert_redirected_to account_trainers_path
-    follow_redirect!
-    assert_match trainer.email_address, flash[:notice]
-    assert_raises(ActiveRecord::RecordNotFound) { trainer.reload }
+    assert_trainer_successfully_removed(users(:acme_trainer_three))
   end
 
   test "admin fails to remove a trainer when destroy fails" do
@@ -126,5 +96,20 @@ class AccountTrainersIntegrationTest < ActionDispatch::IntegrationTest
 
     assert_response :not_found
     assert_equal original_attributes, other_trainer.reload.attributes
+  end
+
+  private
+
+  def assert_trainer_successfully_removed(trainer)
+    sign_in_as(@account_admin)
+
+    assert_difference "User.count", -1 do
+      delete account_trainer_path(trainer)
+    end
+
+    assert_redirected_to account_trainers_path
+    follow_redirect!
+    assert_match trainer.email_address, flash[:notice]
+    assert_raises(ActiveRecord::RecordNotFound) { trainer.reload }
   end
 end
