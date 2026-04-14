@@ -158,7 +158,7 @@ jobs:
         run: '[ -s .minitest_failed_tests ] && bin/rails test:system $(cat .minitest_failed_tests)'
 
       - name: Keep screenshots from failed system tests
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v7.0.1
         if: failure()
         with:
           name: screenshots
