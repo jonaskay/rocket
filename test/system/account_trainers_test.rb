@@ -1,13 +1,12 @@
 require "application_system_test_case"
 
 class AccountTrainersTest < ApplicationSystemTestCase
+  setup do
+    @account_admin = users(:acme_admin)
+  end
+
   test "account admin sees trainers listed with their status" do
-    account_admin = users(:acme_admin)
-
-    sign_in_via_ui account_admin
-    assert_current_path edit_account_settings_path
-
-    click_link_and_confirm "Trainer Roster", title: I18n.t("account.trainers.index.title")
+    navigate_to_trainer_roster
 
     assert_text users(:acme_trainer_one).email_address
     assert_text users(:acme_trainer_two).email_address
@@ -19,13 +18,9 @@ class AccountTrainersTest < ApplicationSystemTestCase
   end
 
   test "admin removes a trainer from the roster" do
-    account_admin = users(:acme_admin)
     trainer = users(:acme_trainer_one)
 
-    sign_in_via_ui account_admin
-    assert_current_path edit_account_settings_path
-
-    click_link_and_confirm "Trainer Roster", title: I18n.t("account.trainers.index.title")
+    navigate_to_trainer_roster
 
     assert_text trainer.email_address
     within("tr", text: trainer.email_address) do
@@ -39,13 +34,9 @@ class AccountTrainersTest < ApplicationSystemTestCase
   end
 
   test "admin deactivates an active trainer and reactivates them" do
-    account_admin = users(:acme_admin)
     trainer = users(:acme_trainer_one)
 
-    sign_in_via_ui account_admin
-    assert_current_path edit_account_settings_path
-
-    click_link_and_confirm "Trainer Roster", title: I18n.t("account.trainers.index.title")
+    navigate_to_trainer_roster
 
     assert_text trainer.email_address
     within("tr", text: trainer.email_address) do
@@ -67,5 +58,13 @@ class AccountTrainersTest < ApplicationSystemTestCase
     within("tr", text: trainer.email_address) do
       assert_text "Active"
     end
+  end
+
+  private
+
+  def navigate_to_trainer_roster
+    sign_in_via_ui @account_admin
+    assert_current_path edit_account_settings_path
+    click_link_and_confirm "Trainer Roster", title: I18n.t("account.trainers.index.title")
   end
 end
