@@ -1,14 +1,14 @@
 require "application_system_test_case"
 
 class AccountTrainersTest < ApplicationSystemTestCase
-  test "account admin sees trainers listed with their status" do
-    account_admin = users(:acme_admin)
-
-    sign_in_via_ui account_admin
+  setup do
+    @account_admin = users(:acme_admin)
+    sign_in_via_ui @account_admin
     assert_current_path edit_account_settings_path
-
     click_link_and_confirm "Trainer Roster", title: I18n.t("account.trainers.index.title")
+  end
 
+  test "account admin sees trainers listed with their status" do
     assert_text users(:acme_trainer_one).email_address
     assert_text users(:acme_trainer_two).email_address
     assert_text users(:acme_trainer_three).email_address
@@ -19,13 +19,7 @@ class AccountTrainersTest < ApplicationSystemTestCase
   end
 
   test "admin removes a trainer from the roster" do
-    account_admin = users(:acme_admin)
     trainer = users(:acme_trainer_one)
-
-    sign_in_via_ui account_admin
-    assert_current_path edit_account_settings_path
-
-    click_link_and_confirm "Trainer Roster", title: I18n.t("account.trainers.index.title")
 
     assert_text trainer.email_address
     within("tr", text: trainer.email_address) do
@@ -39,13 +33,7 @@ class AccountTrainersTest < ApplicationSystemTestCase
   end
 
   test "admin deactivates an active trainer and reactivates them" do
-    account_admin = users(:acme_admin)
     trainer = users(:acme_trainer_one)
-
-    sign_in_via_ui account_admin
-    assert_current_path edit_account_settings_path
-
-    click_link_and_confirm "Trainer Roster", title: I18n.t("account.trainers.index.title")
 
     assert_text trainer.email_address
     within("tr", text: trainer.email_address) do
