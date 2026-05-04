@@ -16,9 +16,11 @@ Important domain terms for the Rocket training platform.
 
 **Exercise Snapshot** — An immutable HTML copy of an exercise's rich text body captured at the time a training session is generated. Stored on the `exercise_snapshots` table as sanitized HTML.
 
-**Forced Password Change** — A security gate applied to trainers with `status: pending_password_change`. When such a trainer logs in, they are immediately redirected to `/account/password/edit` and cannot navigate to any other page until they set a new password. After submitting a valid password, their status is automatically transitioned to `active` and they are redirected to the home page.
+**Forced Password Change** — A security gate applied to trainers with `status: pending_password_change`. When such a trainer logs in, they are immediately redirected to `/account/password/edit` and cannot navigate to any other page until they set a new password. After submitting a valid password, their status is automatically transitioned to `active` and they are redirected to the Master Trainings Dashboard.
 
 **Invitation Flow** — The process by which an account admin adds a new trainer to their organization. The system creates the trainer's account with `status: pending_password_change` and sends an invitation email containing a signed, time-limited link. When the trainer follows the link and sets their password, their status is automatically transitioned to `active`, allowing them to log in immediately.
+
+**Master Trainings Dashboard** — The trainer home page at `/master_trainings` that lists all master trainings belonging to the trainer's client account, ordered by most recently updated. Trainers are redirected here after sign-in and after completing a forced password change. Access is restricted to trainers; account admins and unauthenticated users are redirected away.
 
 **Master Training** — A reusable training template created and owned by a trainer. Contains slides, prerequisite assets, and exercises. Multiple training sessions can be generated from a single master training at different points in time.
 
