@@ -86,44 +86,24 @@ class AdminClientsIntegrationTest < ActionDispatch::IntegrationTest
 
   test "creation fails when client name is blank" do
     sign_in_as(@admin)
-
-    assert_no_difference "Client.count" do
-      post admin_clients_path, params: valid_client_params(name: "")
-    end
-
-    assert_response :unprocessable_entity
+    assert_client_creation_fails(valid_client_params(name: ""))
     assert_select ".text-red-700", text: /can't be blank/
   end
 
   test "creation fails when admin email is blank" do
     sign_in_as(@admin)
-
-    assert_no_difference [ "Client.count", "User.count" ] do
-      post admin_clients_path, params: valid_client_params(user: { email_address: "" })
-    end
-
-    assert_response :unprocessable_entity
+    assert_client_creation_fails(valid_client_params(user: { email_address: "" }))
     assert_select ".text-red-700", text: /can't be blank/
   end
 
   test "creation fails when admin email is already taken" do
     sign_in_as(@admin)
-
-    assert_no_difference "Client.count" do
-      post admin_clients_path, params: valid_client_params(user: { email_address: users(:acme_admin).email_address })
-    end
-
-    assert_response :unprocessable_entity
+    assert_client_creation_fails(valid_client_params(user: { email_address: users(:acme_admin).email_address }))
   end
 
   test "creation fails when password confirmation does not match" do
     sign_in_as(@admin)
-
-    assert_no_difference [ "Client.count", "User.count" ] do
-      post admin_clients_path, params: valid_client_params(user: { password_confirmation: "wrongpassword" })
-    end
-
-    assert_response :unprocessable_entity
+    assert_client_creation_fails(valid_client_params(user: { password_confirmation: "wrongpassword" }))
   end
 
   test "show page renders client name and user list" do
@@ -184,5 +164,13 @@ class AdminClientsIntegrationTest < ActionDispatch::IntegrationTest
     }.merge(user)
 
     { client: { name: name, users_attributes: { "0" => user_attrs } } }
+  end
+
+  def assert_client_creation_fails(params)
+    assert_no_difference [ "Client.count", "User.count" ] do
+      post admin_clients_path, params: params
+    end
+
+    assert_response :unprocessable_entity
   end
 end
