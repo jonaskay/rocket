@@ -2,6 +2,13 @@ en:
   master_trainings:
     unauthorized: "You are not authorized to access this page."
     empty: "No master trainings yet."
+    form:
+      title: "Title"
+      description: "Description"
+      submit: "Save changes"
+      cancel: "Cancel"
+    update:
+      success: "Master training was successfully updated."
     index:
       title: "Master Trainings"
       table:
@@ -9,3 +16,6 @@ en:
         description: "Description"
         created_at: "Created"
         updated_at: "Updated"
+        edit: "Edit"
+    edit:
+      title: "Edit Master Training"
