@@ -28,4 +28,10 @@ module CapybaraHelpers
   def sign_out_via_ui
     click_button_and_confirm "Sign out", title: I18n.t("sessions.new.title")
   end
+
+  def visit_trainer_roster_as(user)
+    sign_in_via_ui user
+    assert_current_path edit_account_settings_path
+    click_link_and_confirm "Trainer Roster", title: I18n.t("account.trainers.index.title")
+  end
 end
