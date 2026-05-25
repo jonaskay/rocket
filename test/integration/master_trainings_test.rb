@@ -43,8 +43,7 @@ class MasterTrainingsIntegrationTest < ActionDispatch::IntegrationTest
 
     get master_trainings_path
 
-    assert_redirected_to root_path
-    assert_equal I18n.t("master_trainings.unauthorized"), flash[:alert]
+    assert_master_training_unauthorized
   end
 
   test "super admin cannot access the edit action" do
@@ -53,8 +52,7 @@ class MasterTrainingsIntegrationTest < ActionDispatch::IntegrationTest
 
     get edit_master_training_path(training)
 
-    assert_redirected_to root_path
-    assert_equal I18n.t("master_trainings.unauthorized"), flash[:alert]
+    assert_master_training_unauthorized
   end
 
   test "super admin cannot access the update action" do
@@ -65,8 +63,7 @@ class MasterTrainingsIntegrationTest < ActionDispatch::IntegrationTest
       master_training: { title: "Hijacked", description: "" }
     }
 
-    assert_redirected_to root_path
-    assert_equal I18n.t("master_trainings.unauthorized"), flash[:alert]
+    assert_master_training_unauthorized
   end
 
   test "client admin cannot access the master trainings dashboard" do
@@ -74,8 +71,7 @@ class MasterTrainingsIntegrationTest < ActionDispatch::IntegrationTest
 
     get master_trainings_path
 
-    assert_redirected_to root_path
-    assert_equal I18n.t("master_trainings.unauthorized"), flash[:alert]
+    assert_master_training_unauthorized
   end
 
   test "client admin cannot access the edit action" do
@@ -84,8 +80,7 @@ class MasterTrainingsIntegrationTest < ActionDispatch::IntegrationTest
 
     get edit_master_training_path(training)
 
-    assert_redirected_to root_path
-    assert_equal I18n.t("master_trainings.unauthorized"), flash[:alert]
+    assert_master_training_unauthorized
   end
 
   test "client admin cannot access the update action" do
@@ -96,8 +91,7 @@ class MasterTrainingsIntegrationTest < ActionDispatch::IntegrationTest
       master_training: { title: "Hijacked", description: "" }
     }
 
-    assert_redirected_to root_path
-    assert_equal I18n.t("master_trainings.unauthorized"), flash[:alert]
+    assert_master_training_unauthorized
   end
 
   test "unauthenticated user is redirected to sign in" do
@@ -201,5 +195,12 @@ class MasterTrainingsIntegrationTest < ActionDispatch::IntegrationTest
     }
 
     assert_response :not_found
+  end
+
+  private
+
+  def assert_master_training_unauthorized
+    assert_redirected_to root_path
+    assert_equal I18n.t("master_trainings.unauthorized"), flash[:alert]
   end
 end
