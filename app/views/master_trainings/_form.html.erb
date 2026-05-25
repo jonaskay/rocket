@@ -22,7 +22,7 @@
   </div>
 
   <div class="flex items-center gap-4">
-    <%= form.submit t("master_trainings.form.submit"), class: "rounded-md px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium cursor-pointer" %>
+    <%= form.submit(master_training.new_record? ? t("master_trainings.form.submit_create") : t("master_trainings.form.submit"), class: "rounded-md px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium cursor-pointer") %>
     <%= link_to t("master_trainings.form.cancel"), master_trainings_path, class: "text-sm text-gray-600 hover:underline" %>
   </div>
 <% end %>

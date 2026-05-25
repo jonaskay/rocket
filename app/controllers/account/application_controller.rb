@@ -8,9 +8,4 @@ class Account::ApplicationController < ApplicationController
         redirect_to root_path, alert: t("account.application.not_authorized")
       end
     end
-
-    def current_client
-      Current.user.client
-    end
-    helper_method :current_client
 end

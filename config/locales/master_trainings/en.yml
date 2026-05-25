@@ -6,11 +6,15 @@ en:
       title: "Title"
       description: "Description"
       submit: "Save changes"
+      submit_create: "Create Master Training"
       cancel: "Cancel"
+    create:
+      success: "Master training created."
     update:
       success: "Master training was successfully updated."
     index:
       title: "Master Trainings"
+      new: "New Master Training"
       table:
         title: "Title"
         description: "Description"
@@ -19,3 +23,5 @@ en:
         edit: "Edit"
     edit:
       title: "Edit Master Training"
+    new:
+      title: "New Master Training"
