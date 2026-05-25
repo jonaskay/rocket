@@ -250,7 +250,7 @@
       "Step 4: Submit the form",
       "Step 5: Verify changes are saved and displayed"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",

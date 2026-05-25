@@ -9,3 +9,9 @@ acme_training_two:
   trainer_id: <%= ActiveRecord::FixtureSet.identify('acme_trainer_one') %>
   title: "Onboarding"
   description: "New employee onboarding"
+
+beta_training_one:
+  client: beta
+  trainer_id: <%= ActiveRecord::FixtureSet.identify('beta_trainer_one') %>
+  title: "Beta Safety Training"
+  description: "Beta company safety training program"

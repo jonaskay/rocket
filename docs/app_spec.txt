@@ -461,8 +461,9 @@
         trainer) - MasterTrainingsController: index, new, create, show, edit,
         update, destroy - Guard destroy action: block if training_sessions
         exist, show error flash - Trainer dashboard: card grid with title,
-        description, session count, timestamps - Inline new/edit via Turbo Frame
-        modal pattern
+        description, session count, timestamps - Edit master training via full-page
+        edit form (edit.html.erb + shared _form.html.erb partial); scoped to
+        current_client to prevent cross-tenant access
       </tasks>
     </step>
 

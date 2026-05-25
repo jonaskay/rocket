@@ -24,6 +24,10 @@
           <th class="py-3 px-4 font-semibold text-gray-700">
             <%= t(".table.updated_at") %>
           </th>
+
+          <th class="py-3 px-4 font-semibold text-gray-700">
+            <%= t(".table.edit") %>
+          </th>
         </tr>
       </thead>
 
@@ -42,6 +46,10 @@
 
             <td class="py-3 px-4 text-gray-600">
               <%= l(training.updated_at, format: :long) %>
+            </td>
+
+            <td class="py-3 px-4">
+              <%= link_to t(".table.edit"), edit_master_training_path(training), class: "text-sm text-blue-600 hover:underline" %>
             </td>
           </tr>
         <% end %>
