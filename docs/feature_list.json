@@ -238,7 +238,7 @@
       "Step 4: Submit the form",
       "Step 5: Verify the master training is created and appears in the dashboard"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",

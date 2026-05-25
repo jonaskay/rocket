@@ -100,6 +100,26 @@ class MasterTrainingsIntegrationTest < ActionDispatch::IntegrationTest
     assert_equal I18n.t("master_trainings.unauthorized"), flash[:alert]
   end
 
+  test "client admin cannot access the new action" do
+    sign_in_as(users(:acme_admin))
+
+    get new_master_training_path
+
+    assert_redirected_to root_path
+    assert_equal I18n.t("master_trainings.unauthorized"), flash[:alert]
+  end
+
+  test "client admin cannot access the create action" do
+    sign_in_as(users(:acme_admin))
+
+    post master_trainings_path, params: {
+      master_training: { title: "Hijacked", description: "" }
+    }
+
+    assert_redirected_to root_path
+    assert_equal I18n.t("master_trainings.unauthorized"), flash[:alert]
+  end
+
   test "unauthenticated user is redirected to sign in" do
     get master_trainings_path
 
@@ -132,6 +152,101 @@ class MasterTrainingsIntegrationTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "td", text: master_trainings(:acme_training_one).title, count: 0
     assert_select "td", text: master_trainings(:acme_training_two).title, count: 0
+  end
+
+  test "trainer from another account cannot create a master training" do
+    beta_trainer = users(:beta_trainer_one)
+    sign_in_as(beta_trainer)
+
+    assert_no_difference -> { @trainer.client.master_trainings.count } do
+      assert_difference -> { beta_trainer.client.master_trainings.count }, 1 do
+        post master_trainings_path, params: {
+          master_training: { title: "Cross-Client Training", description: "" }
+        }
+      end
+    end
+
+    assert_redirected_to master_trainings_path
+  end
+
+  test "trainer successfully accesses new form" do
+    sign_in_as(@trainer)
+
+    get new_master_training_path
+
+    assert_response :success
+  end
+
+  test "trainer creates a master training with valid data" do
+    sign_in_as(@trainer)
+
+    assert_difference "MasterTraining.count", 1 do
+      post master_trainings_path, params: {
+        master_training: { title: "Safety Training", description: "Comprehensive safety program" }
+      }
+    end
+
+    assert_redirected_to master_trainings_path
+    assert_equal I18n.t("master_trainings.create.success"), flash[:notice]
+  end
+
+  test "created master training belongs to the trainer's client" do
+    sign_in_as(@trainer)
+
+    post master_trainings_path, params: {
+      master_training: { title: "Safety Training", description: "" }
+    }
+
+    training = MasterTraining.order(created_at: :desc).first
+    assert_equal @trainer.client, training.client
+    assert_equal @trainer, training.trainer
+  end
+
+  test "trainer cannot create a master training without a title" do
+    sign_in_as(@trainer)
+
+    assert_no_difference "MasterTraining.count" do
+      post master_trainings_path, params: {
+        master_training: { title: "", description: "Some description" }
+      }
+    end
+
+    assert_response :unprocessable_entity
+    assert_select "li", text: /Title/
+  end
+
+  test "super admin cannot access the new action" do
+    sign_in_as(users(:one))
+
+    get new_master_training_path
+
+    assert_redirected_to root_path
+    assert_equal I18n.t("master_trainings.unauthorized"), flash[:alert]
+  end
+
+  test "super admin cannot access the create action" do
+    sign_in_as(users(:one))
+
+    post master_trainings_path, params: {
+      master_training: { title: "Hijacked", description: "" }
+    }
+
+    assert_redirected_to root_path
+    assert_equal I18n.t("master_trainings.unauthorized"), flash[:alert]
+  end
+
+  test "unauthenticated user attempting to access new is redirected to sign in" do
+    get new_master_training_path
+
+    assert_redirected_to new_session_path
+  end
+
+  test "unauthenticated user attempting to create via POST is redirected to sign in" do
+    post master_trainings_path, params: {
+      master_training: { title: "Test", description: "" }
+    }
+
+    assert_redirected_to new_session_path
   end
 
   test "trainer successfully accesses edit" do

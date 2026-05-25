@@ -6,6 +6,21 @@ class MasterTrainingsController < ApplicationController
     @master_trainings = current_client.master_trainings.order(updated_at: :desc)
   end
 
+  def new
+    @master_training = current_client.master_trainings.build(trainer: Current.user)
+  end
+
+  def create
+    @master_training = current_client.master_trainings.build(master_training_params)
+    @master_training.trainer = Current.user
+
+    if @master_training.save
+      redirect_to master_trainings_path, notice: t("master_trainings.create.success")
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
   def edit
   end
 
@@ -27,10 +42,6 @@ class MasterTrainingsController < ApplicationController
     unless Current.user&.trainer?
       redirect_to root_path, alert: t("master_trainings.unauthorized")
     end
-  end
-
-  def current_client
-    Current.user.client
   end
 
   def master_training_params
