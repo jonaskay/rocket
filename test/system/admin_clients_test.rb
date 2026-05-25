@@ -27,7 +27,7 @@ class AdminClientsTest < ApplicationSystemTestCase
   end
 
   test "super admin sees client accounts with trainer counts" do
-    sign_in_via_ui @admin
+    sign_in_via_ui @admin, title: I18n.t("admin.home.index.title")
 
     assert_text @admin.email_address
     click_link_and_confirm "Client Accounts", title: I18n.t("admin.clients.index.title")
