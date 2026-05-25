@@ -20,11 +20,11 @@ class MasterTrainingsTest < ApplicationSystemTestCase
 
     visit_and_confirm edit_master_training_path(training), title: "Edit Master Training"
 
-    assert_field "Title", with: training.title
-    assert_field "Description", with: training.description
+    assert_field "master_training[title]", with: training.title
+    assert_field "master_training[description]", with: training.description
 
-    fill_in "Title", with: "Updated Safety Training"
-    fill_in "Description", with: "Updated description text"
+    fill_in "master_training[title]", with: "Updated Safety Training"
+    fill_in "master_training[description]", with: "Updated description text"
 
     click_button_and_confirm "Save changes", title: "Master Trainings"
 
