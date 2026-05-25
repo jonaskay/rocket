@@ -54,6 +54,7 @@
 
 # Ignore Playwright assets.
 .playwright/
+.playwright-mcp/
 
 # Playwright
 node_modules/
