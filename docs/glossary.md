@@ -22,6 +22,8 @@ Important domain terms for the Rocket training platform.
 
 **Master Training** — A reusable training template created and owned by a trainer. Contains slides, prerequisite assets, and exercises. Multiple training sessions can be generated from a single master training at different points in time.
 
+**Master Trainings Dashboard** — The primary landing page for trainers at `/master_trainings`. Displays all master trainings belonging to the trainer's account in a table ordered by most recently updated. Each row shows the training's title, a truncated description, created and updated timestamps, and an Edit link. Trainers are automatically redirected here upon sign-in. Only trainers can access this page; account admins are redirected away with an authorization error.
+
 **Password Gate** — The password entry page shown at `/s/:slug/unlock` when a training session is password-protected. Participants must submit the correct password before the session content is revealed.
 
 **Prerequisite Asset** — A file of any type (PDF, video, ZIP, etc.) attached to a master training that participants are expected to review or download before the training session begins.
