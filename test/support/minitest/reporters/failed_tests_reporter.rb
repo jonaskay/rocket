@@ -7,7 +7,7 @@ class FailedTestsReporter < Minitest::Reporters::BaseReporter
   def start
     super
     FileUtils.rm_f(FAILED_TESTS_FILE)
-    @failures = []
+    @failed_test_locations = []
   end
 
   def record(result)
@@ -15,16 +15,20 @@ class FailedTestsReporter < Minitest::Reporters::BaseReporter
     return if result.skipped?
     return unless result.failure
 
-    path, line = result.klass.instance_method(result.name.to_sym).source_location
-    @failures << "#{path}:#{line}"
+    path, line = if result.respond_to?(:source_location)
+      result.source_location
+    else
+      Object.const_get(result.klass).instance_method(result.name.to_sym).source_location
+    end
+    @failed_test_locations << "#{path}:#{line}"
   end
 
   def report
     super
-    return if @failures.empty?
+    return if @failed_test_locations.empty?
 
     File.open(FAILED_TESTS_FILE, "a") do |f|
-      f.write(@failures.uniq.join("\n") + "\n")
+      f.write(@failed_test_locations.uniq.join("\n") + "\n")
     end
   end
 end
