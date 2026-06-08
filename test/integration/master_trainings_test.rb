@@ -39,65 +39,35 @@ class MasterTrainingsIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   test "super admin cannot access the master trainings dashboard" do
-    sign_in_as(users(:one))
-
-    get master_trainings_path
-
-    assert_redirected_to root_path
-    assert_equal I18n.t("master_trainings.unauthorized"), flash[:alert]
+    assert_unauthorized_master_training_access(users(:one)) { get master_trainings_path }
   end
 
   test "super admin cannot access the edit action" do
     training = master_trainings(:acme_training_one)
-    sign_in_as(users(:one))
-
-    get edit_master_training_path(training)
-
-    assert_redirected_to root_path
-    assert_equal I18n.t("master_trainings.unauthorized"), flash[:alert]
+    assert_unauthorized_master_training_access(users(:one)) { get edit_master_training_path(training) }
   end
 
   test "super admin cannot access the update action" do
     training = master_trainings(:acme_training_one)
-    sign_in_as(users(:one))
-
-    patch master_training_path(training), params: {
-      master_training: { title: "Hijacked", description: "" }
-    }
-
-    assert_redirected_to root_path
-    assert_equal I18n.t("master_trainings.unauthorized"), flash[:alert]
+    assert_unauthorized_master_training_access(users(:one)) do
+      patch master_training_path(training), params: { master_training: { title: "Hijacked", description: "" } }
+    end
   end
 
   test "client admin cannot access the master trainings dashboard" do
-    sign_in_as(users(:acme_admin))
-
-    get master_trainings_path
-
-    assert_redirected_to root_path
-    assert_equal I18n.t("master_trainings.unauthorized"), flash[:alert]
+    assert_unauthorized_master_training_access(users(:acme_admin)) { get master_trainings_path }
   end
 
   test "client admin cannot access the edit action" do
     training = master_trainings(:acme_training_one)
-    sign_in_as(users(:acme_admin))
-
-    get edit_master_training_path(training)
-
-    assert_redirected_to root_path
-    assert_equal I18n.t("master_trainings.unauthorized"), flash[:alert]
+    assert_unauthorized_master_training_access(users(:acme_admin)) { get edit_master_training_path(training) }
   end
 
   test "client admin cannot access the update action" do
     training = master_trainings(:acme_training_one)
-    sign_in_as(users(:acme_admin))
-
-    patch master_training_path(training), params: {
-      master_training: { title: "Hijacked", description: "" }
-    }
-
-    assert_redirected_to root_path
-    assert_equal I18n.t("master_trainings.unauthorized"), flash[:alert]
+    assert_unauthorized_master_training_access(users(:acme_admin)) do
+      patch master_training_path(training), params: { master_training: { title: "Hijacked", description: "" } }
+    end
   end
 
   test "unauthenticated user is redirected to sign in" do
@@ -201,5 +171,14 @@ class MasterTrainingsIntegrationTest < ActionDispatch::IntegrationTest
     }
 
     assert_response :not_found
+  end
+
+  private
+
+  def assert_unauthorized_master_training_access(user)
+    sign_in_as(user)
+    yield
+    assert_redirected_to root_path
+    assert_equal I18n.t("master_trainings.unauthorized"), flash[:alert]
   end
 end
